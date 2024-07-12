@@ -15,14 +15,18 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
+        //Tạo 1 bảng ghi
+        // DB::table('users')->insert(
+        //     [
+        //         'name' => 'AdminTaoPro',
+        //         'email' => 'caotancong2003@gmail.com',
+        //         'password' => Hash::make('password'),
+        //     ]
+        // );
 
-        DB::table('users')->insert(
-            [
-                'name' => 'AdminTaoPro',
-                'email' => 'caotancong2003@gmail.com',
-                'password' => Hash::make('password'),
-            ]
-        );
+        //Tạo nhiều bảng ghi
+        $this->call([
+            UserSeeder::class
+        ]);
     }
 }
