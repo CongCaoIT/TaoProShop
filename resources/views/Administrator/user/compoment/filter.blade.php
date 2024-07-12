@@ -26,7 +26,7 @@
                         </span>
                     </div>
                 </div>
-                <a href="" class="btn btn-danger"><i class="fa fa-plus mr5"></i>Thêm</a>
+                <a href="{{route('user.create')}}" class="btn btn-danger"><i class="fa fa-plus mr5"></i>Thêm</a>
             </div>
         </div>
     </div>
