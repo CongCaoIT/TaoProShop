@@ -17,4 +17,9 @@ class BaseRepository implements BaseRepositoryInterface
     {
         return $this->model::all();
     }
+
+    public function findByID($modelID,   $column = ['*'],  $relation = [])
+    {
+        return $this->model->select($column)->with($relation)->findOrFail($modelID);
+    }
 }

@@ -1,6 +1,7 @@
 @include('Administrator.dashboard.component.breadcrumb', ['title' => $config['seo']['create']['title']])
 
-<form action="" class="box">
+<form action="" class="box" method="post">
+    @csrf
     <div class="wrapper wrapper-content animated fadeInRight">
         <div class="row">
             <div class="col-lg-4">
@@ -107,7 +108,7 @@
                                 <div class="form-row">
                                     <label for="" class="control-label text-right">Thành Phố/Tỉnh</label>
                                     <select name="province_id" id=""
-                                        class="form-control setupSelect2 province">
+                                        class="form-control setupSelect2 province location" data-target="districts">
                                         <option value="0">[Chọn Thành Phố/Tỉnh]</option>
                                         @if (isset($provinces))
                                             @foreach ($provinces as $province)
@@ -121,7 +122,7 @@
                                 <div class="form-row">
                                     <label for="" class="control-label text-right">Quận/Huyện</label>
                                     <select name="district_id" id=""
-                                        class="form-control setupSelect2 district">
+                                        class="form-control setupSelect2 districts location" data-target="wards">
                                         <option value="0">[Chọn Quận/Huyện]</option>
                                     </select>
                                 </div>
@@ -132,7 +133,7 @@
                             <div class="col-lg-6">
                                 <div class="form-row">
                                     <label for="" class="control-label text-right">Phường/Xã</label>
-                                    <select name="ward_id" id="" class="form-control setupSelect2">
+                                    <select name="ward_id" id="" class="form-control setupSelect2 wards">
                                         <option value="0">[Chọn Phường/Xã]</option>
                                     </select>
                                 </div>

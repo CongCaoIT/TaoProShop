@@ -3,8 +3,6 @@
 namespace App\Http\Controllers\Administrator;
 
 use App\Http\Controllers\Controller;
-use App\Models\User;
-use App\Services\DistrictService;
 use App\Services\ProvinceService;
 use App\Services\UserService;
 
@@ -12,13 +10,11 @@ class UserController extends Controller
 {
     protected $userService;
     protected $provinceService;
-    protected $districtService;
 
-    public function __construct(UserService $userService, ProvinceService $provinceService, DistrictService $districtService)
+    public function __construct(UserService $userService, ProvinceService $provinceService)
     {
         $this->userService = $userService;
         $this->provinceService = $provinceService;
-        $this->districtService = $districtService;
     }
 
     public function index()
