@@ -6,4 +6,5 @@ interface BaseRepositoryInterface
 {
     public function all();
     public function findByID($modelId, $column, $relation);
+    public function create($payload);
 }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Administrator;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreUserRequest;
 use App\Services\ProvinceService;
 use App\Services\UserService;
 
@@ -50,7 +51,9 @@ class UserController extends Controller
         $config = [
             'js' => [
                 'https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js',
-                'Administrator/library/location.js'
+                'Administrator/library/location.js',
+                'Administrator/plugin/ckfinder_2/ckfinder.js',
+                'Administrator/library/finder.js'
             ],
             'css' => [
                 'https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet'
@@ -64,5 +67,15 @@ class UserController extends Controller
             'config',
             'provinces'
         ));
+    }
+
+    public function store(StoreUserRequest $request)
+    {
+        if ($this->userService->create($request)) {
+            flash()->success('Thêm mới bản ghi thành công.');
+            return redirect()->route('user.index');
+        }
+        flash()->error('Thêm mới bản ghi không thành công. Hãy thử lại.');
+        return redirect()->route('user.index');
     }
 }

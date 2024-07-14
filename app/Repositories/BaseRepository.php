@@ -22,4 +22,10 @@ class BaseRepository implements BaseRepositoryInterface
     {
         return $this->model->select($column)->with($relation)->findOrFail($modelID);
     }
+
+    public function create($payload = [])
+    {
+        $model = $this->model->create($payload);
+        return $model->refresh();
+    }
 }

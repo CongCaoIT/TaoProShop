@@ -19,10 +19,11 @@ Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard.
 Route::group(['prefix' => 'user'], function () {
     Route::get('', [UserController::class, 'index'])->name('user.index')->middleware(EnsureTokenIsValid::class);
     Route::get('create', [UserController::class, 'create'])->name('user.create')->middleware(EnsureTokenIsValid::class);
+    Route::post('store', [UserController::class, 'store'])->name('user.store')->middleware(EnsureTokenIsValid::class);
 });
 
 /* Ajax */
-Route::get('ajax/location/getLocation', [LocationController::class, 'getLocation'])->name('ajax.location.index');
+Route::get('ajax/location/getLocation', [LocationController::class, 'getLocation'])->name('ajax.location.index')->middleware(EnsureTokenIsValid::class);
 
 Route::get('admin', [AuthController::class, 'index'])->name('auth.admin')->middleware(LoginMiddleware::class);
 Route::get('logout', [AuthController::class, 'logout'])->name('auth.logout');

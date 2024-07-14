@@ -2,9 +2,11 @@
 
 namespace App\Services;
 
-use App\Models\User;
 use App\Repositories\UserRepository;
 use App\Services\Interfaces\UserServiceInterface;
+use Exception;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
 /**
  * Class UserService
@@ -22,5 +24,23 @@ class UserService implements UserServiceInterface
     public function paginate()
     {
         return $this->userRepository->getAllPaginate(); //Xử lý logic
+    }
+
+    public function create($request)
+    {
+        DB::beginTransaction();
+        try {
+            $payload = $request->except(['_token', 'send', 're_password']);
+            $payload['password'] = Hash::make($payload['password']);
+
+            $this->userRepository->create($payload);
+
+            DB::commit();
+            return true;
+        } catch (Exception $ex) {
+            DB::rollBack();
+            echo $ex->getMessage();
+            die();
+        }
     }
 }
