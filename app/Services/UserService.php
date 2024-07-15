@@ -43,4 +43,34 @@ class UserService implements UserServiceInterface
             die();
         }
     }
+
+    public function update($id, $request)
+    {
+        DB::beginTransaction();
+        try {
+            $payload = $request->except(['_token', 'send']);
+
+            $this->userRepository->update($id, $payload);
+            DB::commit();
+            return true;
+        } catch (Exception $ex) {
+            DB::rollBack();
+            echo $ex->getMessage();
+            die();
+        }
+    }
+
+    public function destroy($id)
+    {
+        DB::beginTransaction();
+        try {
+            $this->userRepository->delete($id);
+            DB::commit();
+            return true;
+        } catch (Exception $ex) {
+            DB::rollBack();
+            echo $ex->getMessage();
+            die();
+        }
+    }
 }
