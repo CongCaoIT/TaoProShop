@@ -21,9 +21,23 @@ class UserService implements UserServiceInterface
         $this->userRepository = $userRepository;
     }
 
-    public function paginate()
+    public function paginate($request)
     {
-        return $this->userRepository->getAllPaginate(); //Xử lý logic
+        $condition['keyword'] = addslashes($request->input('keyword'));
+        $perpage = $request->input('perpage');
+
+        //Xử lý logic
+        $users = $this->userRepository->pagination(
+            [
+                'id', 'email', 'phone', 'address', 'name', 'publish' //Select
+            ],
+            $condition, //Keyword
+            [], //Join table
+            $perpage, //Page
+            ['path' => 'user'] //Path URL
+        );
+
+        return $users;
     }
 
     public function create($request)
@@ -34,7 +48,6 @@ class UserService implements UserServiceInterface
             $payload['password'] = Hash::make($payload['password']);
 
             $this->userRepository->create($payload);
-
             DB::commit();
             return true;
         } catch (Exception $ex) {
@@ -65,6 +78,23 @@ class UserService implements UserServiceInterface
         DB::beginTransaction();
         try {
             $this->userRepository->delete($id);
+            DB::commit();
+            return true;
+        } catch (Exception $ex) {
+            DB::rollBack();
+            echo $ex->getMessage();
+            die();
+        }
+    }
+
+    public function updateStatus($post = [])
+    {
+
+        DB::beginTransaction();
+        try {
+            $payload[$post['field']] = (($post['value'] == 1) ? 0 : 1);
+
+            $this->userRepository->update($post['modelId'], $payload);
             DB::commit();
             return true;
         } catch (Exception $ex) {

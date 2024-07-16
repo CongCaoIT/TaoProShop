@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Administrator\AuthController;
 use App\Http\Controllers\Administrator\DashboardController;
+use App\Http\Controllers\Ajax\DashboardController as AjaxDashboard;
 use App\Http\Controllers\Ajax\LocationController;
 use App\Http\Controllers\Administrator\UserController;
 use App\Http\Middleware\EnsureTokenIsValid;
@@ -28,6 +29,7 @@ Route::group(['prefix' => 'user'], function () {
 
 /* Ajax */
 Route::get('ajax/location/getLocation', [LocationController::class, 'getLocation'])->name('ajax.location.index')->middleware(EnsureTokenIsValid::class);
+Route::post('ajax/dashboard/changeStatus', [AjaxDashboard::class, 'changeStatus'])->name('ajax.dashboard.changeStatus')->middleware(EnsureTokenIsValid::class);
 
 Route::get('admin', [AuthController::class, 'index'])->name('auth.admin')->middleware(LoginMiddleware::class);
 Route::get('logout', [AuthController::class, 'logout'])->name('auth.logout');

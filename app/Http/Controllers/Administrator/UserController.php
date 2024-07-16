@@ -8,6 +8,7 @@ use App\Http\Requests\UpdateRequest;
 use App\Repositories\UserRepository;
 use App\Services\ProvinceService;
 use App\Services\UserService;
+use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
@@ -23,15 +24,17 @@ class UserController extends Controller
         $this->userRepository = $userRepository;
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        $users = $this->userService->paginate(); //Gọi func ở tầng Service, nơi xử lý logic
+        $users = $this->userService->paginate($request); //Gọi func ở tầng Service, nơi xử lý logic
 
         $config = [
             'js' => [
+                'https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js',
                 'Administrator/js/plugins/switchery/switchery.js'
             ],
             'css' => [
+                'https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet',
                 'Administrator/css/plugins/switchery/switchery.css'
             ]
         ];

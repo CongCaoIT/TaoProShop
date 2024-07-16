@@ -9,4 +9,5 @@ interface BaseRepositoryInterface
     public function create($payload);
     public function update($id, $payload);
     public function delete($id);
+    public function pagination($column = ['*'], $condition = [], $join = [], $perpage = 20, $extend);
 }
