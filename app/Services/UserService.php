@@ -24,6 +24,7 @@ class UserService implements UserServiceInterface
     public function paginate($request)
     {
         $condition['keyword'] = addslashes($request->input('keyword'));
+        $condition['publish'] = $request->input('publish');
         $perpage = $request->input('perpage');
 
         //Xử lý logic
@@ -89,12 +90,27 @@ class UserService implements UserServiceInterface
 
     public function updateStatus($post = [])
     {
-
         DB::beginTransaction();
         try {
             $payload[$post['field']] = (($post['value'] == 1) ? 0 : 1);
 
             $this->userRepository->update($post['modelId'], $payload);
+            DB::commit();
+            return true;
+        } catch (Exception $ex) {
+            DB::rollBack();
+            echo $ex->getMessage();
+            die();
+        }
+    }
+
+    public function updateStatusAll($post = [])
+    {
+        DB::beginTransaction();
+        try {
+            $payload[$post['field']] = $post['value'];
+
+            $this->userRepository->updateByWhereIn('id', $post['id'], $payload);
             DB::commit();
             return true;
         } catch (Exception $ex) {

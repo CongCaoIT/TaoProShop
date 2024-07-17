@@ -9,27 +9,33 @@
                     <select name="perpage" id="" class="form-control input-sm perpage filter mr10 setupSelect2">
                         @for ($i = 20; $i <= 200; $i += 20)
                             <option {{ $perpage == $i ? 'selected' : '' }} value="{{ $i }}">
-                                {{ $i }}
-                                bản ghi</option>
+                                {{ $i }} bản ghi
+                            </option>
                         @endfor
                     </select>
-
                 </div>
             </div>
             <div class="action">
                 <div class="uk-flex uk-flex-middle">
-                    <select name="user_catelogue_id" id="" class="form-control mr10 setupSelect2">
-                        <option value="0" selected="selected">Chọn nhóm thành viên</option>
-                        <option value="1" selected="selected">Quản trị viên</option>
+                    @php
+                        $publish = request('publish') ?? old('publish', -1);
+                        $user_catelogue_id = request('user_catelogue_id') ?? old('user_catelogue_id', 0);
+                    @endphp
+                    <select name="publish" id="" class="form-control setupSelect2 ml10">
+                        <option value="-1" {{ $publish == -1 ? 'selected' : '' }}>Chọn tình trạng</option>
+                        <option value="0" {{ $publish == 0 ? 'selected' : '' }}>Đã khóa</option>
+                        <option value="1" {{ $publish == 1 ? 'selected' : '' }}>Chưa khóa</option>
                     </select>
-                    <div class="uk-search uk-flex uk-middle mr10  ml10">
+                    <select name="user_catelogue_id" id="" class="form-control mr10 setupSelect2">
+                        <option value="0" {{ $user_catelogue_id == 0 ? 'selected' : '' }}>Chọn nhóm thành viên</option>
+                        <option value="1" {{ $user_catelogue_id == 1 ? 'selected' : '' }}>Quản trị viên</option>
+                    </select>
+                    <div class="uk-search uk-flex uk-middle mr10">
                         <div class="input-group" style="width: 300px">
                             <input type="text" name="keyword" value="{{ request('keyword') ?: old('keyword') }}"
                                 placeholder="Nhập từ khóa bạn muốn tìm ..." class="form-control">
                             <span class="input-group-btn">
-                                <button type="submit" name="search" value="search"
-                                    class="btn btn-primary mb0 btn-sm">Tìm
-                                    kiếm</button>
+                                <button type="submit" name="search" value="search" class="btn btn-primary mb0 btn-sm">Tìm kiếm</button>
                             </span>
                         </div>
                     </div>
@@ -38,5 +44,4 @@
             </div>
         </div>
     </div>
-
 </form>

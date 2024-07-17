@@ -17,7 +17,7 @@
             @foreach ($users as $user)
                 <tr>
                     <td>
-                        <input type="checkbox" class="input-checkbox checkboxItem">
+                        <input type="checkbox" value="{{ $user->id }}" class="input-checkbox checkboxItem">
                     </td>
                     <td>
                         {{ $user->name }}
@@ -31,16 +31,13 @@
                     <td>
                         {{ $user->address }}
                     </td>
-                    <td class="text-center">
-                        <input type="checkbox" value="{{ $user->publish }}" class="js-switch status"
-                            data-field="publish" data-model = "User" data-modelid = "{{ $user->id }}"
-                            {{ $user->publish == 1 ? 'checked' : '' }} />
+                    <td class="text-center js-switch-{{ $user->id }}">
+                        <input type="checkbox" value="{{ $user->publish }}" class="js-switch status" data-field="publish" data-model = "User"
+                            data-modelid = "{{ $user->id }}" {{ $user->publish == 1 ? 'checked' : '' }} />
                     </td>
                     <td class="text-center">
-                        <a href="{{ route('user.edit', $user->id) }}" class="btn btn-success"><i
-                                class="fa fa-edit"></i></a>
-                        <a href="{{ route('user.delete', $user->id) }}" class="btn btn-danger"><i
-                                class="fa fa-trash"></i></a>
+                        <a href="{{ route('user.edit', $user->id) }}" class="btn btn-success"><i class="fa fa-edit"></i></a>
+                        <a href="{{ route('user.delete', $user->id) }}" class="btn btn-danger"><i class="fa fa-trash"></i></a>
                     </td>
                 </tr>
             @endforeach

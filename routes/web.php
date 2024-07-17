@@ -30,6 +30,7 @@ Route::group(['prefix' => 'user'], function () {
 /* Ajax */
 Route::get('ajax/location/getLocation', [LocationController::class, 'getLocation'])->name('ajax.location.index')->middleware(EnsureTokenIsValid::class);
 Route::post('ajax/dashboard/changeStatus', [AjaxDashboard::class, 'changeStatus'])->name('ajax.dashboard.changeStatus')->middleware(EnsureTokenIsValid::class);
+Route::post('ajax/dashboard/changeStatusAll', [AjaxDashboard::class, 'changeStatusAll'])->name('ajax.dashboard.changeStatusAll')->middleware(EnsureTokenIsValid::class);
 
 Route::get('admin', [AuthController::class, 'index'])->name('auth.admin')->middleware(LoginMiddleware::class);
 Route::get('logout', [AuthController::class, 'logout'])->name('auth.logout');

@@ -138,9 +138,40 @@ td {
     line-height: 33px !important;
     font-size: 13px;
 }
+
 .form-control {
     height: 33px;
 }
+
 .ml10 {
     margin-left: 10px;
+}
+
+.active-bg {
+    background: #fdfff2 !important;
+}
+
+.checkboxItem {
+    width: 14px;
+    height: 14px;
+}
+
+#checkAll {
+    width: 14px;
+    height: 14px;
+}
+
+.switchery-small {
+    border-radius: 20px;
+    height: 20px;
+    width: 33px;
+}
+
+.switchery-small > small {
+    height: 20px;
+    width: 20px;
+}
+
+.select2-container--default {
+    margin-right: 10px;
 }

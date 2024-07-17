@@ -13,4 +13,26 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface
     {
         $this->model = $model;
     }
+
+    public function pagination($column = ['*'], $condition = [], $join = [], $perpage = 1, $extend = [])
+    {
+        $query = $this->model->select($column)->where(function ($query) use ($condition) {
+            if (isset($condition['keyword']) && !empty($condition['keyword'])) {
+                $query->where('name', 'LIKE', '%' . $condition['keyword'] . '%')
+                    ->orWhere('email', 'LIKE', '%' . $condition['keyword'] . '%')
+                    ->orWhere('address', 'LIKE', '%' . $condition['keyword'] . '%')
+                    ->orWhere('phone', 'LIKE', '%' . $condition['keyword'] . '%');
+            }
+
+            if (isset($condition['publish']) && $condition['publish'] != -1) {
+                $query->orwhere('publish', $condition['publish']);
+            }
+        });
+
+        if (!empty($join)) {
+            $query->join(...$join);
+        }
+
+        return $query->paginate($perpage)->withQueryString()->withPath(env('APP_URL') . $extend['path']);
+    }
 }

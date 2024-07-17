@@ -6,10 +6,8 @@
         <i class="fa fa-wrench"></i>
     </a>
     <ul class="dropdown-menu dropdown-user">
-        <li><a href="#">Config option 1</a>
-        </li>
-        <li><a href="#">Config option 2</a>
-        </li>
+        <li><a href="" class="changeStatasAll" data-field="publish" data-model="User" data-value="1">Thay đổi trạng thái</a></li>
+        <li><a href="" class="changeStatasAll" data-field="publish" data-model="User" data-value="0">Hủy thay đổi trạng thái</a></li>
     </ul>
     <a class="close-link">
         <i class="fa fa-times"></i>
