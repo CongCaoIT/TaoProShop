@@ -55,12 +55,13 @@
                                     <select name="user_catalogue_id" id="" class="form-control mr10 setupSelect2">
                                         @foreach ($userCatalogues as $item)
                                             <option value="{{ $item->id }}"
-                                                {{ old('user_catalogue_id', $user->user_catalogue_id) == $item->id ? 'selected' : '' }}>
+                                                @if (isset($user)) {{ old('user_catalogue_id', $user->user_catalogue_id) == $item->id ? 'selected' : '' }}
+                                                @else
+                                                    {{ old('user_catalogue_id') == $item->id ? 'selected' : '' }} @endif>
                                                 {{ $item->name }}
                                             </option>
                                         @endforeach
                                     </select>
-
                                 </div>
                             </div>
                             <div class="col-lg-6">
