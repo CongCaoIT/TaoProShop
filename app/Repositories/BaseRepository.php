@@ -53,13 +53,19 @@ class BaseRepository implements BaseRepositoryInterface
         return $this->findByID($id)->forceDelete();
     }
 
-    public function pagination($column = ['*'], $condition = [], $join = [], $perpage = 1, $extend = [])
+    public function pagination($column = ['*'], $condition = [], $join = [], $perpage = 1, $extend = [], $relation = [])
     {
         $query = $this->model->select($column)->where(function ($query) use ($condition) {
             if (isset($condition['keyword']) && !empty($condition['keyword'])) {
                 $query->where('name', 'LIKE', '%' . $condition['keyword'] . '%');
             }
         });
+
+        if (isset($relation) && !empty($relation)) {
+            foreach ($relation as $item) {
+                $query->withCount($item);
+            }
+        }
 
         if (!empty($join)) {
             $query->join(...$join);

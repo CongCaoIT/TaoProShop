@@ -2,22 +2,24 @@
 
 namespace App\Services;
 
+use App\Repositories\UserCatalogueRepository;
 use App\Repositories\UserRepository;
-use App\Services\Interfaces\UserServiceInterface;
+use App\Services\Interfaces\UserCatalogueServiceInterface;
 use Exception;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Hash;
 
 /**
- * Class UserService
+ * Class UserCatalogueService
  * @package App\Services
  */
-class UserService implements UserServiceInterface
+class UserCatalogueService implements UserCatalogueServiceInterface
 {
+    protected $userCatalogeRepository;
     protected $userRepository;
 
-    public function __construct(UserRepository $userRepository)
+    public function __construct(UserCatalogueRepository $userCatalogeRepository, UserRepository $userRepository)
     {
+        $this->userCatalogeRepository = $userCatalogeRepository;
         $this->userRepository = $userRepository;
     }
 
@@ -25,21 +27,18 @@ class UserService implements UserServiceInterface
     {
         $condition['keyword'] = addslashes($request->input('keyword'));
         $condition['publish'] = $request->input('publish');
-        $condition['user_catalogue_id'] = $request->input('user_catalogue_id');
         $perpage = $request->input('perpage');
-
         //Xử lý logic
-        $users = $this->userRepository->pagination(
+        $users = $this->userCatalogeRepository->pagination(
             [
-                'id', 'email', 'phone', 'address', 'name', 'publish', 'user_catalogue_id' //Select
+                'id', 'name', 'description', 'publish' //Select
             ],
             $condition, //Keyword
             [], //Join table
             $perpage, //Page
-            ['path' => 'user'], //Path URL
-            []
+            ['path' => 'user/catalogue'], //Path URL
+            ['users']
         );
-
         return $users;
     }
 
@@ -47,10 +46,9 @@ class UserService implements UserServiceInterface
     {
         DB::beginTransaction();
         try {
-            $payload = $request->except(['_token', 'send', 're_password']);
-            $payload['password'] = Hash::make($payload['password']);
+            $payload = $request->except(['_token', 'send']);
 
-            $this->userRepository->create($payload);
+            $this->userCatalogeRepository->create($payload);
             DB::commit();
             return true;
         } catch (Exception $ex) {
@@ -66,7 +64,7 @@ class UserService implements UserServiceInterface
         try {
             $payload = $request->except(['_token', 'send']);
 
-            $this->userRepository->update($id, $payload);
+            $this->userCatalogeRepository->update($id, $payload);
             DB::commit();
             return true;
         } catch (Exception $ex) {
@@ -80,7 +78,7 @@ class UserService implements UserServiceInterface
     {
         DB::beginTransaction();
         try {
-            $this->userRepository->delete($id);
+            $this->userCatalogeRepository->delete($id);
             DB::commit();
             return true;
         } catch (Exception $ex) {
@@ -96,7 +94,7 @@ class UserService implements UserServiceInterface
         try {
             $payload[$post['field']] = (($post['value'] == 1) ? 0 : 1);
 
-            $this->userRepository->update($post['modelId'], $payload);
+            $this->userCatalogeRepository->update($post['modelId'], $payload);
             DB::commit();
             return true;
         } catch (Exception $ex) {
@@ -112,7 +110,7 @@ class UserService implements UserServiceInterface
         try {
             $payload[$post['field']] = $post['value'];
 
-            $this->userRepository->updateByWhereIn('id', $post['id'], $payload);
+            $this->userCatalogeRepository->updateByWhereIn('id', $post['id'], $payload);
             DB::commit();
             return true;
         } catch (Exception $ex) {

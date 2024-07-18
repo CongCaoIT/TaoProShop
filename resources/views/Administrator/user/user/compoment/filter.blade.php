@@ -19,17 +19,23 @@
                 <div class="uk-flex uk-flex-middle">
                     @php
                         $publish = request('publish') ?? old('publish', -1);
-                        $user_catelogue_id = request('user_catelogue_id') ?? old('user_catelogue_id', 0);
+                        $user_catalogue_id = request('user_catalogue_id') ?? old('user_catalogue_id', 0);
                     @endphp
                     <select name="publish" id="" class="form-control setupSelect2 ml10">
                         <option value="-1" {{ $publish == -1 ? 'selected' : '' }}>Chọn tình trạng</option>
                         <option value="0" {{ $publish == 0 ? 'selected' : '' }}>Đã khóa</option>
                         <option value="1" {{ $publish == 1 ? 'selected' : '' }}>Chưa khóa</option>
                     </select>
-                    <select name="user_catelogue_id" id="" class="form-control mr10 setupSelect2">
-                        <option value="0" {{ $user_catelogue_id == 0 ? 'selected' : '' }}>Chọn nhóm thành viên</option>
-                        <option value="1" {{ $user_catelogue_id == 1 ? 'selected' : '' }}>Quản trị viên</option>
+
+                    <select name="user_catalogue_id" id="" class="form-control mr10 setupSelect2">
+                        <option value="0" {{ $user_catalogue_id == 0 ? 'selected' : '' }}>Chọn nhóm thành viên</option>
+                        @foreach ($userCatalogues as $item)
+                            <option value="{{ $item->id }}" {{ old('user_catalogue_id') == $item->id ? 'selected' : '' }}>
+                                {{ $item->name }}
+                            </option>
+                        @endforeach
                     </select>
+
                     <div class="uk-search uk-flex uk-middle mr10">
                         <div class="input-group" style="width: 300px">
                             <input type="text" name="keyword" value="{{ request('keyword') ?: old('keyword') }}"

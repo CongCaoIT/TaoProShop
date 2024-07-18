@@ -12,6 +12,6 @@ return [
         'title' => 'Sửa thành viên',
     ],
     'delete' => [
-        'title' => 'Xóa thành viên thành viên',
+        'title' => 'Xóa thành viên',
     ]
 ];

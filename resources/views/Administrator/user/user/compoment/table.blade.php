@@ -1,13 +1,14 @@
 <table class="table table-striped table-bordered">
     <thead>
         <tr>
-            <th>
+            <th class="text-center">
                 <input type="checkbox" value="" id="checkAll" class="input-checkbox">
             </th>
             <th class="text-center">Họ tên</th>
             <th class="text-center">Email</th>
             <th class="text-center">Số điện thoại</th>
             <th class="text-center">Địa chỉ</th>
+            <th class="text-center">Nhóm thành viên</th>
             <th class="text-center">Tình trạng</th>
             <th class="text-center">Thao tác</th>
         </tr>
@@ -16,7 +17,7 @@
         @if (isset($users) && is_object($users))
             @foreach ($users as $user)
                 <tr>
-                    <td>
+                    <td class="text-center">
                         <input type="checkbox" value="{{ $user->id }}" class="input-checkbox checkboxItem">
                     </td>
                     <td>
@@ -30,6 +31,9 @@
                     </td>
                     <td>
                         {{ $user->address }}
+                    </td>
+                    <td class="text-center">
+                        {{ $user->user_catalogues->name }}
                     </td>
                     <td class="text-center js-switch-{{ $user->id }}">
                         <input type="checkbox" value="{{ $user->publish }}" class="js-switch status" data-field="publish" data-model = "User"

@@ -6,11 +6,11 @@
         <div class="ibox float-e-margins">
             <div class="ibox-title">
                 <h5>{{ $config['seo']['index']['tableHeading'] }}</h5>
-                @include('Administrator.user.compoment.toolbox') {{-- toolbox --}}
+                @include('Administrator.user.catalogue.compoment.toolbox') {{-- toolbox --}}
             </div>
             <div class="ibox-content">
-                @include('Administrator.user.compoment.filter') {{-- filter --}}
-                @include('Administrator.user.compoment.table') {{-- table --}}
+                @include('Administrator.user.catalogue.compoment.filter') {{-- filter --}}
+                @include('Administrator.user.catalogue.compoment.table') {{-- table --}}
             </div>
         </div>
     </div>

@@ -3,8 +3,7 @@
         <ul class="nav metismenu" id="side-menu">
             <li class="nav-header">
                 <div class="dropdown profile-element"> <span>
-                        <img alt="image" class="img-circle" src="Administrator/img/bug.png" width="60px"
-                            height="60px" />
+                        <img alt="image" class="img-circle" src="Administrator/img/bug.png" width="60px" height="60px" />
                     </span>
                     <a data-toggle="dropdown" class="dropdown-toggle" href="#">
                         <span class="clear"> <span class="block m-t-xs"> <strong class="font-bold">David
@@ -24,10 +23,9 @@
                 </div>
             </li>
             <li class="active">
-                <a href="#"><i class="fa fa-th-large"></i> <span class="nav-label">QL thành viên</span> <span
-                        class="fa arrow"></span></a>
+                <a href="#"><i class="fa fa-th-large"></i> <span class="nav-label">QL thành viên</span> <span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level">
-                    <li><a href="index.html">QL nhóm thành viên</a></li>
+                    <li><a href="{{ route('user.catalogue.index') }}">QL nhóm thành viên</a></li>
                     <li><a href="{{ route('user.index') }}">QL thành viên</a></li>
                 </ul>
             </li>

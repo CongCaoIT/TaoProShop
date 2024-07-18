@@ -2,16 +2,21 @@
 
 namespace App\Repositories;
 
-use App\Models\User;
-use App\Repositories\Interfaces\UserRepositoryInterface;
+use App\Models\UserCatalogue;
+use App\Repositories\Interfaces\UserCatalogueRepositoryInterface;
 
-class UserRepository extends BaseRepository implements UserRepositoryInterface
+class UserCatalogueRepository extends BaseRepository implements UserCatalogueRepositoryInterface
 {
     protected $model;
 
-    public function __construct(User $model)
+    public function __construct(UserCatalogue $model)
     {
         $this->model = $model;
+    }
+
+    public function all()
+    {
+        return $this->model::all();
     }
 
     public function pagination($column = ['*'], $condition = [], $join = [], $perpage = 1, $extend = [], $relation = [])
@@ -19,19 +24,18 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface
         $query = $this->model->select($column)->where(function ($query) use ($condition) {
             if (isset($condition['keyword']) && !empty($condition['keyword'])) {
                 $query->where('name', 'LIKE', '%' . $condition['keyword'] . '%')
-                    ->orWhere('email', 'LIKE', '%' . $condition['keyword'] . '%')
-                    ->orWhere('address', 'LIKE', '%' . $condition['keyword'] . '%')
-                    ->orWhere('phone', 'LIKE', '%' . $condition['keyword'] . '%');
+                    ->orWhere('description', 'LIKE', '%' . $condition['keyword'] . '%');
             }
-
             if (isset($condition['publish']) && $condition['publish'] != -1) {
                 $query->orwhere('publish', $condition['publish']);
             }
+        });
 
-            if (isset($condition['user_catalogue_id']) && $condition['user_catalogue_id'] != 0) {
-                $query->orwhere('user_catalogue_id', $condition['user_catalogue_id']);
+        if (isset($relation) && !empty($relation)) {
+            foreach ($relation as $item) {
+                $query->withCount($item);
             }
-        })->with('user_catalogues');
+        }
 
         if (!empty($join)) {
             $query->join(...$join);

@@ -34,44 +34,40 @@
                         <div class="row mb15">
                             <div class="col-lg-6">
                                 <div class="form-row">
-                                    <label for="" class="control-label text-right">Email<span
-                                            class="text-danger">(*)</span></label>
-                                    <input type="text" name="email" value="{{ old('email', $user->email ?? '') }}"
-                                        class="form-control" placeholder="" autocomplete="off">
+                                    <label for="" class="control-label text-right">Email<span class="text-danger">(*)</span></label>
+                                    <input type="text" name="email" value="{{ old('email', $user->email ?? '') }}" class="form-control"
+                                        placeholder="" autocomplete="off">
                                 </div>
                             </div>
                             <div class="col-lg-6">
                                 <div class="form-row">
-                                    <label for="" class="control-label text-right">Họ tên<span
-                                            class="text-danger">(*)</span></label>
-                                    <input type="text" name="name" value="{{ old('name', $user->name ?? '') }}"
-                                        class="form-control" placeholder="" autocomplete="off">
+                                    <label for="" class="control-label text-right">Họ tên<span class="text-danger">(*)</span></label>
+                                    <input type="text" name="name" value="{{ old('name', $user->name ?? '') }}" class="form-control"
+                                        placeholder="" autocomplete="off">
                                 </div>
                             </div>
                         </div>
-
-                        @php
-                            $userCatalogues = ['[Chọn nhóm thành viên]', 'Quản trị viên', 'Cộng tác viên'];
-                        @endphp
-
                         <div class="row mb15">
                             <div class="col-lg-6">
                                 <div class="form-row">
-                                    <label for="" class="control-label text-right">Nhóm thành viên<span
-                                            class="text-danger">(*)</span></label>
-                                    <select name="user_catalogue_id" id="" class="form-control setupSelect2">
-                                        @foreach ($userCatalogues as $key => $item)
-                                            <option @if (old('user_catalogue_id', $user->user_catalogue_id ?? '') == $key) selected @endif
-                                                value="{{ $key }}">{{ $item }}</option>
+                                    <label for="" class="control-label text-right">Nhóm thành viên<span class="text-danger">(*)</span></label>
+
+                                    <select name="user_catalogue_id" id="" class="form-control mr10 setupSelect2">
+                                        @foreach ($userCatalogues as $item)
+                                            <option value="{{ $item->id }}"
+                                                {{ old('user_catalogue_id', $user->user_catalogue_id) == $item->id ? 'selected' : '' }}>
+                                                {{ $item->name }}
+                                            </option>
                                         @endforeach
                                     </select>
+
                                 </div>
                             </div>
                             <div class="col-lg-6">
                                 <div class="form-row">
                                     <label for="" class="control-label text-right">Ngày sinh</label>
                                     <input type="date" name="birthday"
-                                        value="{{ old('birthday', isset($user->birthda) ? \Carbon\Carbon::parse($user->birthday)->format('Y-m-d') : '') }}"
+                                        value="{{ old('birthday', isset($user->birthday) ? \Carbon\Carbon::parse($user->birthday)->format('Y-m-d') : '') }}"
                                         class="form-control" placeholder="" autocomplete="off">
 
                                 </div>
@@ -82,18 +78,16 @@
                             <div class="row mb15">
                                 <div class="col-lg-6">
                                     <div class="form-row">
-                                        <label for="" class="control-label text-right">Mật khẩu<span
-                                                class="text-danger">(*)</span></label>
-                                        <input type="password" name="password" value="" class="form-control"
-                                            placeholder="" autocomplete="off">
+                                        <label for="" class="control-label text-right">Mật khẩu<span class="text-danger">(*)</span></label>
+                                        <input type="password" name="password" value="" class="form-control" placeholder="" autocomplete="off">
                                     </div>
                                 </div>
                                 <div class="col-lg-6">
                                     <div class="form-row">
                                         <label for="" class="control-label text-right">Nhập lại mật khẩu<span
                                                 class="text-danger">(*)</span></label>
-                                        <input type="password" name="re_password" value="" class="form-control"
-                                            placeholder="" autocomplete="off">
+                                        <input type="password" name="re_password" value="" class="form-control" placeholder=""
+                                            autocomplete="off">
                                     </div>
                                 </div>
                             </div>
@@ -101,11 +95,9 @@
                         <div class="row mb15">
                             <div class="col-lg-12">
                                 <div class="form-row">
-                                    <label for="" class="control-label text-right">Ảnh đại diện<span
-                                            class="text-danger">(*)</span></label>
+                                    <label for="" class="control-label text-right">Ảnh đại diện<span class="text-danger">(*)</span></label>
                                     <input type="text" name="image" value="{{ old('image', $user->image ?? '') }}"
-                                        class="form-control input-image" placeholder="" autocomplete="off"
-                                        data-upload = "Images">
+                                        class="form-control input-image" placeholder="" autocomplete="off" data-upload = "Images">
                                 </div>
                             </div>
                         </div>
@@ -129,13 +121,13 @@
                             <div class="col-lg-6">
                                 <div class="form-row">
                                     <label for="" class="control-label text-right">Thành Phố/Tỉnh</label>
-                                    <select name="province_id" id=""
-                                        class="form-control setupSelect2 province location" data-target="districts">
+                                    <select name="province_id" id="" class="form-control setupSelect2 province location"
+                                        data-target="districts">
                                         <option value="0">[Chọn Thành Phố/Tỉnh]</option>
                                         @if (isset($provinces))
                                             @foreach ($provinces as $province)
-                                                <option @if (old('province_id') == $province->code) selected @endif
-                                                    value="{{ $province->code }}">{{ $province->name }}</option>
+                                                <option @if (old('province_id') == $province->code) selected @endif value="{{ $province->code }}">
+                                                    {{ $province->name }}</option>
                                             @endforeach
                                         @endif
                                     </select>
@@ -144,8 +136,8 @@
                             <div class="col-lg-6">
                                 <div class="form-row">
                                     <label for="" class="control-label text-right">Quận/Huyện</label>
-                                    <select name="district_id" id=""
-                                        class="form-control setupSelect2 districts location" data-target="wards">
+                                    <select name="district_id" id="" class="form-control setupSelect2 districts location"
+                                        data-target="wards">
                                         <option value="0">[Chọn Quận/Huyện]</option>
                                     </select>
                                 </div>
@@ -164,8 +156,7 @@
                             <div class="col-lg-6">
                                 <div class="form-row">
                                     <label for="" class="control-label text-right">Địa chỉ</label>
-                                    <input type="text" name="address"
-                                        value="{{ old('address', $user->address ?? '') }}" class="form-control"
+                                    <input type="text" name="address" value="{{ old('address', $user->address ?? '') }}" class="form-control"
                                         placeholder="" autocomplete="off">
                                 </div>
                             </div>
@@ -175,16 +166,14 @@
                             <div class="col-lg-6">
                                 <div class="form-row">
                                     <label for="" class="control-label text-right">Số điện thoại</label>
-                                    <input type="number" name="phone"
-                                        value="{{ old('phone', $user->phone ?? '') }}" class="form-control"
+                                    <input type="number" name="phone" value="{{ old('phone', $user->phone ?? '') }}" class="form-control"
                                         placeholder="" autocomplete="off">
                                 </div>
                             </div>
                             <div class="col-lg-6">
                                 <div class="form-row">
                                     <label for="" class="control-label text-right">Ghi chú</label>
-                                    <input type="text" name="description"
-                                        value="{{ old('description', $user->description ?? '') }}"
+                                    <input type="text" name="description" value="{{ old('description', $user->description ?? '') }}"
                                         class="form-control" placeholder="" autocomplete="off">
                                 </div>
                             </div>

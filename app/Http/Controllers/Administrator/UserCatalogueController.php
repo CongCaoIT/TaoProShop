@@ -3,34 +3,26 @@
 namespace App\Http\Controllers\Administrator;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\StoreUserRequest;
-use App\Http\Requests\UpdateRequest;
+use App\Http\Requests\StoreUserCatalogueRequest;
+use App\Http\Requests\UpdateUserCatalogueRequest;
 use App\Repositories\UserCatalogueRepository;
-use App\Repositories\UserRepository;
-use App\Services\ProvinceService;
-use App\Services\UserService;
+use App\Services\UserCatalogueService;
 use Illuminate\Http\Request;
 
-class UserController extends Controller
+class UserCatalogueController extends Controller
 {
-    protected $userService;
-    protected $provinceService;
-    protected $userRepository;
+    protected $userCatalogueService;
     protected $userCatalogueRepository;
 
-    public function __construct(UserService $userService, ProvinceService $provinceService, UserRepository $userRepository, UserCatalogueRepository $userCatalogueRepository)
+    public function __construct(UserCatalogueService $userCatalogueService, UserCatalogueRepository $userCatalogueRepository)
     {
-        $this->userService = $userService;
-        $this->provinceService = $provinceService;
-        $this->userRepository = $userRepository;
+        $this->userCatalogueService = $userCatalogueService;
         $this->userCatalogueRepository = $userCatalogueRepository;
     }
 
     public function index(Request $request)
     {
-        $users = $this->userService->paginate($request); //Gọi func ở tầng Service, nơi xử lý logic
-
-        $userCatalogues = $this->userCatalogueRepository->all();
+        $userCatalogues = $this->userCatalogueService->paginate($request); //Gọi func ở tầng Service, nơi xử lý logic
 
         $config = [
             'js' => [
@@ -43,25 +35,20 @@ class UserController extends Controller
             ]
         ];
 
-        $config['seo'] = config('apps.user');
+        $config['seo'] = config('apps.usercatalogue');
 
-        $template = 'Administrator.user.user.index';
+        $template = 'Administrator.user.catalogue.index';
 
         return view('Administrator.dashboard.layout', compact(
             'template',
             'config',
-            'users',
             'userCatalogues'
         ));
     }
 
     public function create()
     {
-        $provinces = $this->provinceService->getProvince();
-
-        $template = 'Administrator.user.user.store';
-
-        $userCatalogues = $this->userCatalogueRepository->all();
+        $template = 'Administrator.user.catalogue.store';
 
         $config = [
             'js' => [
@@ -75,35 +62,29 @@ class UserController extends Controller
             ]
         ];
 
-        $config['seo'] = config('apps.user');
+        $config['seo'] = config('apps.usercatalogue');
         $config['method'] = 'create';
         return view('Administrator.dashboard.layout', compact(
             'template',
             'config',
-            'provinces',
-            'userCatalogues'
         ));
     }
 
-    public function store(StoreUserRequest $request)
+    public function store(StoreUserCatalogueRequest $request)
     {
-        if ($this->userService->create($request)) {
+        if ($this->userCatalogueService->create($request)) {
             flash()->success('Thêm mới bản ghi thành công.');
-            return redirect()->route('user.index');
+            return redirect()->route('user.catalogue.index');
         }
         flash()->error('Thêm mới bản ghi không thành công. Hãy thử lại.');
-        return redirect()->route('user.index');
+        return redirect()->route('user.catalogue.index');
     }
 
     public function edit($id)
     {
-        $user = $this->userRepository->findByID($id);
+        $userCatalogue = $this->userCatalogueRepository->findByID($id);
 
-        $provinces = $this->provinceService->getProvince();
-
-        $userCatalogues = $this->userCatalogueRepository->all();
-
-        $template = 'Administrator.user.user.store';
+        $template = 'Administrator.user.catalogue.store';
 
         $config = [
             'js' => [
@@ -117,58 +98,46 @@ class UserController extends Controller
             ]
         ];
 
-        $config['seo'] = config('apps.user');
+        $config['seo'] = config('apps.usercatalogue');
         $config['method'] = 'edit';
 
         return view('Administrator.dashboard.layout', compact(
             'template',
             'config',
-            'provinces',
-            'user',
-            'userCatalogues'
+            'userCatalogue'
         ));
     }
 
-    public function update($id, UpdateRequest $request)
+    public function update($id, UpdateUserCatalogueRequest $request)
     {
-        if ($this->userService->update($id, $request)) {
+        if ($this->userCatalogueService->update($id, $request)) {
             flash()->success('Sửa bản ghi thành công.');
-            return redirect()->route('user.index');
+            return redirect()->route('user.catalogue.index');
         }
         flash()->error('Sửa bản ghi không thành công. Hãy thử lại.');
-        return redirect()->route('user.index');
+        return redirect()->route('user.catalogue.index');
     }
 
     public function delete($id)
     {
-        $config = [
-            'js' => [
-                'https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js',
-                'Administrator/library/location.js',
-                'Administrator/plugin/ckfinder_2/ckfinder.js',
-                'Administrator/library/finder.js'
-            ],
-            'css' => [
-                'https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet'
-            ]
-        ];
-        $config['seo'] = config('apps.user');
-        $user = $this->userRepository->findByID($id);
-        $template = 'Administrator.user.user.delete';
+        $config['seo'] = config('apps.usercatalogue');
+        $userCatalogue = $this->userCatalogueRepository->findByID($id);
+        $template = 'Administrator.user.catalogue.delete';
+        
         return view('Administrator.dashboard.layout', compact(
             'template',
             'config',
-            'user'
+            'userCatalogue'
         ));
     }
 
     public function destroy($id)
     {
-        if ($this->userService->destroy($id)) {
+        if ($this->userCatalogueService->destroy($id)) {
             flash()->success('Xóa bản ghi thành công.');
-            return redirect()->route('user.index');
+            return redirect()->route('user.catalogue.index');
         }
         flash()->error('Xóa bản ghi không thành công. Hãy thử lại.');
-        return redirect()->route('user.index');
+        return redirect()->route('user.catalogue.index');
     }
 }
