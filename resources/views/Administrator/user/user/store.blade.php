@@ -98,7 +98,7 @@
                                 <div class="form-row">
                                     <label for="" class="control-label text-right">Ảnh đại diện<span class="text-danger">(*)</span></label>
                                     <input type="text" name="image" value="{{ old('image', $user->image ?? '') }}"
-                                        class="form-control input-image" placeholder="" autocomplete="off" data-upload = "Images">
+                                        class="form-control input-image" placeholder="" autocomplete="off" data-type = "Images">
                                 </div>
                             </div>
                         </div>

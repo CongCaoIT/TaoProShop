@@ -3,10 +3,10 @@
     var HT = {};
 
     HT.inputImage = () => {
-        $(document).on("click", ".input-image", function () {
-            let _this = $(this);
-            let fileUpload = _this.attr("data-upload");
-            HT.BrowseServerInput(_this, fileUpload);
+        $(".input-image").click(function () {
+            let input = $(this);
+            let type = input.attr("data-type");
+            HT.BrowseServerInput(input, type);
         });
     };
 

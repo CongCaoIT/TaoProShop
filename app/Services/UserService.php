@@ -31,7 +31,7 @@ class UserService implements UserServiceInterface
         //Xử lý logic
         $users = $this->userRepository->pagination(
             [
-                'id', 'email', 'phone', 'address', 'name', 'publish', 'user_catalogue_id' //Select
+                'id', 'email', 'phone', 'address', 'name', 'publish', 'user_catalogue_id', 'image' //Select
             ],
             $condition, //Keyword
             [], //Join table

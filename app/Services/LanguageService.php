@@ -31,7 +31,7 @@ class LanguageService implements LanguageServiceInterface
         //Xử lý logic
         $languages = $this->languageRepository->pagination(
             [
-                'id', 'name', 'canonical', 'publish', 'description' //Select
+                'id', 'name', 'canonical', 'publish', 'description', 'image' //Select
             ],
             $condition, //Keyword
             [], //Join table

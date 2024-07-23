@@ -26,11 +26,9 @@ class LanguageController extends Controller
 
         $config = [
             'js' => [
-                'https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js',
                 'Administrator/js/plugins/switchery/switchery.js'
             ],
             'css' => [
-                'https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet',
                 'Administrator/css/plugins/switchery/switchery.css'
             ]
         ];
@@ -52,14 +50,11 @@ class LanguageController extends Controller
 
         $config = [
             'js' => [
-                'https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js',
                 'Administrator/library/location.js',
                 'Administrator/plugin/ckfinder_2/ckfinder.js',
                 'Administrator/library/finder.js'
             ],
-            'css' => [
-                'https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet'
-            ]
+            'css' => []
         ];
 
         $config['seo'] = config('apps.language');
@@ -88,14 +83,11 @@ class LanguageController extends Controller
 
         $config = [
             'js' => [
-                'https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js',
                 'Administrator/library/location.js',
                 'Administrator/plugin/ckfinder_2/ckfinder.js',
                 'Administrator/library/finder.js'
             ],
-            'css' => [
-                'https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet'
-            ]
+            'css' => []
         ];
 
         $config['seo'] = config('apps.language');
