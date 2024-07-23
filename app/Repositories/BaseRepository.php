@@ -2,7 +2,6 @@
 
 namespace App\Repositories;
 
-use App\Models\Base;
 use App\Repositories\Interfaces\BaseRepositoryInterface;
 use Illuminate\Database\Eloquent\Model;
 
@@ -25,7 +24,6 @@ class BaseRepository implements BaseRepositoryInterface
 
     public function create($payload = [])
     {
-
         $model = $this->model->create($payload);
         return $model->refresh();
     }

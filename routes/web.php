@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Administrator\AuthController;
 use App\Http\Controllers\Administrator\DashboardController;
+use App\Http\Controllers\Administrator\LanguageController;
 use App\Http\Controllers\Administrator\UserCatalogueController;
 use App\Http\Controllers\Ajax\DashboardController as AjaxDashboard;
 use App\Http\Controllers\Ajax\LocationController;
@@ -37,6 +38,17 @@ Route::group(['prefix' => 'user/catalogue'], function () {
     Route::post('update/{id}', [UserCatalogueController::class, 'update'])->where(['id' => '[0-9]+'])->name('user.catalogue.update')->middleware(EnsureTokenIsValid::class);
     Route::get('delete/{id}', [UserCatalogueController::class, 'delete'])->where(['id' => '[0-9]+'])->name('user.catalogue.delete')->middleware(EnsureTokenIsValid::class);
     Route::post('destroy/{id}', [UserCatalogueController::class, 'destroy'])->where(['id' => '[0-9]+'])->name('user.catalogue.destroy')->middleware(EnsureTokenIsValid::class);
+});
+
+/* User */
+Route::group(['prefix' => 'language'], function () {
+    Route::get('', [LanguageController::class, 'index'])->name('language.index')->middleware(EnsureTokenIsValid::class);
+    Route::get('create', [LanguageController::class, 'create'])->name('language.create')->middleware(EnsureTokenIsValid::class);
+    Route::post('store', [LanguageController::class, 'store'])->name('language.store')->middleware(EnsureTokenIsValid::class);
+    Route::get('edit/{id}', [LanguageController::class, 'edit'])->where(['id' => '[0-9]+'])->name('language.edit')->middleware(EnsureTokenIsValid::class);
+    Route::post('update/{id}', [LanguageController::class, 'update'])->where(['id' => '[0-9]+'])->name('language.update')->middleware(EnsureTokenIsValid::class);
+    Route::get('delete/{id}', [LanguageController::class, 'delete'])->where(['id' => '[0-9]+'])->name('language.delete')->middleware(EnsureTokenIsValid::class);
+    Route::post('destroy/{id}', [LanguageController::class, 'destroy'])->where(['id' => '[0-9]+'])->name('language.destroy')->middleware(EnsureTokenIsValid::class);
 });
 
 /* Ajax */
