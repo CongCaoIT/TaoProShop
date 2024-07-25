@@ -123,7 +123,7 @@ class UserCatalogueController extends Controller
         $config['seo'] = config('apps.usercatalogue');
         $userCatalogue = $this->userCatalogueRepository->findByID($id);
         $template = 'Administrator.user.catalogue.delete';
-        
+
         return view('Administrator.dashboard.layout', compact(
             'template',
             'config',

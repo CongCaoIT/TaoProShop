@@ -26,9 +26,11 @@ class LanguageController extends Controller
 
         $config = [
             'js' => [
+                'https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js',
                 'Administrator/js/plugins/switchery/switchery.js'
             ],
             'css' => [
+                'https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet',
                 'Administrator/css/plugins/switchery/switchery.css'
             ]
         ];
@@ -48,15 +50,7 @@ class LanguageController extends Controller
     {
         $template = 'Administrator.language.store';
 
-        $config = [
-            'js' => [
-                'Administrator/library/location.js',
-                'Administrator/plugin/ckfinder_2/ckfinder.js',
-                'Administrator/library/finder.js'
-            ],
-            'css' => []
-        ];
-
+        $config = $this->configData();
         $config['seo'] = config('apps.language');
         $config['method'] = 'create';
         return view('Administrator.dashboard.layout', compact(
@@ -81,15 +75,7 @@ class LanguageController extends Controller
 
         $template = 'Administrator.language.store';
 
-        $config = [
-            'js' => [
-                'Administrator/library/location.js',
-                'Administrator/plugin/ckfinder_2/ckfinder.js',
-                'Administrator/library/finder.js'
-            ],
-            'css' => []
-        ];
-
+        $config = $this->configData();
         $config['seo'] = config('apps.language');
         $config['method'] = 'edit';
 
@@ -131,5 +117,17 @@ class LanguageController extends Controller
         }
         flash()->error('Xóa bản ghi không thành công. Hãy thử lại.');
         return redirect()->route('language.index');
+    }
+
+    private function configData()
+    {
+        return [
+            'js' => [
+                'Administrator/plugin/ckfinder_2/ckfinder.js',
+                'Administrator/plugin/ckeditor/ckeditor.js',
+                'Administrator/library/finder.js'
+            ],
+            'css' => []
+        ];
     }
 }

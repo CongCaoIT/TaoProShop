@@ -14,3 +14,7 @@
 <link href="Administrator/css/style.css" rel="stylesheet">
 <link href="Administrator/css/customize.css" rel="stylesheet">
 <script src="Administrator/js/jquery-3.1.1.min.js"></script>
+<script>
+    var BASE_URL = '{{ config('app.url') }}'
+    var SUFFIX = '{{ config('apps.general.suffix') }}'
+</script>

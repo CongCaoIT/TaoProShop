@@ -19,14 +19,14 @@
                         <div class="row mb15">
                             <div class="col-lg-6">
                                 <div class="form-row">
-                                    <label for="" class="control-label text-right">Email<span class="text-danger">(*)</span></label>
+                                    <label for="" class="control-label">Email<span class="text-danger">(*)</span></label>
                                     <input type="text" name="email" value="{{ old('email', $user->email ?? '') }}" class="form-control"
                                         placeholder="" autocomplete="off" readonly>
                                 </div>
                             </div>
                             <div class="col-lg-6">
                                 <div class="form-row">
-                                    <label for="" class="control-label text-right">Họ tên<span class="text-danger">(*)</span></label>
+                                    <label for="" class="control-label">Họ tên<span class="text-danger">(*)</span></label>
                                     <input type="text" name="name" value="{{ old('name', $user->name ?? '') }}" class="form-control"
                                         placeholder="" autocomplete="off" readonly>
                                 </div>

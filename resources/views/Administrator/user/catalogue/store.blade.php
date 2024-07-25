@@ -34,14 +34,14 @@
                         <div class="row mb15">
                             <div class="col-lg-6">
                                 <div class="form-row">
-                                    <label for="" class="control-label text-right">Tên nhóm<span class="text-danger">(*)</span></label>
+                                    <label for="" class="control-label">Tên nhóm<span class="text-danger">(*)</span></label>
                                     <input type="text" name="name" value="{{ old('name', $userCatalogue->name ?? '') }}" class="form-control"
                                         placeholder="" autocomplete="off">
                                 </div>
                             </div>
                             <div class="col-lg-6">
                                 <div class="form-row">
-                                    <label for="" class="control-label text-right">Ghi chú</span></label>
+                                    <label for="" class="control-label">Ghi chú</span></label>
                                     <input type="text" name="description" value="{{ old('description', $userCatalogue->description ?? '') }}"
                                         class="form-control" placeholder="" autocomplete="off">
                                 </div>

@@ -34,14 +34,14 @@
                         <div class="row mb15">
                             <div class="col-lg-6">
                                 <div class="form-row">
-                                    <label for="" class="control-label text-right">Email<span class="text-danger">(*)</span></label>
+                                    <label for="" class="control-label">Email<span class="text-danger">(*)</span></label>
                                     <input type="text" name="email" value="{{ old('email', $user->email ?? '') }}" class="form-control"
                                         placeholder="" autocomplete="off">
                                 </div>
                             </div>
                             <div class="col-lg-6">
                                 <div class="form-row">
-                                    <label for="" class="control-label text-right">Họ tên<span class="text-danger">(*)</span></label>
+                                    <label for="" class="control-label">Họ tên<span class="text-danger">(*)</span></label>
                                     <input type="text" name="name" value="{{ old('name', $user->name ?? '') }}" class="form-control"
                                         placeholder="" autocomplete="off">
                                 </div>
@@ -50,7 +50,7 @@
                         <div class="row mb15">
                             <div class="col-lg-6">
                                 <div class="form-row">
-                                    <label for="" class="control-label text-right">Nhóm thành viên<span class="text-danger">(*)</span></label>
+                                    <label for="" class="control-label">Nhóm thành viên<span class="text-danger">(*)</span></label>
 
                                     <select name="user_catalogue_id" id="" class="form-control mr10 setupSelect2">
                                         @foreach ($userCatalogues as $item)
@@ -66,7 +66,7 @@
                             </div>
                             <div class="col-lg-6">
                                 <div class="form-row">
-                                    <label for="" class="control-label text-right">Ngày sinh</label>
+                                    <label for="" class="control-label">Ngày sinh</label>
                                     <input type="date" name="birthday"
                                         value="{{ old('birthday', isset($user->birthday) ? \Carbon\Carbon::parse($user->birthday)->format('Y-m-d') : '') }}"
                                         class="form-control" placeholder="" autocomplete="off">
@@ -79,13 +79,13 @@
                             <div class="row mb15">
                                 <div class="col-lg-6">
                                     <div class="form-row">
-                                        <label for="" class="control-label text-right">Mật khẩu<span class="text-danger">(*)</span></label>
+                                        <label for="" class="control-label">Mật khẩu<span class="text-danger">(*)</span></label>
                                         <input type="password" name="password" value="" class="form-control" placeholder="" autocomplete="off">
                                     </div>
                                 </div>
                                 <div class="col-lg-6">
                                     <div class="form-row">
-                                        <label for="" class="control-label text-right">Nhập lại mật khẩu<span
+                                        <label for="" class="control-label">Nhập lại mật khẩu<span
                                                 class="text-danger">(*)</span></label>
                                         <input type="password" name="re_password" value="" class="form-control" placeholder=""
                                             autocomplete="off">
@@ -96,7 +96,7 @@
                         <div class="row mb15">
                             <div class="col-lg-12">
                                 <div class="form-row">
-                                    <label for="" class="control-label text-right">Ảnh đại diện<span class="text-danger">(*)</span></label>
+                                    <label for="" class="control-label">Ảnh đại diện<span class="text-danger">(*)</span></label>
                                     <input type="text" name="image" value="{{ old('image', $user->image ?? '') }}"
                                         class="form-control input-image" placeholder="" autocomplete="off" data-type = "Images">
                                 </div>
@@ -121,7 +121,7 @@
                         <div class="row mb15">
                             <div class="col-lg-6">
                                 <div class="form-row">
-                                    <label for="" class="control-label text-right">Thành Phố/Tỉnh</label>
+                                    <label for="" class="control-label">Thành Phố/Tỉnh</label>
                                     <select name="province_id" id="" class="form-control setupSelect2 province location"
                                         data-target="districts">
                                         <option value="0">[Chọn Thành Phố/Tỉnh]</option>
@@ -136,7 +136,7 @@
                             </div>
                             <div class="col-lg-6">
                                 <div class="form-row">
-                                    <label for="" class="control-label text-right">Quận/Huyện</label>
+                                    <label for="" class="control-label">Quận/Huyện</label>
                                     <select name="district_id" id="" class="form-control setupSelect2 districts location"
                                         data-target="wards">
                                         <option value="0">[Chọn Quận/Huyện]</option>
@@ -148,7 +148,7 @@
                         <div class="row mb15">
                             <div class="col-lg-6">
                                 <div class="form-row">
-                                    <label for="" class="control-label text-right">Phường/Xã</label>
+                                    <label for="" class="control-label">Phường/Xã</label>
                                     <select name="ward_id" id="" class="form-control setupSelect2 wards">
                                         <option value="0">[Chọn Phường/Xã]</option>
                                     </select>
@@ -156,7 +156,7 @@
                             </div>
                             <div class="col-lg-6">
                                 <div class="form-row">
-                                    <label for="" class="control-label text-right">Địa chỉ</label>
+                                    <label for="" class="control-label">Địa chỉ</label>
                                     <input type="text" name="address" value="{{ old('address', $user->address ?? '') }}" class="form-control"
                                         placeholder="" autocomplete="off">
                                 </div>
@@ -166,14 +166,14 @@
                         <div class="row mb15">
                             <div class="col-lg-6">
                                 <div class="form-row">
-                                    <label for="" class="control-label text-right">Số điện thoại</label>
+                                    <label for="" class="control-label">Số điện thoại</label>
                                     <input type="number" name="phone" value="{{ old('phone', $user->phone ?? '') }}" class="form-control"
                                         placeholder="" autocomplete="off">
                                 </div>
                             </div>
                             <div class="col-lg-6">
                                 <div class="form-row">
-                                    <label for="" class="control-label text-right">Ghi chú</label>
+                                    <label for="" class="control-label">Ghi chú</label>
                                     <input type="text" name="description" value="{{ old('description', $user->description ?? '') }}"
                                         class="form-control" placeholder="" autocomplete="off">
                                 </div>

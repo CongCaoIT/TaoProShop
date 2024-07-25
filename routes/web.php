@@ -3,6 +3,7 @@
 use App\Http\Controllers\Administrator\AuthController;
 use App\Http\Controllers\Administrator\DashboardController;
 use App\Http\Controllers\Administrator\LanguageController;
+use App\Http\Controllers\Administrator\PostCatalogueController;
 use App\Http\Controllers\Administrator\UserCatalogueController;
 use App\Http\Controllers\Ajax\DashboardController as AjaxDashboard;
 use App\Http\Controllers\Ajax\LocationController;
@@ -49,6 +50,17 @@ Route::group(['prefix' => 'language'], function () {
     Route::post('update/{id}', [LanguageController::class, 'update'])->where(['id' => '[0-9]+'])->name('language.update')->middleware(EnsureTokenIsValid::class);
     Route::get('delete/{id}', [LanguageController::class, 'delete'])->where(['id' => '[0-9]+'])->name('language.delete')->middleware(EnsureTokenIsValid::class);
     Route::post('destroy/{id}', [LanguageController::class, 'destroy'])->where(['id' => '[0-9]+'])->name('language.destroy')->middleware(EnsureTokenIsValid::class);
+});
+
+/* Post Catalogue */
+Route::group(['prefix' => 'post/catalogue'], function () {
+    Route::get('', [PostCatalogueController::class, 'index'])->name('post.catalogue.index')->middleware(EnsureTokenIsValid::class);
+    Route::get('create', [PostCatalogueController::class, 'create'])->name('post.catalogue.create')->middleware(EnsureTokenIsValid::class);
+    Route::post('store', [PostCatalogueController::class, 'store'])->name('post.catalogue.store')->middleware(EnsureTokenIsValid::class);
+    Route::get('edit/{id}', [PostCatalogueController::class, 'edit'])->where(['id' => '[0-9]+'])->name('post.catalogue.edit')->middleware(EnsureTokenIsValid::class);
+    Route::post('update/{id}', [PostCatalogueController::class, 'update'])->where(['id' => '[0-9]+'])->name('post.catalogue.update')->middleware(EnsureTokenIsValid::class);
+    Route::get('delete/{id}', [PostCatalogueController::class, 'delete'])->where(['id' => '[0-9]+'])->name('post.catalogue.delete')->middleware(EnsureTokenIsValid::class);
+    Route::post('destroy/{id}', [PostCatalogueController::class, 'destroy'])->where(['id' => '[0-9]+'])->name('post.catalogue.destroy')->middleware(EnsureTokenIsValid::class);
 });
 
 /* Ajax */
