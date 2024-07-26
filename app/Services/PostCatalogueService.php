@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Classes\Nestedsetbie;
 use App\Repositories\PostCatalogueRepository;
 use App\Services\Interfaces\PostCatalogueServiceInterface;
 use Exception;
@@ -12,13 +13,19 @@ use Illuminate\Support\Facades\DB;
  * Class UserService
  * @package App\Services
  */
-class PostCatalogueService implements PostCatalogueServiceInterface
+class PostCatalogueService extends BaseService implements PostCatalogueServiceInterface
 {
     protected $postCatalogueRepository;
+    protected $nestedsetbie;
 
     public function __construct(PostCatalogueRepository $postCatalogueRepository)
     {
         $this->postCatalogueRepository = $postCatalogueRepository;
+        $this->nestedsetbie = new Nestedsetbie([
+            'table' => 'post_catalogues',
+            'foreignkey' => 'post_catalogue_id',
+            'language_id' => $this->currentLanguage()
+        ]);
     }
 
     public function paginate($request)
@@ -45,9 +52,21 @@ class PostCatalogueService implements PostCatalogueServiceInterface
     {
         DB::beginTransaction();
         try {
-            $payload = $request->except(['_token', 'send']);
+            $payload = $request->only($this->payload());
             $payload['user_id'] = Auth::id();
-            $this->postCatalogueRepository->create($payload);
+            $postCatalogue = $this->postCatalogueRepository->create($payload);
+            if ($postCatalogue->id > 0) {
+                $payloadLanguage = $request->only($this->payloadLanguage());
+                $payloadLanguage['language_id'] = $this->currentLanguage();
+                $payloadLanguage['post_catalogue_id'] = $postCatalogue->id;
+
+                $language = $this->postCatalogueRepository->createLanguagePivot($postCatalogue, $payloadLanguage);
+            }
+
+            $this->nestedsetbie->Get('level ASC, orther ASC');
+            $this->nestedsetbie->Recursive(0, $this->nestedsetbie->Set());
+            $this->nestedsetbie->Action();
+
             DB::commit();
             return true;
         } catch (Exception $ex) {
@@ -117,5 +136,28 @@ class PostCatalogueService implements PostCatalogueServiceInterface
             echo $ex->getMessage();
             die();
         }
+    }
+
+    private function payload()
+    {
+        return [
+            'parentid',
+            'publish',
+            'follow',
+            'image'
+        ];
+    }
+
+    private function payloadLanguage()
+    {
+        return [
+            'name',
+            'description',
+            'content',
+            'meta_title',
+            'meta_keyword',
+            'meta_description',
+            'canonical'
+        ];
     }
 }

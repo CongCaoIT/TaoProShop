@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers\Administrator;
 
+use App\Classes\Nestedsetbie;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StorePostCatalogueRequest;
 use App\Http\Requests\UpdatePostCatalogueRequest;
 use App\Repositories\PostCatalogueRepository;
+use App\Services\BaseService;
 use App\Services\PostCatalogueService;
 use Illuminate\Http\Request;
 
@@ -13,11 +15,17 @@ class PostCatalogueController extends Controller
 {
     protected $postCatalogueService;
     protected $postCatalogueRepository;
+    protected $nestedsetbie;
 
     public function __construct(PostCatalogueService $postCatalogueService, PostCatalogueRepository $postCatalogueRepository)
     {
         $this->postCatalogueService = $postCatalogueService;
         $this->postCatalogueRepository = $postCatalogueRepository;
+        $this->nestedsetbie = new Nestedsetbie([
+            'table' => 'post_catalogues',
+            'foreignkey' => 'post_catalogue_id',
+            'language_id' => 1
+        ]);
     }
 
     public function index(Request $request)
@@ -53,9 +61,11 @@ class PostCatalogueController extends Controller
         $config = $this->configData();
         $config['seo'] = config('apps.postcatalogue');
         $config['method'] = 'create';
+        $dropdown = $this->nestedsetbie->Dropdown();
         return view('Administrator.dashboard.layout', compact(
             'template',
             'config',
+            'dropdown'
         ));
     }
 

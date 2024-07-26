@@ -34,7 +34,7 @@
                 @include('Administrator.post.catalogue.compoment.aside')
             </div>
         </div>
-        <div class="text-right mb15 button-fix">
+        <div class="text-right mb15">
             <button class="btn btn-primary" type="submit" value="send" name="send">Lưu lại</button>
         </div>
     </div>

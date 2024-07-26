@@ -4,13 +4,10 @@
     </div>
     <div class="ibox-content">
         <div class="seo-container">
-            <div class="h3 meta_title">
-                Bạn chưa có tiêu đề SEO
-            </div>
-            <div class="canonical">https://duong-dan-cua-ban.html</div>
-            <div class="meta_description">
-                Bạn chưa có mô tả SEO
-            </div>
+            <div class="h3 meta_title">{{ old('meta_title') ?? 'Bạn chưa có tiêu đề SEO' }}</div>
+            <div class="canonical">
+                {{ old('canonical') ? config('app.url') . old('canonical') . config('apps.general.suffix') : 'https://duong-dan-cua-ban.html' }}</div>
+            <div class="meta_description">{{ old('meta_description') ?? ' Bạn chưa có mô tả SEO' }}</div>
         </div>
         <div class="seo-wrapper">
             <div class="row">
@@ -49,8 +46,7 @@
                                 <span class="count_meta-title">0 ký tự</span>
                             </div>
                         </label>
-                        <textarea type="text" name="meta_description" id="meta_description" value="{{ old('meta_description', $postCatalogue->meta_description ?? '') }}"
-                            class="form-control" placeholder="" autocomplete="off"></textarea>
+                        <textarea type="text" name="meta_description" id="meta_description" class="form-control" placeholder="" autocomplete="off">{{ old('meta_description', $postCatalogue->meta_description ?? '') }}</textarea>
                     </div>
                 </div>
             </div>
@@ -58,8 +54,8 @@
                 <div class="col-lg-12">
                     <div class="form-row">
                         <label for="" class="control-label text-left">
-                            <div class="flex-container">
-                                Đường dẫn
+                            <div class="">
+                                Đường dẫn <span class="text-danger"> (*)</span>
                             </div>
                         </label>
                         <div class="input-wrapper">

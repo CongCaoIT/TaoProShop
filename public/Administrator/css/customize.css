@@ -273,8 +273,3 @@ input[name="canonical"] {
     font-weight: 500;
 }
 
-.button-fix{
-    position: fixed;
-    bottom: 30px;
-    right: 30px;
-}
