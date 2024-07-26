@@ -1,14 +1,12 @@
 <table class="table table-striped table-bordered">
     <thead>
         <tr>
-            <th class="text-center">
+            <th class="text-center" style="width: 50px">
                 <input type="checkbox" value="" id="checkAll" class="input-checkbox">
             </th>
-            <th class="text-center">Tên nhóm thành viên</th>
-            <th class="text-center">Số thành viên</th>
-            <th class="text-center">Ghi chú</th>
-            <th class="text-center">Trạng thái</th>
-            <th class="text-center">Thao tác</th>
+            <th class="text-center">Tên nhóm</th>
+            <th class="text-center" style="width: 100px">Trạng thái</th>
+            <th class="text-center" style="width: 100px">Thao tác</th>
         </tr>
     </thead>
     <tbody>
@@ -19,13 +17,7 @@
                         <input type="checkbox" value="{{ $postCatalogue->id }}" class="input-checkbox checkboxItem">
                     </td>
                     <td>
-                        {{ $postCatalogue->name }}
-                    </td>
-                    <td class="text-center">
-                        {{ $postCatalogue->posts_count }}
-                    </td>
-                    <td>
-                        {{ $postCatalogue->description }}
+                        {{ str_repeat('|---- ', $postCatalogue->level > 0 ? $postCatalogue->level - 1 : 0) . $postCatalogue->name }}
                     </td>
                     <td class="text-center js-switch-{{ $postCatalogue->id }}">
                         <input type="checkbox" value="{{ $postCatalogue->publish }}" class="js-switch status" data-field="publish"

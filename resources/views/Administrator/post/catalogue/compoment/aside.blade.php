@@ -8,7 +8,9 @@
                     <span class="text-danger notice">* Chọn Root nếu không có danh mục</span>
                     <select name="parentid" id="" class="form-control setupSelect2">
                         @foreach ($dropdown as $key => $val)
-                            <option value="{{ $key }}">{{ $val }}</option>
+                            <option value="{{ $key }}"
+                                {{ $key == old('parentid', isset($postCatalogue->parentid) ? $postCatalogue->parentid : '') ? 'selected' : '' }}>
+                                {{ $val }}</option>
                         @endforeach
                     </select>
                 </div>

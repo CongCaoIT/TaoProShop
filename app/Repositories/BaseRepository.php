@@ -51,7 +51,7 @@ class BaseRepository implements BaseRepositoryInterface
         return $this->findByID($id)->forceDelete();
     }
 
-    public function pagination($column = ['*'], $condition = [], $join = [], $perpage = 1, $extend = [], $relation = [])
+    public function pagination($column = ['*'], $condition = [], $join = [], $perpage = 1, $extend = [], $relation = [], $orderBy = [])
     {
         $query = $this->model->select($column)->where(function ($query) use ($condition) {
             if (isset($condition['keyword']) && !empty($condition['keyword'])) {
@@ -65,8 +65,14 @@ class BaseRepository implements BaseRepositoryInterface
             }
         }
 
-        if (!empty($join)) {
-            $query->join(...$join);
+        if (isset($join) && is_array($join) && count($join)) {
+            foreach ($join as $key => $value) {
+                $query->join($value[0], $value[1], $value[2], $value[3]);
+            }
+        }
+
+        if (isset($orderBy) && !empty($orderBy)) {
+            $query->orderBy($orderBy[0], $orderBy[1]);
         }
 
         return $query->paginate($perpage)->withQueryString()->withPath(env('APP_URL') . $extend['path']);

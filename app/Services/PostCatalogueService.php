@@ -36,15 +36,20 @@ class PostCatalogueService extends BaseService implements PostCatalogueServiceIn
 
         //Xử lý logic
         $postCatalogues = $this->postCatalogueRepository->pagination(
-            [
-                'id', 'name', 'canonical', 'publish', 'description', 'image' //Select
-            ],
+            $this->select(),
             $condition, //Keyword
-            [], //Join table
+            [
+                [
+                    'post_catalogue_language as tb2', 'tb2.post_catalogue_id', '=', 'post_catalogues.id'
+                ]
+            ], //Join table
             $perpage, //Page
-            ['path' => 'language'], //Path URL
+            ['path' => 'post/catalogue'], //Path UR
+            [],
+            [
+                'post_catalogues.lft', 'ASC'
+            ],
         );
-
         return $postCatalogues;
     }
 
@@ -63,7 +68,7 @@ class PostCatalogueService extends BaseService implements PostCatalogueServiceIn
                 $language = $this->postCatalogueRepository->createLanguagePivot($postCatalogue, $payloadLanguage);
             }
 
-            $this->nestedsetbie->Get('level ASC, orther ASC');
+            $this->nestedsetbie->Get('level ASC, order ASC');
             $this->nestedsetbie->Recursive(0, $this->nestedsetbie->Set());
             $this->nestedsetbie->Action();
 
@@ -136,6 +141,19 @@ class PostCatalogueService extends BaseService implements PostCatalogueServiceIn
             echo $ex->getMessage();
             die();
         }
+    }
+
+    private function select()
+    {
+        return [
+            'post_catalogues.id',
+            'post_catalogues.publish',
+            'post_catalogues.image',
+            'post_catalogues.level',
+            'post_catalogues.order',
+            'tb2.name',
+            'tb2.canonical',
+        ];
     }
 
     private function payload()

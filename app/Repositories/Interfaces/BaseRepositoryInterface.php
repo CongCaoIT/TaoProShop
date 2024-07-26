@@ -10,6 +10,6 @@ interface BaseRepositoryInterface
     public function update($id, $payload);
     public function updateByWhereIn($whereInField = '', $whereIn = [], $payload = []);
     public function delete($id);
-    public function pagination($column = ['*'], $condition = [], $join = [], $perpage = 20, $extend, $relation = []);
+    public function pagination($column = ['*'], $condition = [], $join = [], $perpage = 20, $extend, $relation = [], $orderBy = []);
     public function createLanguagePivot($model, $payload = []);
 }
