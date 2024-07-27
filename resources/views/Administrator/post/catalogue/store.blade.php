@@ -12,7 +12,7 @@
 @endif
 
 @php
-    $url = $config['method'] == 'create' ? route('post.catalogue.store') : route('post.catalogue.update', $userCatalogue->id);
+    $url = $config['method'] == 'create' ? route('post.catalogue.store') : route('post.catalogue.update', $postCatalogue->id);
 @endphp
 
 <form action="{{ $url }}" class="box" method="post">

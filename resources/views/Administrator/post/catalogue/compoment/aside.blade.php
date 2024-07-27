@@ -28,7 +28,8 @@
             <div class="col-lg-12">
                 <div class="form-row-img">
                     <span>
-                        <img class="image img-cover img-target" src="{{ old('image') ?? 'Administrator/img/noimage.jpg' }}" alt="">
+                        <img class="image img-cover img-target"
+                            src="{{ old('image', $postCatalogue->image ?? asset('Administrator/img/noimage.jpg')) }}" alt="">
                         <input type="hidden" name="image" value="{{ old('image', $postCatalogue->image ?? '') }}">
                     </span>
                 </div>

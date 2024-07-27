@@ -16,6 +16,7 @@ class PostCatalogueController extends Controller
     protected $postCatalogueService;
     protected $postCatalogueRepository;
     protected $nestedsetbie;
+    protected $language;
 
     public function __construct(PostCatalogueService $postCatalogueService, PostCatalogueRepository $postCatalogueRepository)
     {
@@ -26,6 +27,7 @@ class PostCatalogueController extends Controller
             'foreignkey' => 'post_catalogue_id',
             'language_id' => 1
         ]);
+        $this->language = $this->currentLanguage();
     }
 
     public function index(Request $request)
@@ -81,19 +83,19 @@ class PostCatalogueController extends Controller
 
     public function edit($id)
     {
-        $postCatalogue = $this->postCatalogueRepository->findByID($id);
+        $postCatalogue = $this->postCatalogueRepository->getPostCatalogueById($id, $this->language);
 
         $template = 'Administrator.post.catalogue.store';
-
         $config = $this->configData();
-
+        $dropdown = $this->nestedsetbie->Dropdown();
         $config['seo'] = config('apps.postcatalogue');
         $config['method'] = 'edit';
 
         return view('Administrator.dashboard.layout', compact(
             'template',
             'config',
-            'postCatalogue'
+            'postCatalogue',
+            'dropdown'
         ));
     }
 

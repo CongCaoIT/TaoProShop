@@ -17,14 +17,16 @@ class PostCatalogueService extends BaseService implements PostCatalogueServiceIn
 {
     protected $postCatalogueRepository;
     protected $nestedsetbie;
+    protected $language;
 
     public function __construct(PostCatalogueRepository $postCatalogueRepository)
     {
+        $this->language = $this->currentLanguage();
         $this->postCatalogueRepository = $postCatalogueRepository;
         $this->nestedsetbie = new Nestedsetbie([
             'table' => 'post_catalogues',
             'foreignkey' => 'post_catalogue_id',
-            'language_id' => $this->currentLanguage()
+            'language_id' => $this->language
         ]);
     }
 
@@ -32,6 +34,10 @@ class PostCatalogueService extends BaseService implements PostCatalogueServiceIn
     {
         $condition['keyword'] = addslashes($request->input('keyword'));
         $condition['publish'] = $request->input('publish');
+        $condition['where'] =
+            [
+                ['tb2.language_id', '=', $this->language]
+            ];
         $perpage = $request->input('perpage') != null ? $request->input('perpage') : 20;
 
         //Xử lý logic
@@ -85,9 +91,23 @@ class PostCatalogueService extends BaseService implements PostCatalogueServiceIn
     {
         DB::beginTransaction();
         try {
-            $payload = $request->except(['_token', 'send']);
+            $postCatalogue = $this->postCatalogueRepository->findByID($id);
 
-            $this->postCatalogueRepository->update($id, $payload);
+            $payload = $request->only($this->payload());
+            $flag = $this->postCatalogueRepository->update($id, $payload);
+
+            if ($flag == TRUE) {
+                $payloadLanguage = $request->only($this->payloadLanguage());
+                $payloadLanguage['language_id'] = $this->currentLanguage();
+                $payloadLanguage['post_catalogue_id'] = $id;
+                $postCatalogue->languages()->detach([$payloadLanguage['language_id'], $payloadLanguage['post_catalogue_id']]);
+                $response = $this->postCatalogueRepository->createLanguagePivot($postCatalogue, $payloadLanguage);
+            }
+
+            $this->nestedsetbie->Get('level ASC, order ASC');
+            $this->nestedsetbie->Recursive(0, $this->nestedsetbie->Set());
+            $this->nestedsetbie->Action();
+
             DB::commit();
             return true;
         } catch (Exception $ex) {

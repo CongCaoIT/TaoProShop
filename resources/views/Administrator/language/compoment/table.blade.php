@@ -1,15 +1,15 @@
 <table class="table table-striped table-bordered">
     <thead>
         <tr>
-            <th class="text-center">
+            <th style="width: 50px" class="text-center">
                 <input type="checkbox" value="" id="checkAll" class="input-checkbox">
             </th>
             <th class="text-center" style="width: 150px">Ảnh</th>
             <th class="text-center">Tên ngôn ngữ</th>
             <th class="text-center">Từ khóa</th>
             <th class="text-center">Mô tả</th>
-            <th class="text-center">Trạng thái</th>
-            <th class="text-center">Thao tác</th>
+            <th style="width: 100px" class="text-center">Trạng thái</th>
+            <th style="width: 100px" class="text-center">Thao tác</th>
         </tr>
     </thead>
     <tbody>

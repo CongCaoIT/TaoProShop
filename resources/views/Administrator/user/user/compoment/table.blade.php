@@ -1,7 +1,7 @@
 <table class="table table-striped table-bordered">
     <thead>
         <tr>
-            <th class="text-center">
+            <th style="width: 50px" class="text-center">
                 <input type="checkbox" value="" id="checkAll" class="input-checkbox">
             </th>
             <th class="text-center">Ảnh</th>
@@ -10,8 +10,8 @@
             <th class="text-center">Số điện thoại</th>
             <th class="text-center">Địa chỉ</th>
             <th class="text-center">Nhóm thành viên</th>
-            <th class="text-center">Tình trạng</th>
-            <th class="text-center">Thao tác</th>
+            <th style="width: 100px" class="text-center">Tình trạng</th>
+            <th style="width: 100px" class="text-center">Thao tác</th>
         </tr>
     </thead>
     <tbody>
@@ -36,7 +36,7 @@
                     <td>
                         {{ $user->address }}
                     </td>
-                    <td class="text-center">
+                    <td>
                         {{ $user->user_catalogues->name }}
                     </td>
                     <td class="text-center js-switch-{{ $user->id }}">

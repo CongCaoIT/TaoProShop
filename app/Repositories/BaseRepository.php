@@ -51,11 +51,21 @@ class BaseRepository implements BaseRepositoryInterface
         return $this->findByID($id)->forceDelete();
     }
 
-    public function pagination($column = ['*'], $condition = [], $join = [], $perpage = 1, $extend = [], $relation = [], $orderBy = [])
+    public function pagination($column = ['*'], $condition = [], $join = [], $perpage = 1, $extend = [], $relation = [], $orderBy = [], $where = [])
     {
         $query = $this->model->select($column)->where(function ($query) use ($condition) {
             if (isset($condition['keyword']) && !empty($condition['keyword'])) {
                 $query->where('name', 'LIKE', '%' . $condition['keyword'] . '%');
+            }
+
+            if (isset($condition['publish']) && $condition['publish'] != -1) {
+                $query->where('publish', $condition['publish']);
+            }
+
+            if (isset($condition['where']) && count($condition['where'])) {
+                foreach ($condition['where'] as $key => $val) {
+                    $query->where($val[0], $val[1], $val[2]);
+                }
             }
         });
 
@@ -77,7 +87,6 @@ class BaseRepository implements BaseRepositoryInterface
 
         return $query->paginate($perpage)->withQueryString()->withPath(env('APP_URL') . $extend['path']);
     }
-
 
     public function createLanguagePivot($model, $payload = [])
     {

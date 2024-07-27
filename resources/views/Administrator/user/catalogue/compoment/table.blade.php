@@ -1,14 +1,14 @@
 <table class="table table-striped table-bordered">
     <thead>
         <tr>
-            <th class="text-center">
+            <th style="width: 50px" class="text-center">
                 <input type="checkbox" value="" id="checkAll" class="input-checkbox">
             </th>
             <th class="text-center">Tên nhóm thành viên</th>
             <th class="text-center">Số thành viên</th>
             <th class="text-center">Ghi chú</th>
-            <th class="text-center">Trạng thái</th>
-            <th class="text-center">Thao tác</th>
+            <th style="width: 100px" class="text-center">Trạng thái</th>
+            <th style="width: 100px" class="text-center">Thao tác</th>
         </tr>
     </thead>
     <tbody>
