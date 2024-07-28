@@ -8,12 +8,14 @@
                 <div class="seo-container">
                     <div class="seo-container">
                         <div class="h3 meta_title">
-                            {{ old('meta_title', isset($postCatalogue) ? $postCatalogue->meta_title : 'Bạn chưa có tiêu đề SEO') }}</div>
+                            {{ old('meta_title', $postCatalogue->meta_title ?? '') ? old('meta_title', $postCatalogue->meta_title ?? '') : 'Bạn chưa có tiêu đề SEO' }}
+                        </div>
                         <div class="canonical">
                             {{ old('canonical', isset($postCatalogue) && $postCatalogue->canonical ? config('app.url') . $postCatalogue->canonical . config('apps.general.suffix') : 'https://duong-dan-cua-ban.html') }}
                         </div>
                         <div class="meta_description">
-                            {{ old('meta_description', isset($postCatalogue) ? $postCatalogue->meta_description : 'Bạn chưa có mô tả SEO') }}</div>
+                            {{ old('meta_description', $postCatalogue->meta_description ?? '') ? old('meta_description', $postCatalogue->meta_description ?? '') : 'Bạn chưa có mô tả SEO' }}
+                        </div>
                     </div>
                 </div>
             </div>

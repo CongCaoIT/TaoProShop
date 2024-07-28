@@ -30,7 +30,7 @@
                     <select name="user_catalogue_id" id="" class="form-control mr10 setupSelect2">
                         <option value="0" {{ $user_catalogue_id == 0 ? 'selected' : '' }}>Chọn nhóm thành viên</option>
                         @foreach ($userCatalogues as $item)
-                            <option value="{{ $item->id }}" {{ old('user_catalogue_id') == $item->id ? 'selected' : '' }}>
+                            <option value="{{ $item->id }}" {{ request('user_catalogue_id') == $item->id ? 'selected' : '' }}>
                                 {{ $item->name }}
                             </option>
                         @endforeach

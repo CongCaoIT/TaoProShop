@@ -86,7 +86,7 @@ Examples:
 ATTENTION: The trailing slash is required.
 */
 $baseUrl = '/TaoProShop/public/userfiles/';
-
+// $baseUrl = 'userfiles/';
 
 
 
@@ -259,7 +259,7 @@ $config['ResourceType'][] = array(
 	'url' => $baseUrl . 'flash',
 	'directory' => $baseDir . 'flash',
 	'maxSize' => 0,
-	'allowedExtensions' => 'swf,flv,mp4,avi',
+	'allowedExtensions' => 'swf,flv',
 	'deniedExtensions' => ''
 );
 

@@ -13,6 +13,15 @@
         }
     };
 
+    HT.multipleUploadImageCkeditor = () => {
+        $(document).on("click", ".multipleUploadImageCkeditor", function (e) {
+            let object = $(this);
+            HT.BrowseServerCkeditor(object, "Images");
+
+            e.preventDefault();
+        });
+    };
+
     HT.ckeditor4 = (elementId, elementHeight) => {
         if (typeof elementHeight == "undefined") {
             elementHeight = 500;
@@ -90,9 +99,21 @@
         finder.popup();
     };
 
+    HT.BrowseServerCkeditor = (object, type) => {
+        if (typeof type == "undefined") {
+            type = "Images";
+        }
+        var finder = new CKFinder();
+        finder.resourceType = type;
+
+        finder.selectActionFunction = function (fileUrl, data) {};
+        finder.popup();
+    };
+
     $(document).ready(function () {
         HT.inputImage();
         HT.setupCkeditor();
         HT.uploadImageAvatar();
+        HT.multipleUploadImageCkeditor();
     });
 })(jQuery);

@@ -18,7 +18,10 @@
 <div class="row mb15">
     <div class="col-lg-12">
         <div class="form-row">
-            <label for="" class="control-label text-left">Nội dung</label>
+            <div class="uk-flex uk-flex-middle uk-flex-space-beetween">
+                <label for="" class="control-label text-left" style="width: 94%">Nội dung</label>
+                <a href="" class="multipleUploadImageCkeditor" data-target="ckContent">Upload ảnh</a>
+            </div>
             <textarea type="text" name="content" id="content" data-height="500" class="form-control ckeditor" placeholder="" autocomplete="off">{{ old('content', $postCatalogue->content ?? '') }}</textarea>
         </div>
     </div>

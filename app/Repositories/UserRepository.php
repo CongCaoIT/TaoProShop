@@ -14,8 +14,15 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface
         $this->model = $model;
     }
 
-    public function pagination($column = ['*'], $condition = [], $join = [], $perpage = 1, $extend = [], $relation = [], $orderBy = [], $where = [])
-    {
+    public function pagination(
+        $column = ['*'],
+        $condition = [],
+        $join = [],
+        $perpage = 1,
+        $extend = [],
+        $relation = [],
+        $orderBy = []
+    ) {
         $query = $this->model->select($column)->where(function ($query) use ($condition) {
             if (isset($condition['keyword']) && !empty($condition['keyword'])) {
                 $query->where('name', 'LIKE', '%' . $condition['keyword'] . '%')
@@ -23,16 +30,15 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface
                     ->orWhere('address', 'LIKE', '%' . $condition['keyword'] . '%')
                     ->orWhere('phone', 'LIKE', '%' . $condition['keyword'] . '%');
             }
-
-            if (isset($condition['publish']) && $condition['publish'] != -1) {
-                $query->orwhere('publish', $condition['publish']);
-            }
-
-            if (isset($condition['user_catalogue_id']) && $condition['user_catalogue_id'] != 0) {
-                $query->orwhere('user_catalogue_id', $condition['user_catalogue_id']);
-            }
         })->with('user_catalogues');
 
+        if (isset($condition['publish']) && $condition['publish'] != -1) {
+            $query->where('publish', $condition['publish']);
+        }
+
+        if (isset($condition['user_catalogue_id']) && $condition['user_catalogue_id'] != 0) {
+            $query->where('user_catalogue_id', $condition['user_catalogue_id']);
+        }
         if (!empty($join)) {
             $query->join(...$join);
         }

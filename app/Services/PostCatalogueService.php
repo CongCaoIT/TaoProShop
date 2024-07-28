@@ -8,11 +8,8 @@ use App\Services\Interfaces\PostCatalogueServiceInterface;
 use Exception;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
-/**
- * Class UserService
- * @package App\Services
- */
 class PostCatalogueService extends BaseService implements PostCatalogueServiceInterface
 {
     protected $postCatalogueRepository;
@@ -40,21 +37,14 @@ class PostCatalogueService extends BaseService implements PostCatalogueServiceIn
             ];
         $perpage = $request->input('perpage') != null ? $request->input('perpage') : 20;
 
-        //Xử lý logic
+
         $postCatalogues = $this->postCatalogueRepository->pagination(
             $this->select(),
-            $condition, //Keyword
-            [
-                [
-                    'post_catalogue_language as tb2', 'tb2.post_catalogue_id', '=', 'post_catalogues.id'
-                ]
-            ], //Join table
-            $perpage, //Page
-            ['path' => 'post/catalogue'], //Path UR
-            [],
-            [
-                'post_catalogues.lft', 'ASC'
-            ],
+            $condition,
+            $perpage,
+            ['post_catalogues.lft', 'ASC'],
+            ['path' => 'post/catalogue'],
+            [['post_catalogue_language as tb2', 'tb2.post_catalogue_id', '=', 'post_catalogues.id']],
         );
         return $postCatalogues;
     }
@@ -70,13 +60,12 @@ class PostCatalogueService extends BaseService implements PostCatalogueServiceIn
                 $payloadLanguage = $request->only($this->payloadLanguage());
                 $payloadLanguage['language_id'] = $this->currentLanguage();
                 $payloadLanguage['post_catalogue_id'] = $postCatalogue->id;
+                $payloadLanguage['canonical'] = Str::slug($payloadLanguage['canonical']);
 
                 $language = $this->postCatalogueRepository->createLanguagePivot($postCatalogue, $payloadLanguage);
             }
 
-            $this->nestedsetbie->Get('level ASC, order ASC');
-            $this->nestedsetbie->Recursive(0, $this->nestedsetbie->Set());
-            $this->nestedsetbie->Action();
+            $this->nestedsetCustom();
 
             DB::commit();
             return true;
@@ -104,9 +93,7 @@ class PostCatalogueService extends BaseService implements PostCatalogueServiceIn
                 $response = $this->postCatalogueRepository->createLanguagePivot($postCatalogue, $payloadLanguage);
             }
 
-            $this->nestedsetbie->Get('level ASC, order ASC');
-            $this->nestedsetbie->Recursive(0, $this->nestedsetbie->Set());
-            $this->nestedsetbie->Action();
+            $this->nestedsetCustom();
 
             DB::commit();
             return true;
@@ -122,9 +109,7 @@ class PostCatalogueService extends BaseService implements PostCatalogueServiceIn
         DB::beginTransaction();
         try {
             $this->postCatalogueRepository->delete($id);
-            $this->nestedsetbie->Get('level ASC, order ASC');
-            $this->nestedsetbie->Recursive(0, $this->nestedsetbie->Set());
-            $this->nestedsetbie->Action();
+            $this->nestedsetCustom();
             DB::commit();
             return true;
         } catch (Exception $ex) {
@@ -200,5 +185,12 @@ class PostCatalogueService extends BaseService implements PostCatalogueServiceIn
             'meta_description',
             'canonical'
         ];
+    }
+
+    private function nestedsetCustom()
+    {
+        $this->nestedsetbie->Get('level ASC, order ASC');
+        $this->nestedsetbie->Recursive(0, $this->nestedsetbie->Set());
+        $this->nestedsetbie->Action();
     }
 }

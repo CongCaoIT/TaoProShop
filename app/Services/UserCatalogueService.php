@@ -15,12 +15,10 @@ use Illuminate\Support\Facades\DB;
 class UserCatalogueService implements UserCatalogueServiceInterface
 {
     protected $userCatalogeRepository;
-    protected $userRepository;
 
-    public function __construct(UserCatalogueRepository $userCatalogeRepository, UserRepository $userRepository)
+    public function __construct(UserCatalogueRepository $userCatalogeRepository)
     {
         $this->userCatalogeRepository = $userCatalogeRepository;
-        $this->userRepository = $userRepository;
     }
 
     public function paginate($request)
@@ -30,13 +28,12 @@ class UserCatalogueService implements UserCatalogueServiceInterface
         $perpage = $request->input('perpage');
         //Xử lý logic
         $users = $this->userCatalogeRepository->pagination(
-            [
-                'id', 'name', 'description', 'publish' //Select
-            ],
-            $condition, //Keyword
-            [], //Join table
-            $perpage, //Page
-            ['path' => 'user/catalogue'], //Path URL
+            ['id', 'name', 'description', 'publish'],
+            $condition,
+            $perpage,
+            [],
+            ['path' => 'user/catalogue'],
+            [],
             ['users']
         );
         return $users;

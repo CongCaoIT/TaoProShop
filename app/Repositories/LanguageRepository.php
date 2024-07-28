@@ -14,17 +14,25 @@ class LanguageRepository extends BaseRepository implements LanguageRepositoryInt
         $this->model = $model;
     }
 
-    public function pagination($column = ['*'], $condition = [], $join = [], $perpage = 1, $extend = [], $relation = [], $orderBy = [], $where = [])
-    {
+    public function pagination(
+        $column = ['*'],
+        $condition = [],
+        $perpage = 1,
+        $orderBy = ['id', 'DESC'],
+        $extend = [],
+        $join = [],
+        $relation = []
+    ) {
         $query = $this->model->select($column)->where(function ($query) use ($condition) {
             if (isset($condition['keyword']) && !empty($condition['keyword'])) {
                 $query->where('name', 'LIKE', '%' . $condition['keyword'] . '%')
                     ->orWhere('description', 'LIKE', '%' . $condition['keyword'] . '%');
             }
-            if (isset($condition['publish']) && $condition['publish'] != -1) {
-                $query->orwhere('publish', $condition['publish']);
-            }
         });
+
+        if (isset($condition['publish']) && $condition['publish'] != -1) {
+            $query->where('publish', $condition['publish']);
+        }
 
         if (isset($relation) && !empty($relation)) {
             foreach ($relation as $item) {
