@@ -1,4 +1,13 @@
 @include('Administrator.dashboard.component.breadcrumb', ['title' => $config['seo']['delete']['title']])
+@if ($errors->any())
+    <div class="alert alert-danger">
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
 
 <form action="{{ route('post.catalogue.destroy', $postCatalogue->id) }}" class="box" method="post">
     @csrf
@@ -7,7 +16,7 @@
             <div class="col-lg-4">
                 <div class="panel-head">
                     <div class="panel-title">Thông tin chung</div>
-                    <div class="panel-description">- Bạn đang muốn xóa nhóm thành viên.
+                    <div class="panel-description">- Bạn đang muốn xóa nhóm bài viết: <span style="color: red">{{ $postCatalogue->name }}</span>
                     </div>
                     <div class="panel-description">- Lưu ý: Không thể khôi phục lại sau khi xóa.</div>
                 </div>
@@ -17,18 +26,11 @@
                     <div class="ibox-content">
 
                         <div class="row mb15">
-                            <div class="col-lg-6">
+                            <div class="col-lg-12">
                                 <div class="form-row">
-                                    <label for="" class="control-label">Tên nhóm<span class="text-danger">(*)</span></label>
+                                    <label for="" class="control-label">Tên nhóm <span class="text-danger">(*)</span></label>
                                     <input type="text" name="name" value="{{ old('name', $postCatalogue->name ?? '') }}" class="form-control"
                                         placeholder="" autocomplete="off" readonly>
-                                </div>
-                            </div>
-                            <div class="col-lg-6">
-                                <div class="form-row">
-                                    <label for="" class="control-label">Ghi chú</span></label>
-                                    <input type="text" name="description" value="{{ old('description', $postCatalogue->description ?? '') }}"
-                                        class="form-control" placeholder="" autocomplete="off" readonly>
                                 </div>
                             </div>
                         </div>
