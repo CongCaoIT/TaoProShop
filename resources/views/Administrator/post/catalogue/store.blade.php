@@ -25,13 +25,14 @@
                         <h5>Thông tin chung</h5>
                     </div>
                     <div class="ibox-content">
-                        @include('Administrator.post.catalogue.compoment.general')
+                        @include('Administrator.post.catalogue.component.general')
                     </div>
                 </div>
-                @include('Administrator.post.catalogue.compoment.seo')
+                @include('Administrator.dashboard.component.album')
+                @include('Administrator.post.catalogue.component.seo')
             </div>
             <div class="col-lg-3">
-                @include('Administrator.post.catalogue.compoment.aside')
+                @include('Administrator.post.catalogue.component.aside')
             </div>
         </div>
         <div class="text-right mb15">

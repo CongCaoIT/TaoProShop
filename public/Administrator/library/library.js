@@ -17,6 +17,11 @@
         }
     };
 
+    HT.sortui = () => {
+        $("#sorttable").sortable();
+        $("#sorttable").disableSelection();
+    };
+
     HT.changeStatus = () => {
         if ($(".status").length) {
             $(document).on("change", ".status", function () {
@@ -151,5 +156,6 @@
         HT.checkAll();
         HT.checkBoxItem();
         HT.changeStatusAll();
+        HT.sortui();
     });
 })(jQuery);

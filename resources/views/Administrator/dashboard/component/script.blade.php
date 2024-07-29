@@ -6,6 +6,7 @@
 
 <script src="Administrator/js/inspinia.js"></script>
 <script src="Administrator/js/plugins/pace/pace.min.js"></script>
+<script src="Administrator/plugin/jquery-ui.js"></script>
 <!-- jQuery UI -->
 <script src="Administrator/js/plugins/jquery-ui/jquery-ui.min.js"></script>
 

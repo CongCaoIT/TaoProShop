@@ -55,6 +55,7 @@ class PostCatalogueService extends BaseService implements PostCatalogueServiceIn
         try {
             $payload = $request->only($this->payload());
             $payload['user_id'] = Auth::id();
+            $payload['album'] = json_encode($payload['album']);
             $postCatalogue = $this->postCatalogueRepository->create($payload);
             if ($postCatalogue->id > 0) {
                 $payloadLanguage = $request->only($this->payloadLanguage());
@@ -81,8 +82,8 @@ class PostCatalogueService extends BaseService implements PostCatalogueServiceIn
         DB::beginTransaction();
         try {
             $postCatalogue = $this->postCatalogueRepository->findByID($id);
-
             $payload = $request->only($this->payload());
+            $payload['album'] = json_encode($payload['album']);
             $flag = $this->postCatalogueRepository->update($id, $payload);
 
             if ($flag == TRUE) {
@@ -170,7 +171,8 @@ class PostCatalogueService extends BaseService implements PostCatalogueServiceIn
             'parentid',
             'publish',
             'follow',
-            'image'
+            'image',
+            'album'
         ];
     }
 

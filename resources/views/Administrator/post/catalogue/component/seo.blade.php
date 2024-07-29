@@ -11,7 +11,7 @@
                             {{ old('meta_title', $postCatalogue->meta_title ?? '') ? old('meta_title', $postCatalogue->meta_title ?? '') : 'Bạn chưa có tiêu đề SEO' }}
                         </div>
                         <div class="canonical">
-                            {{ old('canonical', isset($postCatalogue) && $postCatalogue->canonical ? config('app.url') . $postCatalogue->canonical . config('apps.general.suffix') : 'https://duong-dan-cua-ban.html') }}
+                            {{ old('canonical', $postCatalogue->canonical ?? '') ? old('canonical', $postCatalogue->canonical ?? '') : 'https://duong-dan-cua-ban.html' }}
                         </div>
                         <div class="meta_description">
                             {{ old('meta_description', $postCatalogue->meta_description ?? '') ? old('meta_description', $postCatalogue->meta_description ?? '') : 'Bạn chưa có mô tả SEO' }}

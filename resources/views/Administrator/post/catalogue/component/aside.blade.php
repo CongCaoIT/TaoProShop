@@ -1,10 +1,12 @@
 <div class="ibox">
+    <div class="ibox-title">
+        <h5>Chọn danh mục<span class="text-danger">
+                (*)</span></h5>
+    </div>
     <div class="ibox-content">
         <div class="row mb15">
             <div class="col-lg-12">
                 <div class="form-row">
-                    <label for="" class="control-label text-left">Chọn danh mục<span class="text-danger">
-                            (*)</span></label>
                     <span class="text-danger notice">* Chọn Root nếu không có danh mục</span>
                     <select name="parentid" id="" class="form-control setupSelect2">
                         @foreach ($dropdown as $key => $val)
@@ -28,8 +30,8 @@
             <div class="col-lg-12">
                 <div class="form-row-img">
                     <span>
-                        <img class="image img-cover img-target"
-                            src="{{ old('image', $postCatalogue->image ?? asset('Administrator/img/noimage.jpg')) }}" alt="">
+                        <img src="{{ old('image', $postCatalogue->image ?? '') ? old('image', $postCatalogue->image ?? '') : 'Administrator/img/noimage.jpg' }}"
+                            class="image img-cover img-target" alt="">
                         <input type="hidden" name="image" value="{{ old('image', $postCatalogue->image ?? '') }}">
                     </span>
                 </div>
