@@ -19,5 +19,5 @@ interface BaseRepositoryInterface
         $join = [],
         $relation = []
     );
-    public function createLanguagePivot($model, $payload = []);
+    public function createPivot($model, $payload = [], $relation = '');
 }

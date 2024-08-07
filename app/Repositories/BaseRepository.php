@@ -95,7 +95,7 @@ class BaseRepository implements BaseRepositoryInterface
         return $query->paginate($perpage)->withQueryString()->withPath(env('APP_URL') . $extend['path']);
     }
 
-    public function createLanguagePivot($model, $payload = [])
+    public function createPivot($model, $payload = [], $relation = '')
     {
         return $model->languages()->attach($model->id, $payload);
     }

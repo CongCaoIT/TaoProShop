@@ -3,28 +3,23 @@
 namespace App\Services;
 
 use App\Classes\Nestedsetbie;
-use App\Repositories\PostCatalogueRepository;
-use App\Services\Interfaces\PostCatalogueServiceInterface;
+use App\Repositories\PostRepository;
+use App\Services\Interfaces\PostServiceInterface;
 use Exception;
+use Flasher\Laravel\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
-class PostCatalogueService extends BaseService implements PostCatalogueServiceInterface
+class PostService extends BaseService implements PostServiceInterface
 {
-    protected $postCatalogueRepository;
-    protected $nestedsetbie;
+    protected $postRepository;
     protected $language;
 
-    public function __construct(PostCatalogueRepository $postCatalogueRepository)
+    public function __construct(PostRepository $postRepository)
     {
         $this->language = $this->currentLanguage();
-        $this->postCatalogueRepository = $postCatalogueRepository;
-        $this->nestedsetbie = new Nestedsetbie([
-            'table' => 'post_catalogues',
-            'foreignkey' => 'post_catalogue_id',
-            'language_id' => $this->language
-        ]);
+        $this->postRepository = $postRepository;
     }
 
     public function paginate($request)
@@ -38,15 +33,15 @@ class PostCatalogueService extends BaseService implements PostCatalogueServiceIn
         $perpage = $request->input('perpage') != null ? $request->input('perpage') : 20;
 
 
-        $postCatalogues = $this->postCatalogueRepository->pagination(
+        $posts = $this->postRepository->pagination(
             $this->select(),
             $condition,
             $perpage,
-            ['post_catalogues.lft', 'ASC'],
+            ['posts.id', 'DESC'],
             ['path' => 'post/catalogue'],
-            [['post_catalogue_language as tb2', 'tb2.post_catalogue_id', '=', 'post_catalogues.id']],
+            [['post_language as tb2', 'tb2.post_id', '=', 'posts.id']],
         );
-        return $postCatalogues;
+        return $posts;
     }
 
     public function create($request)
@@ -58,17 +53,16 @@ class PostCatalogueService extends BaseService implements PostCatalogueServiceIn
             if (isset($payload['album'])) {
                 $payload['album'] = json_encode($payload['album']);
             }
-            $postCatalogue = $this->postCatalogueRepository->create($payload);
-            if ($postCatalogue->id > 0) {
+            $post = $this->postRepository->create($payload);
+            if ($post->id > 0) {
                 $payloadLanguage = $request->only($this->payloadLanguage());
                 $payloadLanguage['language_id'] = $this->currentLanguage();
-                $payloadLanguage['post_catalogue_id'] = $postCatalogue->id;
+                $payloadLanguage['post_id'] = $post->id;
                 $payloadLanguage['canonical'] = Str::slug($payloadLanguage['canonical']);
-
-                $language = $this->postCatalogueRepository->createPivot($postCatalogue, $payloadLanguage, 'languages');
+                $this->postRepository->createPivot($post, $payloadLanguage, 'languages');
+                $catalogue = $this->catalogue($request);
+                $post->post_catalogues()->sync($catalogue);
             }
-
-            $this->nestedsetCustom();
 
             DB::commit();
             return true;
@@ -83,22 +77,20 @@ class PostCatalogueService extends BaseService implements PostCatalogueServiceIn
     {
         DB::beginTransaction();
         try {
-            $postCatalogue = $this->postCatalogueRepository->findByID($id);
+            $post = $this->postRepository->findByID($id);
             $payload = $request->only($this->payload());
             if (isset($payload['album'])) {
                 $payload['album'] = json_encode($payload['album']);
             }
-            $flag = $this->postCatalogueRepository->update($id, $payload);
+            $flag = $this->postRepository->update($id, $payload);
 
             if ($flag == TRUE) {
                 $payloadLanguage = $request->only($this->payloadLanguage());
                 $payloadLanguage['language_id'] = $this->currentLanguage();
                 $payloadLanguage['post_catalogue_id'] = $id;
-                $postCatalogue->languages()->detach([$payloadLanguage['language_id'], $payloadLanguage['post_catalogue_id']]);
-                $response = $this->postCatalogueRepository->createPivot($postCatalogue, $payloadLanguage, 'languages');
+                $post->languages()->detach([$payloadLanguage['language_id'], $payloadLanguage['post_catalogue_id']]);
+                $response = $this->postRepository->createPivot($post, $payloadLanguage);
             }
-
-            $this->nestedsetCustom();
 
             DB::commit();
             return true;
@@ -113,8 +105,7 @@ class PostCatalogueService extends BaseService implements PostCatalogueServiceIn
     {
         DB::beginTransaction();
         try {
-            $this->postCatalogueRepository->delete($id);
-            $this->nestedsetCustom();
+            $this->postRepository->delete($id);
             DB::commit();
             return true;
         } catch (Exception $ex) {
@@ -124,13 +115,18 @@ class PostCatalogueService extends BaseService implements PostCatalogueServiceIn
         }
     }
 
+    private function catalogue($request)
+    {
+        return array_unique(array_merge($request->input('catalogue'), [$request->post_catalogue_id]));
+    }
+
     public function updateStatus($post = [])
     {
         DB::beginTransaction();
         try {
             $payload[$post['field']] = (($post['value'] == 1) ? 0 : 1);
 
-            $this->postCatalogueRepository->update($post['modelId'], $payload);
+            $this->postRepository->update($post['modelId'], $payload);
             DB::commit();
             return true;
         } catch (Exception $ex) {
@@ -146,7 +142,7 @@ class PostCatalogueService extends BaseService implements PostCatalogueServiceIn
         try {
             $payload[$post['field']] = $post['value'];
 
-            $this->postCatalogueRepository->updateByWhereIn('id', $post['id'], $payload);
+            $this->postRepository->updateByWhereIn('id', $post['id'], $payload);
             DB::commit();
             return true;
         } catch (Exception $ex) {
@@ -159,11 +155,11 @@ class PostCatalogueService extends BaseService implements PostCatalogueServiceIn
     private function select()
     {
         return [
-            'post_catalogues.id',
-            'post_catalogues.publish',
-            'post_catalogues.image',
-            'post_catalogues.level',
-            'post_catalogues.order',
+            'posts.id',
+            'posts.publish',
+            'posts.image',
+            'posts.level',
+            'posts.order',
             'tb2.name',
             'tb2.canonical',
         ];
@@ -172,10 +168,10 @@ class PostCatalogueService extends BaseService implements PostCatalogueServiceIn
     private function payload()
     {
         return [
-            'parentid',
             'publish',
             'follow',
             'image',
+            'post_catalogue_id',
             'album'
         ];
     }
@@ -191,12 +187,5 @@ class PostCatalogueService extends BaseService implements PostCatalogueServiceIn
             'meta_description',
             'canonical'
         ];
-    }
-
-    private function nestedsetCustom()
-    {
-        $this->nestedsetbie->Get('level ASC, order ASC');
-        $this->nestedsetbie->Recursive(0, $this->nestedsetbie->Set());
-        $this->nestedsetbie->Action();
     }
 }

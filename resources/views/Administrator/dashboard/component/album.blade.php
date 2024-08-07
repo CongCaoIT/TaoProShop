@@ -8,9 +8,12 @@
         </div>
     </div>
     <div class="ibox-content">
+        @php
+            $gallery = isset($album) && count($album) ? $album : old('album');
+        @endphp
         <div class="row">
             <div class="col-lg-12">
-                @if (!isset($album) || count($album) == 0)
+                @if (!isset($gallery) || count($gallery) == 0)
                     <div class="click-to-upload">
                         <div class="icon">
                             <a href="" class="upload-picture">
@@ -40,10 +43,10 @@
                     </div>
                 @endif
 
-                @if (isset($album) && count($album))
-                    <div class="upload-list {{ count($album) ? '' : 'hidden' }}">
-                        <ul id="sorttable" class="clearfix data-album sortui ui-sorttable">
-                            @foreach ($album as $key => $val)
+                <div class="upload-list {{ isset($gallery) && count($gallery) ? '' : 'hidden' }}">
+                    <ul id="sorttable" class="clearfix data-album sortui ui-sorttable">
+                        @if (isset($gallery) && count($gallery))
+                            @foreach ($gallery as $key => $val)
                                 <li class="ui-state-default">
                                     <div class="thumb">
                                         <span class="image img-scaledown">
@@ -54,15 +57,9 @@
                                     </div>
                                 </li>
                             @endforeach
-                        </ul>
-                    </div>
-                @else
-                    <div class="upload-list hidden">
-                        <ul id="sorttable" class="clearfix data-album sortui ui-sorttable">
-
-                        </ul>
-                    </div>
-                @endif
+                        @endif
+                    </ul>
+                </div>
             </div>
         </div>
     </div>

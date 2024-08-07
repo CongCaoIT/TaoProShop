@@ -47,6 +47,11 @@ class PostCatalogue extends Model
         return $this->hasMany(PostCatalogueLanguage::class, 'post_catalogue_id', 'id');
     }
 
+    public function posts()
+    {
+        return $this->belongsToMany(Post::class, 'post_catalogue_post', 'post_catalogue_id', 'post_id');
+    }
+
     public static function isNodeCheck($id = 0)
     {
         $postCatalogue = PostCatalogue::find($id);

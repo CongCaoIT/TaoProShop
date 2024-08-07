@@ -13,6 +13,10 @@
                     CKEDITOR.instances[elementId].destroy(true);
                 }
 
+                CKEDITOR.replace(elementId, {
+                    height: elementHeight,
+                });
+
                 HT.ckeditor4(elementId, elementHeight);
             });
         }
