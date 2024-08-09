@@ -40,8 +40,8 @@
                         {{ $user->user_catalogues->name }}
                     </td>
                     <td class="text-center js-switch-{{ $user->id }}">
-                        <input type="checkbox" value="{{ $user->publish }}" class="js-switch status" data-field="publish" data-model = "User"
-                            data-modelid = "{{ $user->id }}" {{ $user->publish == 1 ? 'checked' : '' }} />
+                        <input type="checkbox" value="{{ $user->publish }}" class="js-switch status" data-field="publish"
+                            data-model = "{{ $config['model'] }}" data-modelid = "{{ $user->id }}" {{ $user->publish == 1 ? 'checked' : '' }} />
                     </td>
                     <td class="text-center">
                         <a href="{{ route('user.edit', $user->id) }}" class="btn btn-success"><i class="fa fa-edit"></i></a>

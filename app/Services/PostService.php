@@ -38,8 +38,9 @@ class PostService extends BaseService implements PostServiceInterface
             $condition,
             $perpage,
             ['posts.id', 'DESC'],
-            ['path' => 'post/catalogue'],
+            ['path' => 'post'],
             [['post_language as tb2', 'tb2.post_id', '=', 'posts.id']],
+            ['post_catalogues']
         );
         return $posts;
     }
@@ -56,7 +57,7 @@ class PostService extends BaseService implements PostServiceInterface
             $post = $this->postRepository->create($payload);
             if ($post->id > 0) {
                 $payloadLanguage = $request->only($this->payloadLanguage());
-                $payloadLanguage['language_id'] = $this->currentLanguage();
+                $payloadLanguage['language_id'] = $this->language;
                 $payloadLanguage['post_id'] = $post->id;
                 $payloadLanguage['canonical'] = Str::slug($payloadLanguage['canonical']);
                 $this->postRepository->createPivot($post, $payloadLanguage, 'languages');
@@ -79,6 +80,7 @@ class PostService extends BaseService implements PostServiceInterface
         try {
             $post = $this->postRepository->findByID($id);
             $payload = $request->only($this->payload());
+            $payload['user_id'] = Auth::id();
             if (isset($payload['album'])) {
                 $payload['album'] = json_encode($payload['album']);
             }
@@ -86,10 +88,13 @@ class PostService extends BaseService implements PostServiceInterface
 
             if ($flag == TRUE) {
                 $payloadLanguage = $request->only($this->payloadLanguage());
-                $payloadLanguage['language_id'] = $this->currentLanguage();
-                $payloadLanguage['post_catalogue_id'] = $id;
-                $post->languages()->detach([$payloadLanguage['language_id'], $payloadLanguage['post_catalogue_id']]);
-                $response = $this->postRepository->createPivot($post, $payloadLanguage);
+                $payloadLanguage['language_id'] = $this->language;
+                $payloadLanguage['post_id'] = $post->id;
+                $payloadLanguage['canonical'] = Str::slug($payloadLanguage['canonical']);
+                $post->languages()->detach([$payloadLanguage['language_id'], $id]);
+                $response = $this->postRepository->createPivot($post, $payloadLanguage, 'languages');
+                $catalogue = $this->catalogue($request);
+                $post->post_catalogues()->sync($catalogue);
             }
 
             DB::commit();
@@ -158,7 +163,6 @@ class PostService extends BaseService implements PostServiceInterface
             'posts.id',
             'posts.publish',
             'posts.image',
-            'posts.level',
             'posts.order',
             'tb2.name',
             'tb2.canonical',

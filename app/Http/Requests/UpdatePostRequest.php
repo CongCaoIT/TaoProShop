@@ -11,7 +11,7 @@ class UpdatePostRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,20 @@ class UpdatePostRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'name' => 'required|string',
+            'canonical' => 'required|unique:post_language,canonical, ' . $this->id . ',post_id',
+            'post_catalogue_id' => 'gt:0',
+        ];
+    }
+
+    public function messages(): array
+    {
+        return [
+            'name.required' => 'Bạn chưa nhập vào ô tiêu đề.',
+            'name.string' => 'Ô tiêu đề phải là chuỗi ký tự.',
+            'canonical.required' => 'Đường dẫn không được để trống.',
+            'canonical.unique' => 'Đường dẫn đã tồn tại. Hãy chọn đường dẫn khác.',
+            'post_catalogue_id.gt' => 'Vui lòng chọn danh mục',
         ];
     }
 }

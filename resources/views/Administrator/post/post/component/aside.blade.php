@@ -19,6 +19,15 @@
             </div>
         </div>
 
+        @php
+            $catalogue = [];
+            if (isset($post)) {
+                foreach ($post->post_catalogues as $key => $value) {
+                    $catalogue[] = $value->id;
+                }
+            }
+        @endphp
+
         <div class="row mb15">
             <div class="col-lg-12">
                 <div class="form-row">

@@ -20,7 +20,7 @@ class PostCatalogue extends Model
         'icon',
         'album',
         'publish',
-        'orther',
+        'order',
         'user_id',
         'follow'
     ];

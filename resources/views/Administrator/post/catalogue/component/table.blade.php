@@ -21,7 +21,7 @@
                     </td>
                     <td class="text-center js-switch-{{ $postCatalogue->id }}">
                         <input type="checkbox" value="{{ $postCatalogue->publish }}" class="js-switch status" data-field="publish"
-                            data-model = "postCatalogue" data-modelid = "{{ $postCatalogue->id }}"
+                            data-model = "{{ $config['model'] }}" data-modelid = "{{ $postCatalogue->id }}"
                             {{ $postCatalogue->publish == 1 ? 'checked' : '' }} />
                     </td>
                     <td class="text-center">

@@ -32,8 +32,9 @@
                         {{ $language->description }}
                     </td>
                     <td class="text-center js-switch-{{ $language->id }}">
-                        <input type="checkbox" value="{{ $language->publish }}" class="js-switch status" data-field="publish" data-model = "Language"
-                            data-modelid = "{{ $language->id }}" {{ $language->publish == 1 ? 'checked' : '' }} />
+                        <input type="checkbox" value="{{ $language->publish }}" class="js-switch status" data-field="publish"
+                            data-model = "{{ $config['model'] }}" data-modelid = "{{ $language->id }}"
+                            {{ $language->publish == 1 ? 'checked' : '' }} />
                     </td>
                     <td class="text-center">
                         <a href="{{ route('language.edit', $language->id) }}" class="btn btn-success"><i class="fa fa-edit"></i></a>
