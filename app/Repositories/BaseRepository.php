@@ -61,45 +61,21 @@ class BaseRepository implements BaseRepositoryInterface
         $relation = [],
         $rawQuery = []
     ) {
-        $query = $this->model->select($column)->distinct()->where(function ($query) use ($condition) {
-            if (isset($condition['keyword']) && !empty($condition['keyword'])) {
-                $query->where('name', 'LIKE', '%' . $condition['keyword'] . '%');
-            }
+        $query = $this->model->select($column)->distinct();
 
-            if (isset($condition['publish']) && $condition['publish'] != -1) {
-                $query->where('publish', $condition['publish']);
-            }
-
-            if (isset($condition['where']) && count($condition['where'])) {
-                foreach ($condition['where'] as $key => $val) {
-                    $query->where($val[0], $val[1], $val[2]);
-                }
-            }
-        });
-
-        if (isset($rawQuery['whereRaw']) && count($rawQuery['whereRaw'])) {
-            foreach ($rawQuery['whereRaw'] as $key => $val) {
-                $query->whereRaw($val[0], $val[1]);
-            }
-        }
-
-        if (isset($relation) && !empty($relation)) {
-            foreach ($relation as $item) {
-                $query->withCount($item);
-            }
-        }
-
-        if (isset($join) && is_array($join) && count($join)) {
-            foreach ($join as $key => $value) {
-                $query->join($value[0], $value[1], $value[2], $value[3]);
-            }
-        }
-
-        if (isset($orderBy) && !empty($orderBy)) {
-            $query->orderBy($orderBy[0], $orderBy[1]);
-        }
-
-        return $query->paginate($perpage)->withQueryString()->withPath(env('APP_URL') . $extend['path']);
+        return $query
+            ->keyword($condition['keyword'] ?? null)
+            ->publish($condition['publish'] ?? -1)
+            ->customWhere($condition['where'] ?? null)
+            ->customWhereRaw($rawQuery['whereRaw'] ?? null)
+            ->relationCount($relation ?? null)
+            ->relation($relation ?? null)
+            ->customJoin($join ?? null)
+            ->customGroupBy($extend['groupBy'] ?? null)
+            ->customOrderBy($orderBy ?? null)
+            ->paginate($perpage)
+            ->withQueryString()
+            ->withPath(env('APP_URL') . $extend['path']);;
     }
 
     public function createPivot($model, $payload = [], $relation = '')

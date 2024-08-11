@@ -21,7 +21,8 @@ class LanguageRepository extends BaseRepository implements LanguageRepositoryInt
         $orderBy = ['id', 'DESC'],
         $extend = [],
         $join = [],
-        $relation = []
+        $relation = [],
+        $rawQuery = []
     ) {
         $query = $this->model->select($column)->where(function ($query) use ($condition) {
             if (isset($condition['keyword']) && !empty($condition['keyword'])) {

@@ -3,7 +3,6 @@
 namespace App\Services;
 
 use App\Repositories\UserCatalogueRepository;
-use App\Repositories\UserRepository;
 use App\Services\Interfaces\UserCatalogueServiceInterface;
 use Exception;
 use Illuminate\Support\Facades\DB;

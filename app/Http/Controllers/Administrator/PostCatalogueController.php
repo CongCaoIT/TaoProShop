@@ -8,7 +8,6 @@ use App\Http\Requests\DeletePostCatalogueRequest;
 use App\Http\Requests\StorePostCatalogueRequest;
 use App\Http\Requests\UpdatePostCatalogueRequest;
 use App\Repositories\PostCatalogueRepository;
-use App\Services\BaseService;
 use App\Services\PostCatalogueService;
 use Illuminate\Http\Request;
 

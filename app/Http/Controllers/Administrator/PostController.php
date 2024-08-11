@@ -4,11 +4,9 @@ namespace App\Http\Controllers\Administrator;
 
 use App\Classes\Nestedsetbie;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\DeletePostRequest;
 use App\Http\Requests\StorePostRequest;
 use App\Http\Requests\UpdatePostRequest;
 use App\Repositories\PostRepository;
-use App\Services\BaseService;
 use App\Services\PostService;
 use Illuminate\Http\Request;
 

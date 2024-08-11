@@ -2,7 +2,6 @@
 
 namespace App\Services;
 
-use App\Models\Province;
 use App\Repositories\ProvinceRepository;
 use App\Services\Interfaces\ProvinceServiceInterface;
 

@@ -2,7 +2,6 @@
 
 namespace App\Http\Requests;
 
-use App\Models\PostCatalogue;
 use App\Rules\CheckPostCatalogueChildenRule;
 use Illuminate\Foundation\Http\FormRequest;
 
