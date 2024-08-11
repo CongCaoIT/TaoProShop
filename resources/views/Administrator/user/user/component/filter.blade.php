@@ -22,9 +22,9 @@
                         $user_catalogue_id = request('user_catalogue_id') ?? old('user_catalogue_id', 0);
                     @endphp
                     <select name="publish" id="" class="form-control setupSelect2 ml10">
-                        <option value="-1" {{ $publish == -1 ? 'selected' : '' }}>Chọn tình trạng</option>
-                        <option value="0" {{ $publish == 0 ? 'selected' : '' }}>Đã khóa</option>
-                        <option value="1" {{ $publish == 1 ? 'selected' : '' }}>Chưa khóa</option>
+                        @foreach (config('apps.general.publish') as $key => $val)
+                            <option {{ $publish == $key ? 'selected' : '' }} value="{{ $key }}">{{ $val }}</option>
+                        @endforeach
                     </select>
 
                     <select name="user_catalogue_id" id="" class="form-control mr10 setupSelect2">

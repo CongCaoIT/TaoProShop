@@ -49,12 +49,15 @@ class PostController extends Controller
 
         $config['seo'] = config('apps.post');
 
+        $dropdown = $this->nestedsetbie->Dropdown();
+
         $template = 'Administrator.post.post.index';
 
         return view('Administrator.dashboard.layout', compact(
             'template',
             'config',
-            'posts'
+            'posts',
+            'dropdown'
         ));
     }
 

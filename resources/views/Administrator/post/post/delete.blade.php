@@ -16,7 +16,7 @@
             <div class="col-lg-4">
                 <div class="panel-head">
                     <div class="panel-title">Thông tin chung</div>
-                    <div class="panel-description">- Bạn đang muốn xóa nhóm bài viết: <span style="color: red">{{ $post->name }}</span>
+                    <div class="panel-description">- Bạn đang muốn xóa bài viết: <span style="color: red">{{ $post->name }}</span>
                     </div>
                     <div class="panel-description">- Lưu ý: Không thể khôi phục lại sau khi xóa.</div>
                 </div>
@@ -28,7 +28,7 @@
                         <div class="row mb15">
                             <div class="col-lg-12">
                                 <div class="form-row">
-                                    <label for="" class="control-label">Tên nhóm <span class="text-danger">(*)</span></label>
+                                    <label for="" class="control-label">Tên bài viết <span class="text-danger">(*)</span></label>
                                     <input type="text" name="name" value="{{ old('name', $post->name ?? '') }}" class="form-control"
                                         placeholder="" autocomplete="off" readonly>
                                 </div>

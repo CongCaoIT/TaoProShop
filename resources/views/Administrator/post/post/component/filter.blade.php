@@ -19,11 +19,17 @@
                 <div class="uk-flex uk-flex-middle">
                     @php
                         $publish = request('publish') ?? old('publish', -1);
+                        $postCatalogueId = request('post_catalogue_id') ?? old('post_catalogue_id', -1);
                     @endphp
                     <select name="publish" id="" class="form-control setupSelect2 ml10 mr10">
-                        <option value="-1" {{ $publish == -1 ? 'selected' : '' }}>Chọn tình trạng</option>
-                        <option value="0" {{ $publish == 0 ? 'selected' : '' }}>Đã khóa</option>
-                        <option value="1" {{ $publish == 1 ? 'selected' : '' }}>Chưa khóa</option>
+                        @foreach (config('apps.general.publish') as $key => $val)
+                            <option {{ $publish == $key ? 'selected' : '' }} value="{{ $key }}">{{ $val }}</option>
+                        @endforeach
+                    </select>
+                    <select name="post_catalogue_id" id="" class="form-control setupSelect2 ml10 mr10">
+                        @foreach ($dropdown as $key => $val)
+                            <option {{ $postCatalogueId == $key ? 'selected' : '' }} value="{{ $key }}">{{ $val }}</option>
+                        @endforeach
                     </select>
                     <div class="uk-search uk-flex uk-middle mr10">
                         <div class="input-group" style="width: 300px">

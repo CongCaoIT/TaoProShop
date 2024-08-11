@@ -17,7 +17,8 @@ interface BaseRepositoryInterface
         $orderBy = ['id', 'DESC'],
         $extend = [],
         $join = [],
-        $relation = []
+        $relation = [],
+        $rawQuery = []
     );
     public function createPivot($model, $payload = [], $relation = '');
 }

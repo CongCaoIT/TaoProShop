@@ -21,9 +21,9 @@
                         $publish = request('publish') ?? old('publish', -1);
                     @endphp
                     <select name="publish" id="" class="form-control setupSelect2 ml10">
-                        <option value="-1" {{ $publish == -1 ? 'selected' : '' }}>Chọn tình trạng</option>
-                        <option value="0" {{ $publish == 0 ? 'selected' : '' }}>Đã khóa</option>
-                        <option value="1" {{ $publish == 1 ? 'selected' : '' }}>Chưa khóa</option>
+                        @foreach (config('apps.general.publish') as $key => $val)
+                        <option {{ $publish == $key ? 'selected' : '' }} value="{{ $key }}">{{ $val }}</option>
+                    @endforeach
                     </select>
                     <div class="uk-search uk-flex uk-middle mr10">
                         <div class="input-group" style="width: 300px">

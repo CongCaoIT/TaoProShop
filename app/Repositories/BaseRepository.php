@@ -58,9 +58,10 @@ class BaseRepository implements BaseRepositoryInterface
         $orderBy = ['id', 'DESC'],
         $extend = [],
         $join = [],
-        $relation = []
+        $relation = [],
+        $rawQuery = []
     ) {
-        $query = $this->model->select($column)->where(function ($query) use ($condition) {
+        $query = $this->model->select($column)->distinct()->where(function ($query) use ($condition) {
             if (isset($condition['keyword']) && !empty($condition['keyword'])) {
                 $query->where('name', 'LIKE', '%' . $condition['keyword'] . '%');
             }
@@ -75,6 +76,12 @@ class BaseRepository implements BaseRepositoryInterface
                 }
             }
         });
+
+        if (isset($rawQuery['whereRaw']) && count($rawQuery['whereRaw'])) {
+            foreach ($rawQuery['whereRaw'] as $key => $val) {
+                $query->whereRaw($val[0], $val[1]);
+            }
+        }
 
         if (isset($relation) && !empty($relation)) {
             foreach ($relation as $item) {

@@ -365,8 +365,8 @@ input[name="canonical"] {
     object-fit: cover;
 }
 
-.maintitle,
-a {
+.maintitle {
+    font-size: 16px;
     color: #2962ff;
 }
 

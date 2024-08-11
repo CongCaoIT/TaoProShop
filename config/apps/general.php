@@ -2,14 +2,14 @@
 
 return [
     'publish' => [
-        '0' => 'Chọn tình trạng',
-        '1' => 'Không xuất bản',
-        '2' => 'Xuất bản',
+        '-1' => 'Chọn tình trạng',
+        '0' => 'Không xuất bản',
+        '1' => 'Xuất bản',
     ],
     'follow' => [
-        '0' => 'Chọn điều hướng',
-        '1' => 'No follow',
-        '2' => 'Follow',
+        '-1' => 'Chọn điều hướng',
+        '0' => 'No follow',
+        '1' => 'Follow',
     ],
     'suffix' => '.php'
 ];
