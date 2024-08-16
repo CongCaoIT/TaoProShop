@@ -6,8 +6,14 @@
         <i class="fa fa-wrench"></i>
     </a>
     <ul class="dropdown-menu dropdown-user">
-        <li><a href="" class="changeStatasAll" data-field="publish" data-model="{{ $config['model'] }}" data-value="1">Thay đổi trạng thái</a></li>
-        <li><a href="" class="changeStatasAll" data-field="publish" data-model="{{ $config['model'] }}" data-value="0">Hủy thay đổi trạng thái</a></li>
+        <li>
+            <a href="" class="changeStatasAll" data-field="publish" data-model="{{ $config['model'] }}"
+                data-value="1">{{ __('messages.change_status') }}</a>
+        </li>
+        <li>
+            <a href="" class="changeStatasAll" data-field="publish" data-model="{{ $config['model'] }}"
+                data-value="0">{{ __('messages.cancel_status_change') }}</a>
+        </li>
     </ul>
     <a class="close-link">
         <i class="fa fa-times"></i>

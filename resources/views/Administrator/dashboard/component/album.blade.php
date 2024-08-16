@@ -1,9 +1,9 @@
 <div class="ibox">
     <div class="ibox-title">
         <div class="uk-flex uk-flex-middle uk-flex-space-between">
-            <h5>Album ảnh</h5>
+            <h5>{{ __('messages.photo_album') }}</h5>
             <div class="upload-album">
-                <a href="" class="upload-picture">Chọn hình</a>
+                <a href="" class="upload-picture">{{ __('messages.select_image') }}</a>
             </div>
         </div>
     </div>
@@ -25,7 +25,7 @@
                                 </svg>
                             </a>
                         </div>
-                        <div class="small-text">Sử dụng nút chọn hình hoặc click vào đây để thêm hình ảnh</div>
+                        <div class="small-text">{{ __('messages.mess_image') }}</div>
                     </div>
                 @else
                     <div class="click-to-upload hidden">
@@ -39,7 +39,7 @@
                                 </svg>
                             </a>
                         </div>
-                        <div class="small-text">Sử dụng nút chọn hình hoặc click vào đây để thêm hình ảnh</div>
+                        <div class="small-text">{{ __('messages.mess_image') }}</div>
                     </div>
                 @endif
 

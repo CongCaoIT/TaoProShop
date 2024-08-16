@@ -4,9 +4,9 @@
             <th class="text-center" style="width: 50px">
                 <input type="checkbox" value="" id="checkAll" class="input-checkbox">
             </th>
-            <th class="text-center">Tên nhóm</th>
-            <th class="text-center" style="width: 100px">Trạng thái</th>
-            <th class="text-center" style="width: 100px">Thao tác</th>
+            <th class="text-center">{{ __('messages.group_name') }}</th>
+            <th class="text-center" style="width: 100px">{{ __('messages.status') }}</th>
+            <th class="text-center" style="width: 100px">{{ __('messages.action') }}</th>
         </tr>
     </thead>
     <tbody>

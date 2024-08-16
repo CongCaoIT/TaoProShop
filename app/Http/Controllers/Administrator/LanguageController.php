@@ -8,6 +8,7 @@ use App\Http\Requests\UpdateLanguageRequest;
 use App\Repositories\LanguageRepository;
 use App\Services\LanguageService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
 
 class LanguageController extends Controller
 {
@@ -130,5 +131,15 @@ class LanguageController extends Controller
             ],
             'css' => []
         ];
+    }
+
+    public function switchLanguage($id)
+    {
+        $language = $this->languageRepository->findByID($id);
+        if ($this->languageService->switch($id)) {
+            session(['app_locale' => $language->canonical]);
+            App::setLocale($language->canonical);
+        }
+        return back();
     }
 }

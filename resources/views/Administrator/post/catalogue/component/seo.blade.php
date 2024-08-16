@@ -1,6 +1,6 @@
 <div class="ibox">
     <div class="ibox-title">
-        <h5>Cấu hình SEO</h5>
+        <h5>{{ __('messages.seo_configuration') }}</h5>
     </div>
     <div class="ibox-content">
         <div class="seo-container">
@@ -8,13 +8,13 @@
                 <div class="seo-container">
                     <div class="seo-container">
                         <div class="h3 meta_title">
-                            {{ old('meta_title', $postCatalogue->meta_title ?? '') ? old('meta_title', $postCatalogue->meta_title ?? '') : 'Bạn chưa có tiêu đề SEO' }}
+                            {{ old('meta_title', $postCatalogue->meta_title ?? '') ? old('meta_title', $postCatalogue->meta_title ?? '') : __('messages.no_seo_title') }}
                         </div>
                         <div class="canonical">
-                            {{ old('canonical', $postCatalogue->canonical ?? '') ? old('canonical', $postCatalogue->canonical ?? '') : 'https://duong-dan-cua-ban.html' }}
+                            {{ old('canonical', $postCatalogue->canonical ?? '') ? old('canonical', $postCatalogue->canonical ?? '') : __('messages.url_placeholder') }}
                         </div>
                         <div class="meta_description">
-                            {{ old('meta_description', $postCatalogue->meta_description ?? '') ? old('meta_description', $postCatalogue->meta_description ?? '') : 'Bạn chưa có mô tả SEO' }}
+                            {{ old('meta_description', $postCatalogue->meta_description ?? '') ? old('meta_description', $postCatalogue->meta_description ?? '') : __('messages.no_seo_description') }}
                         </div>
                     </div>
                 </div>
@@ -26,8 +26,8 @@
                     <div class="form-row">
                         <label for="" class="control-label text-left">
                             <div class="flex-container">
-                                <span>Tiêu đề SEO</span>
-                                <span class="count_meta-title">0 ký tự</span>
+                                <span>{{ __('messages.seo_title') }}</span>
+                                <span class="count_meta-title"></span>
                             </div>
                         </label>
                         <input type="text" name="meta_title" value="{{ old('meta_title', $postCatalogue->meta_title ?? '') }}" class="form-control"
@@ -39,9 +39,7 @@
                 <div class="col-lg-12">
                     <div class="form-row">
                         <label for="" class="control-label text-left">
-                            <div class="flex-container">
-                                Từ khóa SEO
-                            </div>
+                            <div class="flex-container">{{ __('messages.seo_keywords') }}</div>
                         </label>
                         <input type="text" name="meta_keyword" value="{{ old('meta_keyword', $postCatalogue->meta_keyword ?? '') }}"
                             class="form-control" placeholder="" autocomplete="off">
@@ -53,8 +51,8 @@
                     <div class="form-row">
                         <label for="" class="control-label text-left">
                             <div class="flex-container">
-                                <span>Mô tả SEO</span>
-                                <span class="count_meta-title">0 ký tự</span>
+                                <span>{{ __('messages.seo_description') }}</span>
+                                <span class="count_meta-title">{{ __('messages.zero_characters') }}</span>
                             </div>
                         </label>
                         <textarea type="text" name="meta_description" id="meta_description" class="form-control" placeholder="" autocomplete="off">{{ old('meta_description', $postCatalogue->meta_description ?? '') }}</textarea>
@@ -66,7 +64,7 @@
                     <div class="form-row">
                         <label for="" class="control-label text-left">
                             <div class="">
-                                Đường dẫn <span class="text-danger"> (*)</span>
+                                {{ __('messages.url') }} <span class="text-danger"> (*)</span>
                             </div>
                         </label>
                         <div class="input-wrapper">

@@ -4,10 +4,10 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
 use Symfony\Component\HttpFoundation\Response;
-use Illuminate\Support\Facades\Auth;
 
-class EnsureTokenIsValid
+class SetLocale
 {
     /**
      * Handle an incoming request.
@@ -16,10 +16,8 @@ class EnsureTokenIsValid
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (Auth::id() == null) {
-            flash()->error('Bạn phải đăng nhập tài khoản Admin.');
-            return redirect()->route('auth.admin');
-        }
+        $locale = session('app_locale', config('app.locale'));
+        App::setLocale($locale);
         return $next($request);
     }
 }

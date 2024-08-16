@@ -3,48 +3,48 @@
 return [
     'module' => [
         [
-            'title' => 'QL Bài viết',
+            'title' => 'Post',
             'icon' => 'fa fa-file',
             'name' => [
                 'post'
             ],
             'subModule' => [
                 [
-                    'title' => 'QL nhóm bài viết',
+                    'title' => 'Post Group',
                     'route' => 'post.catalogue.index',
                 ],
                 [
-                    'title' => 'QL bài viết',
+                    'title' => 'Post',
                     'route' => 'post.index',
                 ]
             ]
         ],
         [
-            'title' => 'QL thành viên',
+            'title' => 'User',
             'icon' => 'fa fa-user',
             'name' => [
                 'user'
             ],
             'subModule' => [
                 [
-                    'title' => 'QL nhóm thành viên',
+                    'title' => 'User Group',
                     'route' => 'user.catalogue.index',
                 ],
                 [
-                    'title' => 'QL thành viên',
+                    'title' => 'User',
                     'route' => 'user.index',
                 ]
             ]
         ],
         [
-            'title' => 'Cấu hình chung',
+            'title' => 'General',
             'icon' => 'fa fa-file',
             'name' => [
                 'language'
             ],
             'subModule' => [
                 [
-                    'title' => 'QL Ngôn ngữ',
+                    'title' => 'Language',
                     'route' => 'language.index',
                 ]
             ]

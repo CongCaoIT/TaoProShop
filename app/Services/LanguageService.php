@@ -30,7 +30,12 @@ class LanguageService implements LanguageServiceInterface
         //Xử lý logic
         $languages = $this->languageRepository->pagination(
             [
-                'id', 'name', 'canonical', 'publish', 'description', 'image' //Select
+                'id',
+                'name',
+                'canonical',
+                'publish',
+                'description',
+                'image' //Select
             ],
             $condition, //Keyword
             [], //Join table
@@ -110,6 +115,23 @@ class LanguageService implements LanguageServiceInterface
             $payload[$post['field']] = $post['value'];
 
             $this->languageRepository->updateByWhereIn('id', $post['id'], $payload);
+            DB::commit();
+            return true;
+        } catch (Exception $ex) {
+            DB::rollBack();
+            echo $ex->getMessage();
+            die();
+        }
+    }
+
+    public function switch($id)
+    {
+        DB::beginTransaction();
+        try {
+            $language = $this->languageRepository->update($id, ['current' => 1]);
+            $payload = ['current' => 0];
+            $where = [['id', '!=', $id],];
+            $this->languageRepository->updateByWhere($where, $payload);
             DB::commit();
             return true;
         } catch (Exception $ex) {

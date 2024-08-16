@@ -22,7 +22,7 @@
             <div class="col-lg-9">
                 <div class="ibox">
                     <div class="ibox-title">
-                        <h5>Thông tin chung</h5>
+                        <h5>{{ __('messages.general_information') }}</h5>
                     </div>
                     <div class="ibox-content">
                         @include('Administrator.post.catalogue.component.general')
@@ -36,7 +36,7 @@
             </div>
         </div>
         <div class="text-right mb15">
-            <button class="btn btn-primary" type="submit" value="send" name="send">Lưu lại</button>
+            <button class="btn btn-primary" type="submit" value="send" name="send">{{ __('messages.save') }}</button>
         </div>
     </div>
 </form>

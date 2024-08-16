@@ -19,7 +19,8 @@ class Language extends Authenticatable
         'publish',
         'user_id',
         'image',
-        'description'
+        'description',
+        'current'
     ];
 
     protected $table = 'languages';

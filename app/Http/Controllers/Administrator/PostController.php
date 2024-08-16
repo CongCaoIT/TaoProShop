@@ -6,6 +6,7 @@ use App\Classes\Nestedsetbie;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StorePostRequest;
 use App\Http\Requests\UpdatePostRequest;
+use App\Repositories\LanguageRepository;
 use App\Repositories\PostRepository;
 use App\Services\PostService;
 use Illuminate\Http\Request;
@@ -55,7 +56,7 @@ class PostController extends Controller
             'template',
             'config',
             'posts',
-            'dropdown'
+            'dropdown',
         ));
     }
 

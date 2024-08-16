@@ -58,7 +58,7 @@
                             </div>
                             <div class="col-lg-6">
                                 <div class="form-row">
-                                    <label for="" class="control-label">Ghi chú</label>
+                                    <label for="" class="control-label">Mô tả</label>
                                     <input type="text" name="description" value="{{ old('description', $language->description ?? '') }}"
                                         class="form-control" placeholder="" autocomplete="off">
                                 </div>

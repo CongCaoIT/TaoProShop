@@ -15,20 +15,20 @@
         <div class="row">
             <div class="col-lg-4">
                 <div class="panel-head">
-                    <div class="panel-title">Thông tin chung</div>
-                    <div class="panel-description">- Bạn đang muốn xóa nhóm bài viết: <span style="color: red">{{ $postCatalogue->name }}</span>
+                    <div class="panel-title">{{ __('messages.general_information') }}</div>
+                    <div class="panel-description">- {{ __('messages.delete_post_group') }} <span style="color: red">{{ $postCatalogue->name }}</span>
                     </div>
-                    <div class="panel-description">- Lưu ý: Không thể khôi phục lại sau khi xóa.</div>
+                    <div class="panel-description">- {{ __('messages.note_irreversible') }}</div>
                 </div>
             </div>
             <div class="col-lg-8">
                 <div class="ibox">
                     <div class="ibox-content">
-
                         <div class="row mb15">
                             <div class="col-lg-12">
                                 <div class="form-row">
-                                    <label for="" class="control-label">Tên nhóm <span class="text-danger">(*)</span></label>
+                                    <label for="" class="control-label">{{ __('messages.group_name') }} <span
+                                            class="text-danger">(*)</span></label>
                                     <input type="text" name="name" value="{{ old('name', $postCatalogue->name ?? '') }}" class="form-control"
                                         placeholder="" autocomplete="off" readonly>
                                 </div>
@@ -39,7 +39,7 @@
             </div>
 
             <div class="text-right mb15">
-                <button class="btn btn-danger" type="submit" value="send" name="send">Xóa dữ liệu</button>
+                <button class="btn btn-danger" type="submit" value="send" name="send">{{ __('messages.delete_data') }}</button>
             </div>
         </div>
     </div>
