@@ -22,12 +22,25 @@ class BaseRepository implements BaseRepositoryInterface
         return $this->model->select($column)->with($relation)->findOrFail($modelID);
     }
 
+    public function findByCondition($condition = [])
+    {
+        $query = $this->model->newQuery();
+        foreach ($condition as $key => $val) {
+            $query->where($val[0], $val[1], $val[2]);
+        }
+        return $query->first();
+    }
+
     public function create($payload = [])
     {
         $model = $this->model->create($payload);
         return $model->refresh();
     }
 
+    public function createPivot($model, $payload = [], $relation = '')
+    {
+        return $model->languages()->attach($model->id, $payload);
+    }
     public function update($id, $payload = [])
     {
         $model = $this->findByID($id);
@@ -85,10 +98,5 @@ class BaseRepository implements BaseRepositoryInterface
             ->paginate($perpage)
             ->withQueryString()
             ->withPath(env('APP_URL') . $extend['path']);;
-    }
-
-    public function createPivot($model, $payload = [], $relation = '')
-    {
-        return $model->languages()->attach($model->id, $payload);
     }
 }

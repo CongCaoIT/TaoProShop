@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Classes\Nestedsetbie;
 use App\Repositories\PostCatalogueRepository;
+use App\Repositories\RouterRepository;
 use App\Services\Interfaces\PostCatalogueServiceInterface;
 use Exception;
 use Illuminate\Support\Facades\Auth;
@@ -13,13 +14,15 @@ use Illuminate\Support\Str;
 class PostCatalogueService extends BaseService implements PostCatalogueServiceInterface
 {
     protected $postCatalogueRepository;
+    protected $routerRepository;
     protected $nestedsetbie;
     protected $language;
 
-    public function __construct(PostCatalogueRepository $postCatalogueRepository)
+    public function __construct(PostCatalogueRepository $postCatalogueRepository, RouterRepository $routerRepository)
     {
         $this->language = $this->currentLanguage();
         $this->postCatalogueRepository = $postCatalogueRepository;
+        $this->routerRepository = $routerRepository;
         $this->nestedsetbie = new Nestedsetbie([
             'table' => 'post_catalogues',
             'foreignkey' => 'post_catalogue_id',
@@ -53,23 +56,20 @@ class PostCatalogueService extends BaseService implements PostCatalogueServiceIn
     {
         DB::beginTransaction();
         try {
-            $payload = $request->only($this->payload());
-            $payload['user_id'] = Auth::id();
-            if (isset($payload['album'])) {
-                $payload['album'] = json_encode($payload['album']);
-            }
-            $postCatalogue = $this->postCatalogueRepository->create($payload);
+            $postCatalogue = $this->createPostCatalogue($request);
             if ($postCatalogue->id > 0) {
                 $payloadLanguage = $request->only($this->payloadLanguage());
                 $payloadLanguage['language_id'] = $this->currentLanguage();
                 $payloadLanguage['post_catalogue_id'] = $postCatalogue->id;
                 $payloadLanguage['canonical'] = Str::slug($payloadLanguage['canonical']);
 
-                $language = $this->postCatalogueRepository->createPivot($postCatalogue, $payloadLanguage, 'languages');
+                $this->postCatalogueRepository->createPivot($postCatalogue, $payloadLanguage, 'languages');
+                $router = $this->payloadRouter($payloadLanguage, $postCatalogue);
+
+                $this->routerRepository->create($router);
             }
 
             $this->nestedsetCustom();
-
             DB::commit();
             return true;
         } catch (Exception $ex) {
@@ -85,21 +85,29 @@ class PostCatalogueService extends BaseService implements PostCatalogueServiceIn
         try {
             $postCatalogue = $this->postCatalogueRepository->findByID($id);
             $payload = $request->only($this->payload());
-            if (isset($payload['album'])) {
-                $payload['album'] = json_encode($payload['album']);
-            }
+            $this->formatAlbum($payload);
             $flag = $this->postCatalogueRepository->update($id, $payload);
 
             if ($flag == TRUE) {
                 $payloadLanguage = $request->only($this->payloadLanguage());
                 $payloadLanguage['language_id'] = $this->currentLanguage();
-                $payloadLanguage['post_catalogue_id'] = $id;
+                $payloadLanguage['post_catalogue_id'] = $postCatalogue->id;
+                $payloadLanguage['canonical'] = Str::slug($payloadLanguage['canonical']);
                 $postCatalogue->languages()->detach([$payloadLanguage['language_id'], $payloadLanguage['post_catalogue_id']]);
                 $response = $this->postCatalogueRepository->createPivot($postCatalogue, $payloadLanguage, 'languages');
+
+                $condition = [
+                    ['module_id', '=', $id],
+                    ['controllers', '=', 'App\Http\Controllers\Frontend\PostCatalogueController']
+                ];
+
+                $router = $this->routerRepository->findByCondition($condition);
+                $payloadRouter = $this->payloadRouter($payloadLanguage, $postCatalogue);
+
+                $this->routerRepository->update($router->id, $payloadRouter);
             }
 
             $this->nestedsetCustom();
-
             DB::commit();
             return true;
         } catch (Exception $ex) {
@@ -154,6 +162,25 @@ class PostCatalogueService extends BaseService implements PostCatalogueServiceIn
             echo $ex->getMessage();
             die();
         }
+    }
+
+    private function createPostCatalogue($request)
+    {
+        $payload = $request->only($this->payload());
+        $payload['user_id'] = Auth::id();
+        $this->formatAlbum($payload);
+        return $this->postCatalogueRepository->create($payload);
+    }
+
+    private function payloadRouter($payloadLanguage, $postCatalogue)
+    {
+        $router = [
+            'canonical' => $payloadLanguage['canonical'],
+            'module_id' => $postCatalogue->id,
+            'controllers' => 'App\Http\Controllers\Frontend\PostCatalogueController'
+        ];
+
+        return $router;
     }
 
     private function select()

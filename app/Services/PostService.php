@@ -140,14 +140,6 @@ class PostService extends BaseService implements PostServiceInterface
         $post->post_catalogues()->sync($this->catalogue($request));
     }
 
-    private function formatAlbum($payload)
-    {
-        if (isset($payload['album'])) {
-            $payload['album'] = json_encode($payload['album']);
-        }
-        return $payload;
-    }
-
     private function catalogue($request)
     {
         $catalogue = $request->input('catalogue');
