@@ -23,7 +23,8 @@ return [
             'title' => 'User',
             'icon' => 'fa fa-user',
             'name' => [
-                'user'
+                'user',
+                'permission'
             ],
             'subModule' => [
                 [
@@ -33,6 +34,10 @@ return [
                 [
                     'title' => 'User',
                     'route' => 'user.index',
+                ],
+                [
+                    'title' => 'Permission',
+                    'route' => 'permission.index',
                 ]
             ]
         ],

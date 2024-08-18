@@ -8,7 +8,7 @@
             <th class="text-center">Số thành viên</th>
             <th class="text-center">Ghi chú</th>
             <th style="width: 100px" class="text-center">Trạng thái</th>
-            <th style="width: 100px" class="text-center">Thao tác</th>
+            <th style="width: 150px" class="text-center">Thao tác</th>
         </tr>
     </thead>
     <tbody>

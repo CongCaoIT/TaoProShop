@@ -10,6 +10,7 @@ use App\Repositories\LanguageRepository;
 use App\Repositories\PostRepository;
 use App\Services\PostService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 
 class PostController extends Controller
 {
@@ -32,8 +33,9 @@ class PostController extends Controller
 
     public function index(Request $request)
     {
-        $posts = $this->postService->paginate($request); //Gọi func ở tầng Service, nơi xử lý logic
+        Gate::authorize('modules', 'post.index');
 
+        $posts = $this->postService->paginate($request); //Gọi func ở tầng Service, nơi xử lý logic
         $config = [
             'js' => [
                 'https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js',
@@ -62,8 +64,9 @@ class PostController extends Controller
 
     public function create()
     {
-        $template = 'Administrator.post.post.store';
+        Gate::authorize('modules', 'post.create');
 
+        $template = 'Administrator.post.post.store';
         $config = $this->configData();
         $config['seo'] = config('apps.post');
         $config['method'] = 'create';
@@ -87,8 +90,9 @@ class PostController extends Controller
 
     public function edit($id)
     {
-        $post = $this->postRepository->getPostById($id, $this->language);
+        Gate::authorize('modules', 'post.update');
 
+        $post = $this->postRepository->getPostById($id, $this->language);
         $template = 'Administrator.post.post.store';
         $config = $this->configData();
         $dropdown = $this->nestedsetbie->Dropdown();
@@ -117,6 +121,8 @@ class PostController extends Controller
 
     public function delete($id)
     {
+        Gate::authorize('modules', 'post.destroy');
+
         $post = $this->postRepository->getPostById($id, $this->language);
         $config['seo'] = config('apps.post');
         $template = 'Administrator.post.post.delete';

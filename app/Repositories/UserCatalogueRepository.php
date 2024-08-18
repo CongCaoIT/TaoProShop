@@ -14,11 +14,6 @@ class UserCatalogueRepository extends BaseRepository implements UserCatalogueRep
         $this->model = $model;
     }
 
-    public function all()
-    {
-        return $this->model::all();
-    }
-
     public function pagination(
         $column = ['*'],
         $condition = [],

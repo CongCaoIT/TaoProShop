@@ -10,6 +10,7 @@ use App\Repositories\UserRepository;
 use App\Services\ProvinceService;
 use App\Services\UserService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 
 class UserController extends Controller
 {
@@ -28,10 +29,10 @@ class UserController extends Controller
 
     public function index(Request $request)
     {
-        $users = $this->userService->paginate($request); //Gọi func ở tầng Service, nơi xử lý logic
+        Gate::authorize('modules', 'user.index');
 
+        $users = $this->userService->paginate($request);
         $userCatalogues = $this->userCatalogueRepository->all();
-
         $config = [
             'js' => [
                 'https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js',
@@ -58,12 +59,11 @@ class UserController extends Controller
 
     public function create()
     {
+        Gate::authorize('modules', 'user.create');
+
         $provinces = $this->provinceService->getProvince();
-
         $template = 'Administrator.user.user.store';
-
         $userCatalogues = $this->userCatalogueRepository->all();
-
         $config = [
             'js' => [
                 'https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js',
@@ -98,14 +98,12 @@ class UserController extends Controller
 
     public function edit($id)
     {
+        Gate::authorize('modules', 'user.update');
+
         $user = $this->userRepository->findByID($id);
-
         $provinces = $this->provinceService->getProvince();
-
         $userCatalogues = $this->userCatalogueRepository->all();
-
         $template = 'Administrator.user.user.store';
-
         $config = [
             'js' => [
                 'https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js',
@@ -142,6 +140,8 @@ class UserController extends Controller
 
     public function delete($id)
     {
+        Gate::authorize('modules', 'user.destroy');
+
         $config = [
             'js' => [
                 'https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js',

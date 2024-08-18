@@ -1,4 +1,4 @@
-<form action="{{ route('user.catalogue.index') }}" method="GET">
+<form action="{{ route('permission.index') }}" method="GET">
     <div class="filter-wrapper">
         <div class="uk-flex uk-flex-middle uk-flex-space-between">
             <div class="perpage">
@@ -17,14 +17,6 @@
             </div>
             <div class="action">
                 <div class="uk-flex uk-flex-middle">
-                    @php
-                        $publish = request('publish') ?? old('publish', -1);
-                    @endphp
-                    <select name="publish" id="" class="form-control setupSelect2 ml10">
-                        @foreach (config('apps.general.publish') as $key => $val)
-                            <option {{ $publish == $key ? 'selected' : '' }} value="{{ $key }}">{{ $val }}</option>
-                        @endforeach
-                    </select>
                     <div class="uk-search uk-flex uk-middle mr10">
                         <div class="input-group" style="width: 300px">
                             <input type="text" name="keyword" value="{{ request('keyword') ?: old('keyword') }}"
@@ -34,10 +26,7 @@
                             </span>
                         </div>
                     </div>
-                    <div class="uk-flex uk-flex-middle">
-                        <a href="{{ route('user.catalogue.permission') }}" class="btn btn-warning mr10"><i class="fa fa-key mr5"></i>Phân quyền</a>
-                        <a href="{{ route('user.catalogue.create') }}" class="btn btn-danger"><i class="fa fa-plus mr5"></i>Thêm</a>
-                    </div>
+                    <a href="{{ route('permission.create') }}" class="btn btn-danger"><i class="fa fa-plus mr5"></i>Thêm</a>
                 </div>
             </div>
         </div>

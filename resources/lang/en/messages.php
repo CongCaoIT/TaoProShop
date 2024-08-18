@@ -14,7 +14,25 @@ return [
         ],
         'delete' => [
             'title' => 'Delete Post Group',
-        ]
+        ],
+        'permission' => [
+            'title' => 'Update Permission',
+        ],
+    ],
+    'permission' => [
+        'index' => [
+            'title'             => 'Permissions',
+            'tableHeading'      => 'Permission List'
+        ],
+        'create' => [
+            'title' => 'Add New Permission',
+        ],
+        'edit' => [
+            'title' => 'Edit Permission',
+        ],
+        'delete' => [
+            'title' => 'Delete Permission',
+        ],
     ],
     'parent'                    => 'Select Parent Category',
     'parent_notice'             => 'Select Root if no category exists',

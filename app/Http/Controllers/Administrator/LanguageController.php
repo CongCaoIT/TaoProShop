@@ -9,6 +9,7 @@ use App\Repositories\LanguageRepository;
 use App\Services\LanguageService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Gate;
 
 class LanguageController extends Controller
 {
@@ -23,8 +24,9 @@ class LanguageController extends Controller
 
     public function index(Request $request)
     {
-        $languages = $this->languageService->paginate($request); //Gọi func ở tầng Service, nơi xử lý logic
+        Gate::authorize('modules', 'language.index');
 
+        $languages = $this->languageService->paginate($request); //Gọi func ở tầng Service, nơi xử lý logic
         $config = [
             'js' => [
                 'https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js',
@@ -50,8 +52,9 @@ class LanguageController extends Controller
 
     public function create()
     {
-        $template = 'Administrator.language.store';
+        Gate::authorize('modules', 'language.create');
 
+        $template = 'Administrator.language.store';
         $config = $this->configData();
         $config['seo'] = config('apps.language');
         $config['method'] = 'create';
@@ -73,10 +76,10 @@ class LanguageController extends Controller
 
     public function edit($id)
     {
+        Gate::authorize('modules', 'language.update');
+
         $language = $this->languageRepository->findByID($id);
-
         $template = 'Administrator.language.store';
-
         $config = $this->configData();
         $config['seo'] = config('apps.language');
         $config['method'] = 'edit';
@@ -100,6 +103,8 @@ class LanguageController extends Controller
 
     public function delete($id)
     {
+        Gate::authorize('modules', 'language.destroy');
+
         $config['seo'] = config('apps.language');
         $language = $this->languageRepository->findByID($id);
         $template = 'Administrator.language.delete';

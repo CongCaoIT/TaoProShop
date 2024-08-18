@@ -23,7 +23,8 @@ return [
             'title' => 'QL thành viên',
             'icon' => 'fa fa-user',
             'name' => [
-                'user'
+                'user',
+                'permission'
             ],
             'subModule' => [
                 [
@@ -33,6 +34,10 @@ return [
                 [
                     'title' => 'Thành viên',
                     'route' => 'user.index',
+                ],
+                [
+                    'title' => 'Quyền',
+                    'route' => 'permission.index',
                 ]
             ]
         ],

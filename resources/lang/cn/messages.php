@@ -14,7 +14,25 @@ return [
         ],
         'delete' => [
             'title' => '删除帖子组',
-        ]
+        ],
+        'permission' => [
+            'title' => '更新权限',
+        ],
+    ],
+    'permission' => [
+        'index' => [
+            'title'             => '权限管理',
+            'tableHeading'      => '权限列表'
+        ],
+        'create' => [
+            'title' => '添加新权限',
+        ],
+        'edit' => [
+            'title' => '编辑权限',
+        ],
+        'delete' => [
+            'title' => '删除权限',
+        ],
     ],
     'parent'                    => '选择父类别',
     'parent_notice'             => '如果没有类别，请选择根目录',

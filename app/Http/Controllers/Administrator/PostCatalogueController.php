@@ -10,6 +10,7 @@ use App\Http\Requests\UpdatePostCatalogueRequest;
 use App\Repositories\PostCatalogueRepository;
 use App\Services\PostCatalogueService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 
 class PostCatalogueController extends Controller
 {
@@ -32,8 +33,9 @@ class PostCatalogueController extends Controller
 
     public function index(Request $request)
     {
-        $postCatalogues = $this->postCatalogueService->paginate($request); //Gọi func ở tầng Service, nơi xử lý logic
-
+        Gate::authorize('modules', 'post.catalogue.index');
+        
+        $postCatalogues = $this->postCatalogueService->paginate($request); 
         $config = [
             'js' => [
                 'https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js',
@@ -57,8 +59,9 @@ class PostCatalogueController extends Controller
 
     public function create()
     {
-        $template = 'Administrator.post.catalogue.store';
+        Gate::authorize('modules', 'post.catalogue.create');
 
+        $template = 'Administrator.post.catalogue.store';
         $config = $this->configData();
         $config['seo'] = __('messages.postCatalogue');
         $config['method'] = 'create';
@@ -82,8 +85,9 @@ class PostCatalogueController extends Controller
 
     public function edit($id)
     {
-        $postCatalogue = $this->postCatalogueRepository->getPostCatalogueById($id, $this->language);
+        Gate::authorize('modules', 'post.catalogue.update');
 
+        $postCatalogue = $this->postCatalogueRepository->getPostCatalogueById($id, $this->language);
         $template = 'Administrator.post.catalogue.store';
         $config = $this->configData();
         $dropdown = $this->nestedsetbie->Dropdown();
@@ -112,6 +116,8 @@ class PostCatalogueController extends Controller
 
     public function delete($id)
     {
+        Gate::authorize('modules', 'post.catalogue.destroy');
+        
         $postCatalogue = $this->postCatalogueRepository->getPostCatalogueById($id, $this->language);
         $config['seo'] = __('messages.postCatalogue');
         $template = 'Administrator.post.catalogue.delete';

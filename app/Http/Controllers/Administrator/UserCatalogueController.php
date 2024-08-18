@@ -5,25 +5,30 @@ namespace App\Http\Controllers\Administrator;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreUserCatalogueRequest;
 use App\Http\Requests\UpdateUserCatalogueRequest;
+use App\Repositories\PermissionRepository;
 use App\Repositories\UserCatalogueRepository;
 use App\Services\UserCatalogueService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 
 class UserCatalogueController extends Controller
 {
     protected $userCatalogueService;
     protected $userCatalogueRepository;
+    protected $permissionRepository;
 
-    public function __construct(UserCatalogueService $userCatalogueService, UserCatalogueRepository $userCatalogueRepository)
+    public function __construct(UserCatalogueService $userCatalogueService, UserCatalogueRepository $userCatalogueRepository, PermissionRepository $permissionRepository)
     {
         $this->userCatalogueService = $userCatalogueService;
         $this->userCatalogueRepository = $userCatalogueRepository;
+        $this->permissionRepository = $permissionRepository;
     }
 
     public function index(Request $request)
     {
-        $userCatalogues = $this->userCatalogueService->paginate($request); //Gọi func ở tầng Service, nơi xử lý logic
+        Gate::authorize('modules', 'user.catalogue.index');
 
+        $userCatalogues = $this->userCatalogueService->paginate($request);
         $config = [
             'js' => [
                 'https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js',
@@ -49,8 +54,9 @@ class UserCatalogueController extends Controller
 
     public function create()
     {
-        $template = 'Administrator.user.catalogue.store';
+        Gate::authorize('modules', 'user.catalogue.create');
 
+        $template = 'Administrator.user.catalogue.store';
         $config = [
             'js' => [
                 'https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js',
@@ -83,10 +89,10 @@ class UserCatalogueController extends Controller
 
     public function edit($id)
     {
+        Gate::authorize('modules', 'user.catalogue.update');
+
         $userCatalogue = $this->userCatalogueRepository->findByID($id);
-
         $template = 'Administrator.user.catalogue.store';
-
         $config = [
             'js' => [
                 'https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js',
@@ -121,6 +127,8 @@ class UserCatalogueController extends Controller
 
     public function delete($id)
     {
+        Gate::authorize('modules', 'user.catalogue.destroy');
+
         $config['seo'] = config('apps.usercatalogue');
         $userCatalogue = $this->userCatalogueRepository->findByID($id);
         $template = 'Administrator.user.catalogue.delete';
@@ -139,6 +147,34 @@ class UserCatalogueController extends Controller
             return redirect()->route('user.catalogue.index');
         }
         flash()->error('Xóa bản ghi không thành công. Hãy thử lại.');
+        return redirect()->route('user.catalogue.index');
+    }
+
+    public function permission()
+    {
+        Gate::authorize('modules', 'user.catalogue.permission');
+
+        $userCatalogues = $this->userCatalogueRepository->all(['permissions']);
+        $permissions = $this->permissionRepository->all();
+        $config['seo'] = __('messages.userCatalogue.permission');
+        $config['method'] = 'create';
+        $template = 'Administrator.user.catalogue.permission';
+
+        return view('Administrator.dashboard.layout', compact(
+            'template',
+            'config',
+            'userCatalogues',
+            'permissions'
+        ));
+    }
+
+    public function updatePermission(Request $request)
+    {
+        if ($this->userCatalogueService->setPermission($request)) {
+            flash()->success('Cập nhật quyền thành công.');
+            return redirect()->route('user.catalogue.index');
+        }
+        flash()->error('Cập nhật quyền không thành công. Hãy thử lại.');
         return redirect()->route('user.catalogue.index');
     }
 }

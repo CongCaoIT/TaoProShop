@@ -22,7 +22,7 @@ trait QueryScopes
 
     public function scopeCustomWhere($query, $where = [])
     {
-        if (count($where)) {
+        if (isset($where) && count($where)) {
             foreach ($where as $key => $val) {
                 $query->where($val[0], $val[1], $val[2]);
             }
