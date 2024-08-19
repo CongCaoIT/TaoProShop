@@ -9,8 +9,11 @@
             $(".meta_title").html(value);
         });
 
-        $("input[name=canonical]").css({
-            "padding-left": parseInt($(".baseURL").outerWidth()),
+        $(".seo-canonical").each(function () {
+            let _this = $(this);
+            _this.css({
+                "padding-left": parseInt($(".baseURL").outerWidth()),
+            });
         });
 
         $("input[name=canonical]").on("keyup", function () {

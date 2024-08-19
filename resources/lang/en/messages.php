@@ -48,7 +48,7 @@ return [
     'upload_image'              => 'Upload Image',
     'seo_configuration'         => 'SEO Configuration',
     'no_seo_title'              => 'You do not have an SEO title yet',
-    'url_placeholder'           => 'https://your-path.html',
+    'url_placeholder'           => 'your-path',
     'no_seo_description'        => 'You do not have an SEO description yet',
     'seo_title'                 => 'SEO Title',
     'zero_characters'           => '0 characters',

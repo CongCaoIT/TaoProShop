@@ -268,7 +268,7 @@ td {
     border-right: 0;
 }
 
-input[name="canonical"] {
+.seo-canonical {
     color: green;
     font-weight: 500;
 }

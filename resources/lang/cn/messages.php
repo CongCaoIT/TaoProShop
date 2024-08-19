@@ -48,7 +48,7 @@ return [
     'upload_image'              => '上传图片',
     'seo_configuration'         => 'SEO 配置',
     'no_seo_title'              => '您还没有 SEO 标题',
-    'url_placeholder'           => 'https://your-path.html',
+    'url_placeholder'           => 'your-path',
     'no_seo_description'        => '您还没有 SEO 描述',
     'seo_title'                 => 'SEO 标题',
     'zero_characters'           => '0 个字符',

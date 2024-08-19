@@ -25,11 +25,11 @@
                         <h5>Thông tin chung</h5>
                     </div>
                     <div class="ibox-content">
-                        @include('Administrator.post.post.component.general')
+                        @include('Administrator.dashboard.component.content', ['model' => $post ?? null])
                     </div>
                 </div>
                 @include('Administrator.dashboard.component.album')
-                @include('Administrator.post.post.component.seo')
+                @include('Administrator.dashboard.component.seo', ['model' => $post ?? null])
             </div>
             <div class="col-lg-3">
                 @include('Administrator.post.post.component.aside')

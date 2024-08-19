@@ -50,6 +50,24 @@ return [
             'title' => 'Xóa quyền',
         ],
     ],
+    'language' => [
+        'index' => [
+            'title' => 'Quản lý ngôn ngữ',
+            'tableHeading' => 'Danh sách ngôn ngữ'
+        ],
+        'create' => [
+            'title' => 'Thêm mới ngôn ngữ',
+        ],
+        'edit' => [
+            'title' => 'Sửa ngôn ngữ',
+        ],
+        'delete' => [
+            'title' => 'Xóa ngôn ngữ',
+        ],
+        'translate' => [
+            'title' => 'Dịch ngôn ngữ',
+        ]
+    ],
     'parent'                    => 'Chọn danh mục cha',
     'parent_notice'             => 'Chọn Root nếu không có danh mục',
     'avt'                       => 'Chọn ảnh đại diện',
@@ -64,7 +82,7 @@ return [
     'upload_image'              => 'Upload ảnh',
     'seo_configuration'         => 'Cấu hình SEO',
     'no_seo_title'              => 'Bạn chưa có tiêu đề SEO',
-    'url_placeholder'           => 'https://duong-dan-cua-ban.html',
+    'url_placeholder'           => 'duong-dan-cua-ban',
     'no_seo_description'        => 'Bạn chưa có mô tả SEO',
     'seo_title'                 => 'Tiêu đề SEO',
     'zero_characters'           => '0 ký tự',

@@ -10,6 +10,7 @@ use App\Services\LanguageService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Gate;
+use PhpParser\Node\Expr\FuncCall;
 
 class LanguageController extends Controller
 {
@@ -146,5 +147,50 @@ class LanguageController extends Controller
             App::setLocale($language->canonical);
         }
         return back();
+    }
+
+    public function translate($id = 0, $languageId = 0, $model = '')
+    {
+        Gate::authorize('modules', 'language.translate');
+
+        $repositoryInstance = $this->repositoryInstance($model);
+        $languageInstance = $this->repositoryInstance('Language');
+        $currentLanguage = $languageInstance->findByCondition([
+            ['canonical', '=', session('app_locale')]
+        ]);
+        $methodName = 'get' . $model . 'ById';
+        $object = $repositoryInstance->{$methodName}($id, $currentLanguage->id); //lấy data để bắt đầu dịch
+        $objectTranslate = $repositoryInstance->{$methodName}($id, $languageId);
+
+        $config = [
+            'js' => [
+                'https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js',
+                'Administrator/plugin/ckfinder_2/ckfinder.js',
+                'Administrator/plugin/ckeditor/ckeditor.js',
+                'Administrator/library/finder.js',
+                'Administrator/library/seo.js'
+            ],
+            'css' => [
+                'https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet'
+            ]
+        ];
+        $config['seo'] = __('messages.language');
+        $template = 'Administrator.language.translate';
+
+        return view('Administrator.dashboard.layout', compact(
+            'template',
+            'config',
+            'object',
+            'objectTranslate'
+        ));
+    }
+
+    private function repositoryInstance($model)
+    {
+        $repositoryNamespace = '\App\Repositories\\' . ucfirst($model) . 'Repository';
+        if (class_exists($repositoryNamespace)) {
+            $repositoryInstance = app($repositoryNamespace);
+        }
+        return $repositoryInstance ?? null;
     }
 }
