@@ -5,6 +5,7 @@
                 <input type="checkbox" value="" id="checkAll" class="input-checkbox">
             </th>
             <th class="text-center">Tiêu đề</th>
+            @include('Administrator.dashboard.component.languageTh')
             <th class="text-center" style="width: 80px">Vị trí</th>
             <th class="text-center" style="width: 100px">Trạng thái</th>
             <th class="text-center" style="width: 100px">Thao tác</th>
@@ -31,7 +32,7 @@
                                 <div class="catalogue" style="margin-top: 5px">
                                     <span class="text-danger">Nhóm hiển thị:</span>
                                     @foreach ($post->post_catalogues as $val)
-                                        @foreach ($val->post_catalogue_language as $item)
+                                        @foreach ($val->post_catalogue_language->where('language_id', $languageId) as $item)
                                             <a href="{{ route('post.index', ['post_catalogue_id' => $val->id]) }}"
                                                 title="">{{ $item->name }}</a>
                                             @if (!$loop->last)
@@ -46,6 +47,7 @@
                             </div>
                         </div>
                     </td>
+                    @include('Administrator.dashboard.component.languageTd', ['model' => $post, 'modeling' => 'Post'])
                     <td>
                         <input type="text" name="order" class="form-control sort-order text-right" data-id="{{ $post->id }}"
                             data-model="{{ $config['model'] }}" value="{{ $post->order }}">

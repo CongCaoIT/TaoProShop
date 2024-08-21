@@ -6,6 +6,7 @@ use App\Classes\Nestedsetbie;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StorePostRequest;
 use App\Http\Requests\UpdatePostRequest;
+use App\Models\Language;
 use App\Repositories\LanguageRepository;
 use App\Repositories\PostRepository;
 use App\Services\PostService;
@@ -23,19 +24,30 @@ class PostController extends Controller
     {
         $this->postService = $postService;
         $this->postRepository = $postRepository;
+        $this->middleware(function ($request, $next) {
+            $locale = app()->getLocale();
+            $language = Language::where('canonical', $locale)->first();
+            $this->language = $language->id;
+            $this->initialize();
+            return $next($request);
+        });
+    }
+
+    private function initialize()
+    {
         $this->nestedsetbie = new Nestedsetbie([
             'table' => 'post_catalogues',
             'foreignkey' => 'post_catalogue_id',
-            'language_id' => 1
+            'language_id' =>  $this->language,
         ]);
-        $this->language = $this->currentLanguage();
     }
 
     public function index(Request $request)
     {
         Gate::authorize('modules', 'post.index');
 
-        $posts = $this->postService->paginate($request); //Gọi func ở tầng Service, nơi xử lý logic
+        $languageId = $this->language;
+        $posts = $this->postService->paginate($request, $languageId); //Gọi func ở tầng Service, nơi xử lý logic
         $config = [
             'js' => [
                 'https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js',
@@ -47,18 +59,15 @@ class PostController extends Controller
             ],
             'model' => 'post'
         ];
-
         $config['seo'] = config('apps.post');
-
         $dropdown = $this->nestedsetbie->Dropdown();
-
         $template = 'Administrator.post.post.index';
-
         return view('Administrator.dashboard.layout', compact(
             'template',
             'config',
             'posts',
             'dropdown',
+            'languageId'
         ));
     }
 

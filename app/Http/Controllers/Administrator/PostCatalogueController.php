@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\DeletePostCatalogueRequest;
 use App\Http\Requests\StorePostCatalogueRequest;
 use App\Http\Requests\UpdatePostCatalogueRequest;
+use App\Models\Language;
 use App\Repositories\PostCatalogueRepository;
 use App\Services\PostCatalogueService;
 use Illuminate\Http\Request;
@@ -21,21 +22,33 @@ class PostCatalogueController extends Controller
 
     public function __construct(PostCatalogueService $postCatalogueService, PostCatalogueRepository $postCatalogueRepository)
     {
+        $this->middleware(function ($request, $next) {
+            $locale = app()->getLocale();
+            $language = Language::where('canonical', $locale)->first();
+            $this->language = $language->id;
+            $this->initialize();
+            return $next($request);
+        });
+
+
         $this->postCatalogueService = $postCatalogueService;
         $this->postCatalogueRepository = $postCatalogueRepository;
+    }
+
+    private function initialize()
+    {
         $this->nestedsetbie = new Nestedsetbie([
             'table' => 'post_catalogues',
             'foreignkey' => 'post_catalogue_id',
-            'language_id' => 1
+            'language_id' =>  $this->language,
         ]);
-        $this->language = $this->currentLanguage();
     }
-
+    
     public function index(Request $request)
     {
         Gate::authorize('modules', 'post.catalogue.index');
-        
-        $postCatalogues = $this->postCatalogueService->paginate($request); 
+
+        $postCatalogues = $this->postCatalogueService->paginate($request, $this->language);
         $config = [
             'js' => [
                 'https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js',
@@ -117,7 +130,7 @@ class PostCatalogueController extends Controller
     public function delete($id)
     {
         Gate::authorize('modules', 'post.catalogue.destroy');
-        
+
         $postCatalogue = $this->postCatalogueRepository->getPostCatalogueById($id, $this->language);
         $config['seo'] = __('messages.postCatalogue');
         $template = 'Administrator.post.catalogue.delete';

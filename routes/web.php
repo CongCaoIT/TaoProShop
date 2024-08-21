@@ -58,6 +58,7 @@ Route::group(['middleware' => [AuthenticateMiddleware::class, SetLocale::class]]
         Route::post('destroy/{id}', [LanguageController::class, 'destroy'])->where(['id' => '[0-9]+'])->name('language.destroy');
         Route::get('switch/{id}', [LanguageController::class, 'switchLanguage'])->where(['id' => '[0-9]+'])->name('language.switch');
         Route::get('translate/{id}/{languageId}/{model}', [LanguageController::class, 'translate'])->where(['id' => '[0-9]+', 'languageId' => '[0-9]+'])->name('language.translate');
+        Route::post('storeTranslate', [LanguageController::class, 'storeTranslate'])->name('language.storeTranslate');
     });
 
     /* Post Catalogue */

@@ -20,13 +20,13 @@ class PostService extends BaseService implements PostServiceInterface
         $this->postRepository = $postRepository;
     }
 
-    public function paginate($request)
+    public function paginate($request, $languageId)
     {
         $condition['keyword'] = addslashes($request->input('keyword'));
         $condition['publish'] = $request->input('publish');
         $condition['where'] =
             [
-                ['tb2.language_id', '=', $this->language],
+                ['tb2.language_id', '=', $languageId],
             ];
         $perpage = $request->input('perpage') != null ? $request->input('perpage') : 20;
 

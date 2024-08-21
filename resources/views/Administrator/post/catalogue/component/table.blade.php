@@ -5,16 +5,7 @@
                 <input type="checkbox" value="" id="checkAll" class="input-checkbox">
             </th>
             <th class="text-center">{{ __('messages.group_name') }}</th>
-            @foreach ($language_all as $language)
-                @if (session('app_locale') == $language->canonical)
-                    @continue;
-                @endif
-                <th style="width: 100px">
-                    <span class="image img-scaledown" style="box-shadow: none; height: 30px;">
-                        <img src="{{ $language->image }}" alt="">
-                    </span>
-                </th>
-            @endforeach
+            @include('Administrator.dashboard.component.languageTh')
             <th class="text-center" style="width: 100px">{{ __('messages.status') }}</th>
             <th class="text-center" style="width: 100px">{{ __('messages.action') }}</th>
         </tr>
@@ -29,16 +20,7 @@
                     <td>
                         {{ str_repeat('|---- ', $postCatalogue->level > 0 ? $postCatalogue->level - 1 : 0) . $postCatalogue->name }}
                     </td>
-                    @foreach ($language_all as $language)
-                        @if (session('app_locale') == $language->canonical)
-                            @continue;
-                        @endif
-                        <td style="width: 100px" class="text-center">
-                            <a
-                                href="{{ route('language.translate', ['id' => $postCatalogue->id, 'languageId' => $language->id, 'model' => 'PostCatalogue']) }}">Chưa
-                                dịch</a>
-                        </td>
-                    @endforeach
+                    @include('Administrator.dashboard.component.languageTd', ['model' => $postCatalogue, 'modeling' => 'PostCatalogue'])
                     <td class="text-center js-switch-{{ $postCatalogue->id }}">
                         <input type="checkbox" value="{{ $postCatalogue->publish }}" class="js-switch status" data-field="publish"
                             data-model = "{{ $config['model'] }}" data-modelid = "{{ $postCatalogue->id }}"

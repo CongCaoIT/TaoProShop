@@ -12,8 +12,11 @@
     </div>
 @endif
 
-<form action="" method="POST">
+<form action="{{ route('language.storeTranslate') }}" method="POST">
     @csrf
+    <input type="hidden" name="option[id]" value="{{ $option['id'] }}">
+    <input type="hidden" name="option[languageId]" value="{{ $option['languageId'] }}">
+    <input type="hidden" name="option[model]" value="{{ $option['model'] }}">
     <div class="wrapper wrapper-content animated fadeInRight">
         <div class="row">
             <div class="col-lg-6">
@@ -22,10 +25,10 @@
                         <h5>{{ __('messages.general_information') }}</h5>
                     </div>
                     <div class="ibox-content">
-                        @include('Administrator.dashboard.component.content', ['model' => $object ?? null])
+                        @include('Administrator.dashboard.component.content', ['model' => $object ?? null, 'disabled' => 1])
                     </div>
                 </div>
-                @include('Administrator.dashboard.component.seo', ['model' => $object ?? null])
+                @include('Administrator.dashboard.component.seo', ['model' => $object ?? null, 'disabled' => 1])
             </div>
             <div class="col-lg-6">
                 <div class="ibox">

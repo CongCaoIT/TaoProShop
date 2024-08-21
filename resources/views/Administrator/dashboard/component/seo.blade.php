@@ -30,8 +30,8 @@
                                 <span class="count_meta-title"></span>
                             </div>
                         </label>
-                        <input type="text" name="meta_title" value="{{ old('meta_title', $model->meta_title ?? '') }}" class="form-control"
-                            placeholder="" autocomplete="off">
+                        <input {{ isset($disabled) ? 'disabled' : '' }} type="text" name="meta_title"
+                            value="{{ old('meta_title', $model->meta_title ?? '') }}" class="form-control" placeholder="" autocomplete="off">
                     </div>
                 </div>
             </div>
@@ -41,8 +41,8 @@
                         <label for="" class="control-label text-left">
                             <div class="flex-container">{{ __('messages.seo_keywords') }}</div>
                         </label>
-                        <input type="text" name="meta_keyword" value="{{ old('meta_keyword', $model->meta_keyword ?? '') }}" class="form-control"
-                            placeholder="" autocomplete="off">
+                        <input {{ isset($disabled) ? 'disabled' : '' }} type="text" name="meta_keyword"
+                            value="{{ old('meta_keyword', $model->meta_keyword ?? '') }}" class="form-control" placeholder="" autocomplete="off">
                     </div>
                 </div>
             </div>
@@ -55,7 +55,8 @@
                                 <span class="count_meta-title">{{ __('messages.zero_characters') }}</span>
                             </div>
                         </label>
-                        <textarea type="text" name="meta_description" id="meta_description" class="form-control" placeholder="" autocomplete="off">{{ old('meta_description', $model->meta_description ?? '') }}</textarea>
+                        <textarea {{ isset($disabled) ? 'disabled' : '' }} type="text" name="meta_description" id="meta_description" class="form-control" placeholder=""
+                            autocomplete="off">{{ old('meta_description', $model->meta_description ?? '') }}</textarea>
                     </div>
                 </div>
             </div>
@@ -68,8 +69,9 @@
                             </div>
                         </label>
                         <div class="input-wrapper">
-                            <input type="text" name="canonical" value="{{ old('canonical', $model->canonical ?? '') }}"
-                                class="form-control seo-canonical" placeholder="" autocomplete="off">
+                            <input {{ isset($disabled) ? 'disabled' : '' }} type="text" name="canonical"
+                                value="{{ old('canonical', $model->canonical ?? '') }}" class="form-control seo-canonical" placeholder=""
+                                autocomplete="off">
                             <span class="baseURL">{{ config('app.url') }}</span>
                         </div>
                     </div>

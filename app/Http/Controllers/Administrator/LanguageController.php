@@ -4,13 +4,13 @@ namespace App\Http\Controllers\Administrator;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreLanguageRequest;
+use App\Http\Requests\TranslateRequest;
 use App\Http\Requests\UpdateLanguageRequest;
 use App\Repositories\LanguageRepository;
 use App\Services\LanguageService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Gate;
-use PhpParser\Node\Expr\FuncCall;
 
 class LanguageController extends Controller
 {
@@ -127,18 +127,6 @@ class LanguageController extends Controller
         return redirect()->route('language.index');
     }
 
-    private function configData()
-    {
-        return [
-            'js' => [
-                'Administrator/plugin/ckfinder_2/ckfinder.js',
-                'Administrator/plugin/ckeditor/ckeditor.js',
-                'Administrator/library/finder.js'
-            ],
-            'css' => []
-        ];
-    }
-
     public function switchLanguage($id)
     {
         $language = $this->languageRepository->findByID($id);
@@ -161,7 +149,6 @@ class LanguageController extends Controller
         $methodName = 'get' . $model . 'ById';
         $object = $repositoryInstance->{$methodName}($id, $currentLanguage->id); //lấy data để bắt đầu dịch
         $objectTranslate = $repositoryInstance->{$methodName}($id, $languageId);
-
         $config = [
             'js' => [
                 'https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js',
@@ -174,6 +161,11 @@ class LanguageController extends Controller
                 'https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet'
             ]
         ];
+        $option = [
+            'id' => $id,
+            'languageId' => $languageId,
+            'model' => $model
+        ];
         $config['seo'] = __('messages.language');
         $template = 'Administrator.language.translate';
 
@@ -181,7 +173,8 @@ class LanguageController extends Controller
             'template',
             'config',
             'object',
-            'objectTranslate'
+            'objectTranslate',
+            'option'
         ));
     }
 
@@ -192,5 +185,28 @@ class LanguageController extends Controller
             $repositoryInstance = app($repositoryNamespace);
         }
         return $repositoryInstance ?? null;
+    }
+
+    public function storeTranslate(TranslateRequest $request)
+    {
+        $option = $request->input('option');
+        if ($this->languageService->saveTranslate($option, $request)) {
+            flash()->success('Sửa bản ghi thành công.');
+            return redirect()->back();
+        }
+        flash()->error('Sửa bản ghi không thành công. Hãy thử lại.');
+        return redirect()->back();
+    }
+
+    private function configData()
+    {
+        return [
+            'js' => [
+                'Administrator/plugin/ckfinder_2/ckfinder.js',
+                'Administrator/plugin/ckeditor/ckeditor.js',
+                'Administrator/library/finder.js'
+            ],
+            'css' => []
+        ];
     }
 }
