@@ -41,9 +41,7 @@ class LanguageController extends Controller
         ];
 
         $config['seo'] = config('apps.language');
-
         $template = 'Administrator.language.index';
-
         return view('Administrator.dashboard.layout', compact(
             'template',
             'config',
@@ -140,11 +138,10 @@ class LanguageController extends Controller
     public function translate($id = 0, $languageId = 0, $model = '')
     {
         Gate::authorize('modules', 'language.translate');
-
         $repositoryInstance = $this->repositoryInstance($model);
         $languageInstance = $this->repositoryInstance('Language');
         $currentLanguage = $languageInstance->findByCondition([
-            ['canonical', '=', session('app_locale')]
+            ['canonical', '=', App::getLocale()]
         ]);
         $methodName = 'get' . $model . 'ById';
         $object = $repositoryInstance->{$methodName}($id, $currentLanguage->id); //lấy data để bắt đầu dịch

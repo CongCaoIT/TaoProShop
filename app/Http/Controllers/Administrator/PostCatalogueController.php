@@ -11,6 +11,7 @@ use App\Models\Language;
 use App\Repositories\PostCatalogueRepository;
 use App\Services\PostCatalogueService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Gate;
 
 class PostCatalogueController extends Controller
@@ -43,7 +44,7 @@ class PostCatalogueController extends Controller
             'language_id' =>  $this->language,
         ]);
     }
-    
+
     public function index(Request $request)
     {
         Gate::authorize('modules', 'post.catalogue.index');
@@ -63,10 +64,12 @@ class PostCatalogueController extends Controller
 
         $config['seo'] = __('messages.postCatalogue');
         $template = 'Administrator.post.catalogue.index';
+        $locale = App::getLocale();
         return view('Administrator.dashboard.layout', compact(
             'template',
             'config',
-            'postCatalogues'
+            'postCatalogues',
+            'locale'
         ));
     }
 

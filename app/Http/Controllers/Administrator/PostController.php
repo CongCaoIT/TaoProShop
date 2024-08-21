@@ -11,6 +11,7 @@ use App\Repositories\LanguageRepository;
 use App\Repositories\PostRepository;
 use App\Services\PostService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Gate;
 
 class PostController extends Controller
@@ -62,12 +63,14 @@ class PostController extends Controller
         $config['seo'] = config('apps.post');
         $dropdown = $this->nestedsetbie->Dropdown();
         $template = 'Administrator.post.post.index';
+        $locale = App::getLocale();
         return view('Administrator.dashboard.layout', compact(
             'template',
             'config',
             'posts',
             'dropdown',
-            'languageId'
+            'languageId',
+            'locale'
         ));
     }
 
