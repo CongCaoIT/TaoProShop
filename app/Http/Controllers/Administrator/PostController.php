@@ -110,8 +110,11 @@ class PostController extends Controller
         $dropdown = $this->nestedsetbie->Dropdown();
         $config['seo'] = config('apps.post');
         $config['method'] = 'edit';
-        $album = json_decode($post->album);
-
+        if ($post && property_exists($post, 'album')) {
+            $album = json_decode($post->album);
+        } else {
+            $album = null;
+        }
         return view('Administrator.dashboard.layout', compact(
             'template',
             'config',

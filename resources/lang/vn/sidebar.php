@@ -3,6 +3,32 @@
 return [
     'module' => [
         [
+            'title' => 'QL Sản phẩm',
+            'icon' => 'fa fa-cube',
+            'name' => [
+                'product',
+                'attribute'
+            ],
+            'subModule' => [
+                [
+                    'title' => 'Nhóm Sản phẩm',
+                    'route' => 'product.catalogue.index',
+                ],
+                [
+                    'title' => 'Sản phẩm',
+                    'route' => 'product.index',
+                ],
+                [
+                    'title' => 'Loại thuộc tính',
+                    'route' => 'attribute.catalogue.index',
+                ],
+                [
+                    'title' => 'Thuộc tính',
+                    'route' => 'attribute.index',
+                ]
+            ]
+        ],
+        [
             'title' => 'QL Bài viết',
             'icon' => 'fa fa-file',
             'name' => [

@@ -5,15 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Router extends Model
+class ProductVariantAttribute extends Model
 {
     use HasFactory;
 
-    protected $table = 'routers';
     protected $fillable = [
-        'canonical',
-        'module_id',
-        'controllers',
-        'language_id',
+        'product_variant_id',
+        'attribute_id',
     ];
+
+    protected $table = 'product_variant_attribute';
 }

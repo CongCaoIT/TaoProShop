@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Administrator\AttributeCatalogueController;
 use App\Http\Controllers\Administrator\AuthController;
 use App\Http\Controllers\Administrator\DashboardController;
 use App\Http\Controllers\Administrator\LanguageController;
@@ -59,6 +60,50 @@ Route::group(['middleware' => [AuthenticateMiddleware::class, SetLocale::class]]
         Route::get('switch/{id}', [LanguageController::class, 'switchLanguage'])->where(['id' => '[0-9]+'])->name('language.switch');
         Route::get('translate/{id}/{languageId}/{model}', [LanguageController::class, 'translate'])->where(['id' => '[0-9]+', 'languageId' => '[0-9]+'])->name('language.translate');
         Route::post('storeTranslate', [LanguageController::class, 'storeTranslate'])->name('language.storeTranslate');
+    });
+
+    /* Product Catalogue */
+    Route::group(['prefix' => 'product/catalogue'], function () {
+        Route::get('', [ProductCatalogueController::class, 'index'])->name('product.catalogue.index');
+        Route::get('create', [ProductCatalogueController::class, 'create'])->name('product.catalogue.create');
+        Route::post('store', [ProductCatalogueController::class, 'store'])->name('product.catalogue.store');
+        Route::get('edit/{id}', [ProductCatalogueController::class, 'edit'])->where(['id' => '[0-9]+'])->name('product.catalogue.edit');
+        Route::post('update/{id}', [ProductCatalogueController::class, 'update'])->where(['id' => '[0-9]+'])->name('product.catalogue.update');
+        Route::get('delete/{id}', [ProductCatalogueController::class, 'delete'])->where(['id' => '[0-9]+'])->name('product.catalogue.delete');
+        Route::post('destroy/{id}', [ProductCatalogueController::class, 'destroy'])->where(['id' => '[0-9]+'])->name('product.catalogue.destroy');
+    });
+
+    /* Product  */
+    Route::group(['prefix' => 'product'], function () {
+        Route::get('', [ProductController::class, 'index'])->name('product.index');
+        Route::get('create', [ProductController::class, 'create'])->name('product.create');
+        Route::post('store', [ProductController::class, 'store'])->name('product.store');
+        Route::get('edit/{id}', [ProductController::class, 'edit'])->where(['id' => '[0-9]+'])->name('product.edit');
+        Route::post('update/{id}', [ProductController::class, 'update'])->where(['id' => '[0-9]+'])->name('product.update');
+        Route::get('delete/{id}', [ProductController::class, 'delete'])->where(['id' => '[0-9]+'])->name('product.delete');
+        Route::post('destroy/{id}', [ProductController::class, 'destroy'])->where(['id' => '[0-9]+'])->name('product.destroy');
+    });
+
+    /* Attribute Catalogue */
+    Route::group(['prefix' => 'attribute/catalogue'], function () {
+        Route::get('', [AttributeCatalogueController::class, 'index'])->name('attribute.catalogue.index');
+        Route::get('create', [AttributeCatalogueController::class, 'create'])->name('attribute.catalogue.create');
+        Route::post('store', [AttributeCatalogueController::class, 'store'])->name('attribute.catalogue.store');
+        Route::get('edit/{id}', [AttributeCatalogueController::class, 'edit'])->where(['id' => '[0-9]+'])->name('attribute.catalogue.edit');
+        Route::post('update/{id}', [AttributeCatalogueController::class, 'update'])->where(['id' => '[0-9]+'])->name('attribute.catalogue.update');
+        Route::get('delete/{id}', [AttributeCatalogueController::class, 'delete'])->where(['id' => '[0-9]+'])->name('attribute.catalogue.delete');
+        Route::post('destroy/{id}', [AttributeCatalogueController::class, 'destroy'])->where(['id' => '[0-9]+'])->name('attribute.catalogue.destroy');
+    });
+
+    /* Attribute  */
+    Route::group(['prefix' => 'attribute'], function () {
+        Route::get('', [AttributeController::class, 'index'])->name('attribute.index');
+        Route::get('create', [AttributeController::class, 'create'])->name('attribute.create');
+        Route::post('store', [AttributeController::class, 'store'])->name('attribute.store');
+        Route::get('edit/{id}', [AttributeController::class, 'edit'])->where(['id' => '[0-9]+'])->name('attribute.edit');
+        Route::post('update/{id}', [AttributeController::class, 'update'])->where(['id' => '[0-9]+'])->name('attribute.update');
+        Route::get('delete/{id}', [AttributeController::class, 'delete'])->where(['id' => '[0-9]+'])->name('attribute.delete');
+        Route::post('destroy/{id}', [AttributeController::class, 'destroy'])->where(['id' => '[0-9]+'])->name('attribute.destroy');
     });
 
     /* Post Catalogue */

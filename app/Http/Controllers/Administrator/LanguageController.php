@@ -186,8 +186,7 @@ class LanguageController extends Controller
 
     public function storeTranslate(TranslateRequest $request)
     {
-        $option = $request->input('option');
-        if ($this->languageService->saveTranslate($option, $request)) {
+        if ($this->languageService->saveTranslate($request)) {
             flash()->success('Sửa bản ghi thành công.');
             return redirect()->back();
         }

@@ -68,6 +68,78 @@ return [
             'title' => 'Dịch ngôn ngữ',
         ]
     ],
+    'productCatalogue' => [
+        'index' => [
+            'title' => 'Quản lý nhóm sản phẩm',
+            'tableHeading' => 'Danh sách nhóm sản phẩm'
+        ],
+        'create' => [
+            'title' => 'Thêm mới nhóm sản phẩm',
+        ],
+        'edit' => [
+            'title' => 'Sửa nhóm sản phẩm',
+        ],
+        'delete' => [
+            'title' => 'Xóa nhóm sản phẩm',
+        ],
+        'translate' => [
+            'title' => 'Dịch nhóm sản phẩm',
+        ]
+    ],
+    'product' => [
+        'index' => [
+            'title' => 'Quản lý sản phẩm',
+            'tableHeading' => 'Danh sách sản phẩm'
+        ],
+        'create' => [
+            'title' => 'Thêm mới sản phẩm',
+        ],
+        'edit' => [
+            'title' => 'Sửa sản phẩm',
+        ],
+        'delete' => [
+            'title' => 'Xóa sản phẩm',
+        ],
+        'translate' => [
+            'title' => 'Dịch sản phẩm',
+        ]
+    ],
+    'attributeCatalogue' => [
+        'index' => [
+            'title' => 'Quản lý nhóm thuộc tính',
+            'tableHeading' => 'Danh sách nhóm thuộc tính'
+        ],
+        'create' => [
+            'title' => 'Thêm mới nhóm thuộc tính',
+        ],
+        'edit' => [
+            'title' => 'Sửa nhóm thuộc tính',
+        ],
+        'delete' => [
+            'title' => 'Xóa nhóm thuộc tính',
+        ],
+        'translate' => [
+            'title' => 'Dịch nhóm thuộc tính',
+        ]
+    ],
+    'attribute' => [
+        'index' => [
+            'title' => 'Quản lý thuộc tính',
+            'tableHeading' => 'Danh sách thuộc tính'
+        ],
+        'create' => [
+            'title' => 'Thêm mới thuộc tính',
+        ],
+        'edit' => [
+            'title' => 'Sửa thuộc tính',
+        ],
+        'delete' => [
+            'title' => 'Xóa thuộc tính',
+        ],
+        'translate' => [
+            'title' => 'Dịch thuộc tính',
+        ]
+    ],
     'parent'                    => 'Chọn danh mục cha',
     'parent_notice'             => 'Chọn Root nếu không có danh mục',
     'avt'                       => 'Chọn ảnh đại diện',
