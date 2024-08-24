@@ -1,5 +1,5 @@
 @foreach ($language_all as $language)
-    @if (session('app_locale') == $language->canonical)
+    @if ($locale == $language->canonical)
         @continue;
     @endif
     <th style="width: 100px">
