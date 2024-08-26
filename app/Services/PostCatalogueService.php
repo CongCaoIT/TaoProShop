@@ -52,21 +52,19 @@ class PostCatalogueService extends BaseService implements PostCatalogueServiceIn
         return $postCatalogues;
     }
 
-    public function create($request)
+    public function create($request, $languageId)
     {
         DB::beginTransaction();
         try {
             $postCatalogue = $this->createPostCatalogue($request);
             if ($postCatalogue->id > 0) {
                 $payloadLanguage = $request->only($this->payloadLanguage());
-                $payloadLanguage['language_id'] = $this->currentLanguage();
+                $payloadLanguage['language_id'] = $languageId;
                 $payloadLanguage['post_catalogue_id'] = $postCatalogue->id;
                 $payloadLanguage['canonical'] = Str::slug($payloadLanguage['canonical']);
 
                 $this->postCatalogueRepository->createPivot($postCatalogue, $payloadLanguage, 'languages');
-                $router = $this->payloadRouter($payloadLanguage, $postCatalogue);
-
-                $this->routerRepository->create($router);
+                $this->createRouter($postCatalogue, $request, $this->controllerName, $languageId);
             }
 
             $this->nestedsetCustom();
@@ -79,7 +77,7 @@ class PostCatalogueService extends BaseService implements PostCatalogueServiceIn
         }
     }
 
-    public function update($id, $request)
+    public function update($id, $request, $languageId)
     {
         DB::beginTransaction();
         try {
@@ -102,9 +100,7 @@ class PostCatalogueService extends BaseService implements PostCatalogueServiceIn
                 ];
 
                 $router = $this->routerRepository->findByCondition($condition);
-                $payloadRouter = $this->payloadRouter($payloadLanguage, $postCatalogue);
-
-                $this->routerRepository->update($router->id, $payloadRouter);
+                $this->updateRouter($postCatalogue, $request, $this->controllerName, $languageId);
             }
 
             $this->nestedsetCustom();
@@ -122,6 +118,10 @@ class PostCatalogueService extends BaseService implements PostCatalogueServiceIn
         DB::beginTransaction();
         try {
             $this->postCatalogueRepository->delete($id);
+            $this->routerRepository->forceDeleteByCondition([
+                ['module_id', '=', $id],
+                ['controllers', '=', 'App\Http\Controllers\Frontend\PostCatalogueController']
+            ]);
             $this->nestedsetCustom();
             DB::commit();
             return true;
@@ -170,17 +170,6 @@ class PostCatalogueService extends BaseService implements PostCatalogueServiceIn
         $payload['user_id'] = Auth::id();
         $this->formatAlbum($payload);
         return $this->postCatalogueRepository->create($payload);
-    }
-
-    private function payloadRouter($payloadLanguage, $postCatalogue)
-    {
-        $router = [
-            'canonical' => $payloadLanguage['canonical'],
-            'module_id' => $postCatalogue->id,
-            'controllers' => 'App\Http\Controllers\Frontend\PostCatalogueController'
-        ];
-
-        return $router;
     }
 
     private function select()

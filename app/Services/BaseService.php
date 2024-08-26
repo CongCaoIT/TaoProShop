@@ -42,6 +42,17 @@ class BaseService implements BaseServiceInterface
         return $this->routerRepository->create($payload);
     }
 
+    public function updateRouter($model, $request, $controllerName, $languageId)
+    {
+        $payload = $this->formatRouterPayload($model, $request, $controllerName, $languageId);
+        $condition = [
+            ['module_id', '=', $model->id],
+            ['controllers', '=', 'App\Http\Controllers\Frontend\\' . $controllerName . '']
+        ];
+        $router = $this->routerRepository->findByCondition($condition);
+        return $this->routerRepository->update($router->id, $payload);
+    }
+
     public function formatRouterPayload($model, $request, $controllerName, $languageId)
     {
         return [

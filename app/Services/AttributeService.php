@@ -2,25 +2,26 @@
 
 namespace App\Services;
 
+use App\Repositories\AttributeRepository;
+
 use App\Repositories\RouterRepository;
-use App\Repositories\PostRepository;
-use App\Services\Interfaces\PostServiceInterface;
+use App\Services\Interfaces\AttributeServiceInterface;
 use Exception;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
-class PostService extends BaseService implements PostServiceInterface
+class AttributeService extends BaseService implements AttributeServiceInterface
 {
-    protected $postRepository;
-    protected $language;
+    protected $attributeRepository;
     protected $routerRepository;
-    protected $controllerName = 'PostController';
+    protected $language;
+    protected $controllerName = 'AttributeController';
 
-    public function __construct(PostRepository $postRepository, RouterRepository $routerRepository)
+    public function __construct(AttributeRepository $attributeRepository, RouterRepository $routerRepository)
     {
         $this->language = $this->currentLanguage();
-        $this->postRepository = $postRepository;
+        $this->attributeRepository = $attributeRepository;
         $this->routerRepository = $routerRepository;
     }
 
@@ -34,31 +35,31 @@ class PostService extends BaseService implements PostServiceInterface
             ];
         $perpage = $request->input('perpage') != null ? $request->input('perpage') : 20;
 
-        $posts = $this->postRepository->pagination(
+        $attributes = $this->attributeRepository->pagination(
             $this->select(),
             $condition,
             $perpage,
-            ['posts.id', 'DESC'],
-            ['path' => 'post'],
+            ['attributes.id', 'DESC'],
+            ['path' => 'attribute'],
             [
-                ['post_language as tb2', 'tb2.post_id', '=', 'posts.id'],
-                ['post_catalogue_post', 'posts.id', '=', 'post_catalogue_post.post_id'],
+                ['attribute_language as tb2', 'tb2.attribute_id', '=', 'attributes.id'],
+                ['attribute_catalogue_attribute', 'attributes.id', '=', 'attribute_catalogue_attribute.attribute_id'],
             ],
-            ['post_catalogues'],
+            ['attribute_catalogues'],
             $this->whereRaw($request)
         );
-        return $posts;
+        return $attributes;
     }
 
     public function create($request, $languageId)
     {
         DB::beginTransaction();
         try {
-            $post = $this->createPost($request);
-            if ($post->id > 0) {
-                $this->updateLanguageForPost($post, $request);
-                $this->updateCatalogueForPost($post, $request);
-                $this->createRouter($post, $request, $this->controllerName, $languageId);
+            $attribute = $this->createAttribute($request);
+            if ($attribute->id > 0) {
+                $this->updateLanguageForAttribute($attribute, $request);
+                $this->updateCatalogueForAttribute($attribute, $request);
+                $this->createRouter($attribute, $request, $this->controllerName, $languageId);
             }
 
             DB::commit();
@@ -74,11 +75,11 @@ class PostService extends BaseService implements PostServiceInterface
     {
         DB::beginTransaction();
         try {
-            $post = $this->postRepository->findByID($id);
-            if ($this->uploadPost($post->id, $request)) {
-                $this->updateLanguageForPost($post, $request);
-                $this->updateCatalogueForPost($post, $request);
-                $this->updateRouter($post, $request, $this->controllerName, $languageId);
+            $attribute = $this->attributeRepository->findByID($id);
+            if ($this->uploadAttribute($attribute->id, $request)) {
+                $this->updateLanguageForAttribute($attribute, $request);
+                $this->updateCatalogueForAttribute($attribute, $request);
+                $this->updateRouter($attribute, $request, $this->controllerName, $languageId);
             }
 
             DB::commit();
@@ -94,7 +95,7 @@ class PostService extends BaseService implements PostServiceInterface
     {
         DB::beginTransaction();
         try {
-            $this->postRepository->delete($id);
+            $this->attributeRepository->delete($id);
             $this->routerRepository->forceDeleteByCondition([
                 ['module_id', '=', $id],
                 ['controllers', '=', 'App\Http\Controllers\Frontend\\' . $this->controllerName . '']
@@ -108,46 +109,46 @@ class PostService extends BaseService implements PostServiceInterface
         }
     }
 
-    private function createPost($request)
+    private function createAttribute($request)
     {
         $payload = $request->only($this->payload());
         $payload['user_id'] = Auth::id();
         $payload = $this->formatAlbum($payload);
-        $post = $this->postRepository->create($payload);
+        $attribute = $this->attributeRepository->create($payload);
 
-        return $post;
+        return $attribute;
     }
 
-    private function uploadPost($id, $request)
+    private function uploadAttribute($id, $request)
     {
         $payload = $request->only($this->payload());
         $payload['user_id'] = Auth::id();
         $payload = $this->formatAlbum($payload);
 
-        return $this->postRepository->update($id, $payload);
+        return $this->attributeRepository->update($id, $payload);
     }
 
-    private function updateLanguageForPost($post, $request)
+    private function updateLanguageForAttribute($attribute, $request)
     {
         $payload = $request->only($this->payloadLanguage());
-        $payload = $this->formatLanguagePayload($payload, $post->id);
-        $post->languages()->detach([$this->language, $post->id]);
+        $payload = $this->formatLanguagePayload($payload, $attribute->id);
+        $attribute->languages()->detach([$this->language, $attribute->id]);
 
-        return $this->postRepository->createPivot($post, $payload, 'languages');
+        return $this->attributeRepository->createPivot($attribute, $payload, 'languages');
     }
 
-    private function formatLanguagePayload($payload, $postId)
+    private function formatLanguagePayload($payload, $attributeId)
     {
         $payload['language_id'] = $this->language;
-        $payload['post_id'] = $postId;
+        $payload['attribute_id'] = $attributeId;
         $payload['canonical'] = Str::slug($payload['canonical']);
 
         return $payload;
     }
 
-    private function updateCatalogueForPost($post, $request)
+    private function updateCatalogueForAttribute($attribute, $request)
     {
-        $post->post_catalogues()->sync($this->catalogue($request));
+        $attribute->attribute_catalogues()->sync($this->catalogue($request));
     }
 
     private function catalogue($request)
@@ -158,16 +159,16 @@ class PostService extends BaseService implements PostServiceInterface
             $catalogue = [];
         }
 
-        return array_unique(array_merge($catalogue, [$request->post_catalogue_id]));
+        return array_unique(array_merge($catalogue, [$request->attribute_catalogue_id]));
     }
 
-    public function updateStatus($post = [])
+    public function updateStatus($attribute = [])
     {
         DB::beginTransaction();
         try {
-            $payload[$post['field']] = (($post['value'] == 1) ? 0 : 1);
+            $payload[$attribute['field']] = (($attribute['value'] == 1) ? 0 : 1);
 
-            $this->postRepository->update($post['modelId'], $payload);
+            $this->attributeRepository->update($attribute['modelId'], $payload);
             DB::commit();
             return true;
         } catch (Exception $ex) {
@@ -177,13 +178,13 @@ class PostService extends BaseService implements PostServiceInterface
         }
     }
 
-    public function updateStatusAll($post = [])
+    public function updateStatusAll($attribute = [])
     {
         DB::beginTransaction();
         try {
-            $payload[$post['field']] = $post['value'];
+            $payload[$attribute['field']] = $attribute['value'];
 
-            $this->postRepository->updateByWhereIn('id', $post['id'], $payload);
+            $this->attributeRepository->updateByWhereIn('id', $attribute['id'], $payload);
             DB::commit();
             return true;
         } catch (Exception $ex) {
@@ -196,18 +197,18 @@ class PostService extends BaseService implements PostServiceInterface
     private function whereRaw($request)
     {
         $rawCondition = [];
-        $postCatalogueId = $request->input('post_catalogue_id') != null ? $request->integer('post_catalogue_id') : 0;
-        if ($postCatalogueId > 0) {
+        $attributeCatalogueId = $request->input('attribute_catalogue_id') != null ? $request->integer('attribute_catalogue_id') : 0;
+        if ($attributeCatalogueId > 0) {
             $rawCondition['whereRaw'] = [
                 [
-                    'post_catalogue_post.post_catalogue_id IN (
+                    'attribute_catalogue_attribute.attribute_catalogue_id IN (
                         SELECT id
-                        FROM post_catalogues
-                        JOIN post_catalogue_language ON post_catalogues.id = post_catalogue_language.post_catalogue_id
-                        WHERE lft >= (SELECT lft FROM post_catalogues WHERE post_catalogues.id = ?)
-                        AND rgt <= (SELECT rgt FROM post_catalogues WHERE post_catalogues.id = ?)
+                        FROM attribute_catalogues
+                        JOIN attribute_catalogue_language ON attribute_catalogues.id = attribute_catalogue_language.attribute_catalogue_id
+                        WHERE lft >= (SELECT lft FROM attribute_catalogues WHERE attribute_catalogues.id = ?)
+                        AND rgt <= (SELECT rgt FROM attribute_catalogues WHERE attribute_catalogues.id = ?)
                     )',
-                    [$postCatalogueId, $postCatalogueId]
+                    [$attributeCatalogueId, $attributeCatalogueId]
                 ]
             ];
         }
@@ -217,10 +218,10 @@ class PostService extends BaseService implements PostServiceInterface
     private function select()
     {
         return [
-            'posts.id',
-            'posts.publish',
-            'posts.image',
-            'posts.order',
+            'attributes.id',
+            'attributes.publish',
+            'attributes.image',
+            'attributes.order',
             'tb2.name',
             'tb2.canonical',
         ];
@@ -232,7 +233,7 @@ class PostService extends BaseService implements PostServiceInterface
             'publish',
             'follow',
             'image',
-            'post_catalogue_id',
+            'attribute_catalogue_id',
             'album'
         ];
     }

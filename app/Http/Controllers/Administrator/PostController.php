@@ -92,7 +92,8 @@ class PostController extends Controller
 
     public function store(StorePostRequest $request)
     {
-        if ($this->postService->create($request)) {
+        $languageId = $this->language;
+        if ($this->postService->create($request, $languageId)) {
             flash()->success('Thêm mới bản ghi thành công.');
             return redirect()->route('post.index');
         }
@@ -126,7 +127,8 @@ class PostController extends Controller
 
     public function update($id, UpdatePostRequest $request)
     {
-        if ($this->postService->update($id, $request)) {
+        $languageId = $this->language;
+        if ($this->postService->update($id, $request, $languageId)) {
             flash()->success('Sửa bản ghi thành công.');
             return redirect()->route('post.index');
         }

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Administrator\AttributeCatalogueController;
+use App\Http\Controllers\Administrator\AttributeController;
 use App\Http\Controllers\Administrator\AuthController;
 use App\Http\Controllers\Administrator\DashboardController;
 use App\Http\Controllers\Administrator\LanguageController;

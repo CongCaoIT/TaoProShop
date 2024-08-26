@@ -40,7 +40,7 @@ class AttributeCatalogueService extends BaseService implements AttributeCatalogu
             $condition,
             $perpage,
             ['attribute_catalogues.lft', 'ASC'],
-            ['path' => 'post/catalogue'],
+            ['path' => 'attribute/catalogue'],
             [['attribute_catalogue_language as tb2', 'tb2.attribute_catalogue_id', '=', 'attribute_catalogues.id']],
         );
         return $attributeCatalogues;
@@ -125,6 +125,10 @@ class AttributeCatalogueService extends BaseService implements AttributeCatalogu
         DB::beginTransaction();
         try {
             $this->attributeCatalogueRepository->delete($id);
+            $this->routerRepository->forceDeleteByCondition([
+                ['module_id', '=', $id],
+                ['controllers', '=', 'App\Http\Controllers\Frontend\\' . $this->controllerName . '']
+            ]);
             $this->nestedset = new Nestedsetbie([
                 'table' => 'attribute_catalogues',
                 'foreignkey' => 'attribute_catalogue_id',
