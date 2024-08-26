@@ -94,15 +94,7 @@ class AttributeCatalogueService extends BaseService implements AttributeCatalogu
                 $attributeCatalogue->languages()->detach([$payloadLanguage['language_id'], $payloadLanguage['attribute_catalogue_id']]);
                 $response = $this->attributeCatalogueRepository->createPivot($attributeCatalogue, $payloadLanguage, 'languages');
 
-                $condition = [
-                    ['module_id', '=', $id],
-                    ['controllers', '=', 'App\Http\Controllers\Frontend\attributeCatalogueController']
-                ];
-
-                $router = $this->routerRepository->findByCondition($condition);
-                $payloadRouter = $this->payloadRouter($payloadLanguage, $attributeCatalogue);
-
-                $this->routerRepository->update($router->id, $payloadRouter);
+                $this->updateRouter($attributeCatalogue, $request, $this->controllerName, $languageId);
             }
 
             $this->nestedset = new Nestedsetbie([
@@ -182,17 +174,6 @@ class AttributeCatalogueService extends BaseService implements AttributeCatalogu
         $payload['user_id'] = Auth::id();
         $this->formatAlbum($payload);
         return $this->attributeCatalogueRepository->create($payload);
-    }
-
-    private function payloadRouter($payloadLanguage, $attributeCatalogue)
-    {
-        $router = [
-            'canonical' => $payloadLanguage['canonical'],
-            'module_id' => $attributeCatalogue->id,
-            'controllers' => 'App\Http\Controllers\Frontend\attributeCatalogueController'
-        ];
-
-        return $router;
     }
 
     private function select()
